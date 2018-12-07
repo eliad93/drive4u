@@ -1,7 +1,6 @@
 package com.example.eliad.drive4u;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         textViewNewUser.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                onNewUserTouch();
+                onNewUserClick();
                 return false;
             }
         });
@@ -65,8 +64,8 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.wrong_user_name_or_password, Toast.LENGTH_SHORT).show();
     }
 
-    public void onNewUserTouch(){
-        Log.d(TAG, "in onNewUserTouch");
+    public void onNewUserClick(){
+        Log.d(TAG, "in onNewUserClick");
         // start a new activity for registration.
 
         //Intent intent = new Intent(this, newUserActivity.class)
