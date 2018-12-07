@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         editTextUserName = findViewById(R.id.editTextUserName);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin      = findViewById(R.id.buttonLogin);
-        textViewNewUser  = findViewById(R.id.textViewNewUser);
+        textViewNewUser  = findViewById(R.id.textViewNewUserClick);
 
         // set a callback for the login button
         buttonLogin.setOnClickListener(new View.OnClickListener() {
