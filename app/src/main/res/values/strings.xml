@@ -6,4 +6,6 @@
     <string name="dont_have_an_account_yet">Don\'t have an account yet?</string>
     <string name="click_here_to_create_a_new_account">Click here to create a new account</string>
     <string name="wrong_user_name_or_password">Wrong user name or password</string>
+    <string name="user_email">User Email</string>
+    <string name="search_a_student">Search a student</string>
 </resources>

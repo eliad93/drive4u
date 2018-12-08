@@ -1,6 +1,7 @@
 package com.example.eliad.drive4u;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,15 +12,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
 public class LoginActivity extends AppCompatActivity {
 
-    final static String TAG = "LoginActivity";
+    // Tag for the Log
+    private final static String TAG = "LoginActivity";
+
+    // Firebase
+    private FirebaseAuth mAuth;
 
     // widgets
-    EditText editTextUserName;
-    EditText editTextPassword;
-    Button   buttonLogin;
-    TextView textViewNewUser;
+    private EditText editTextUserEmail;
+    private EditText editTextPassword;
+    private Button   buttonLogin;
+    private TextView textViewNewUser;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -28,8 +38,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mAuth = FirebaseAuth.getInstance();
         // set all the widgets
-        editTextUserName = findViewById(R.id.editTextUserName);
+        editTextUserEmail = findViewById(R.id.editTextUserEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin      = findViewById(R.id.buttonLogin);
         textViewNewUser  = findViewById(R.id.textViewNewUserClick);
@@ -53,15 +64,26 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginClick(){
         Log.d(TAG, "in onLoginClick");
-        String userName     = editTextUserName.getText().toString();
+        String userEmail     = editTextUserEmail.getText().toString();
         String userPassword = editTextPassword.getText().toString();
 
-        Log.d(TAG, "userName=" + userName + " userPassword=" + userPassword);
+        Log.d(TAG, "userName=" + userEmail + " userPassword=" + userPassword);
 
         Log.d(TAG, "checking if the user name is in the data base with the password");
-
-        Log.d(TAG, "did not find the user, making a toast.");
-        Toast.makeText(this, R.string.wrong_user_name_or_password, Toast.LENGTH_SHORT).show();
+        mAuth.signInWithEmailAndPassword(userEmail, userPassword)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                        } else {
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     public void onNewUserClick(){
