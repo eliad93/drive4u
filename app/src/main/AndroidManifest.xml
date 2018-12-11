@@ -22,6 +22,8 @@
         <activity android:name=".TeacherRegistrationActivity" />
         <activity android:name=".UserTypeChoiceActivity" />
         <activity android:name=".TeacherStudentPluralInfo" />
+        <activity android:name=".TeacherHomeActivity" />
+        <activity android:name=".StudentHomeActivity"></activity>
     </application>
 
 </manifest>
