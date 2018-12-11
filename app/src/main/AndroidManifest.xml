@@ -23,7 +23,9 @@
         <activity android:name=".UserTypeChoiceActivity" />
         <activity android:name=".TeacherStudentPluralInfo" />
         <activity android:name=".TeacherHomeActivity" />
-        <activity android:name=".StudentHomeActivity"></activity>
+        <activity android:name=".StudentHomeActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".TeacherScheduleActivity"></activity>
     </application>
 
 </manifest>
