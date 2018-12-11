@@ -12,4 +12,17 @@
         <item name = "android:windowNoTitle">true</item>
     </style>
 
+    <style name="editTextRegFormField">
+        <item name="android:layout_width">@dimen/editTextRegFormFieldWidth</item>
+        <item name="android:layout_height">@dimen/editTextRegFormFieldHeight</item>
+        <item name="android:textSize">@dimen/editTextRegFormFieldTextSize</item>
+        <item name="android:background">@drawable/reg_form_field</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="ButtonUserTypeChoice">
+        <item name="android:layout_width">@dimen/big_buttons_width</item>
+        <item name="android:layout_height">@dimen/big_buttons_height</item>
+    </style>
+
 </resources>

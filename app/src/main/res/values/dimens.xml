@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="editTextRegFormFieldWidth">160dp</dimen>
+    <dimen name="editTextRegFormFieldHeight">32dp</dimen>
+    <dimen name="editTextRegFormFieldTextSize">16sp</dimen>
+    <dimen name="main_headers">40sp</dimen>
+    <dimen name="big_buttons_width">240dp</dimen>
+    <dimen name="big_buttons_height">60dp</dimen>
+</resources>

@@ -3,6 +3,8 @@
     <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorRegistrationFormFieldBackground">#e8f2f2</color>
+    <color name="colorRegistrationFormFieldBorder">#e4e4e4</color>
     <color name="colorButtonBackground">#f137a2f4</color>
     <color name="colorButtonText">#ffffff</color>
 </resources>
