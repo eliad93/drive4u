@@ -17,6 +17,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -25,12 +31,14 @@ public class LoginActivity extends AppCompatActivity {
 
     // Firebase
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     // widgets
     private EditText editTextUserEmail;
     private EditText editTextPassword;
     private Button   buttonLogin;
     private TextView textViewNewUser;
+    private CollectionReference CollectionRef;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -38,8 +46,13 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "in onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        db = FirebaseFirestore.getInstance();
+        CollectionRef = db.collection("Students");
         mAuth = FirebaseAuth.getInstance();
+
+        if(mAuth.getCurrentUser() != null){
+            login();
+        }
         // set all the widgets
         editTextUserEmail = findViewById(R.id.editTextUserEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
@@ -77,6 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
+                            login();
                             Log.d(TAG, "signInWithEmail:success");
                         } else {
                             Log.d(TAG, "signInWithEmail:failure", task.getException());
@@ -90,10 +104,22 @@ public class LoginActivity extends AppCompatActivity {
     public void onNewUserClick(){
         Log.d(TAG, "in onNewUserClick");
         // start a new activity for registration.
+        finish();
         Intent intent = new Intent(this, UserTypeChoiceActivity.class);
         startActivity(intent);
 
         //Intent intent = new Intent(this, newUserActivity.class)
 
+    }
+    public void login (){
+        FirebaseUser user = mAuth.getCurrentUser();
+        Intent intent;
+        if(CollectionRef.document(user.getUid()) != null){
+            intent = new Intent(this, StudentHomeActivity.class);
+        }else{
+            intent = new Intent(this, TeacherHomeActivity.class);
+        }
+        finish();
+        startActivity(intent);
     }
 }

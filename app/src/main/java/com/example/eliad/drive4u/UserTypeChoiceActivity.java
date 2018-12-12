@@ -14,11 +14,13 @@ public class UserTypeChoiceActivity extends AppCompatActivity {
     }
 
     public void studentRegistration(View view) {
+        finish();
         Intent intent = new Intent(this, StudentRegistrationActivity.class);
         startActivity(intent);
     }
 
     public void teacherRegistration(View view) {
+        finish();
         Intent intent = new Intent(this, TeacherRegistrationActivity.class);
         startActivity(intent);
     }
