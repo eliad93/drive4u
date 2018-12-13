@@ -1,17 +1,19 @@
 package com.example.eliad.drive4u;
 
-public abstract class User {
-    private int uId;
-    private UserInfo userInfo;
+import android.content.Intent;
 
-    /**
-     *
-     * @return the user name
-     */
-    public String name(){
-        return userInfo.name();
-    }
-    public UserInfo getInfo(){
-        return userInfo;
+import java.util.Map;
+
+public abstract class User {
+    protected String uId;
+    protected String name;
+    protected String phoneNumber;
+    protected String email;
+
+    protected User(Map<String, Object> params){
+        uId = (String) params.get("id");
+        name = (String)params.get("name");
+        phoneNumber = (String)params.get("phone");
+        email = (String)params.get("email");
     }
 }

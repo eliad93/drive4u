@@ -1,9 +1,12 @@
 package com.example.eliad.drive4u;
 
-class Student extends User {
+import java.util.Map;
 
-    Student(RegistrationModel model) {
-        super();
-        // TODO: implement constructor
+class Student extends User {
+    private int numberOfLessons=0;
+    Boolean hasTeacher=false;
+
+    Student(Map<String, Object> params) {
+        super(params);
     }
 }

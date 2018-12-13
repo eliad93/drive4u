@@ -18,14 +18,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".StudentRegistrationActivity" />
-        <activity android:name=".TeacherRegistrationActivity" />
         <activity android:name=".UserTypeChoiceActivity" />
         <activity android:name=".TeacherStudentPluralInfo" />
         <activity android:name=".TeacherHomeActivity" />
         <activity android:name=".StudentHomeActivity" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".TeacherScheduleActivity"></activity>
+        <activity android:name=".TeacherScheduleActivity" />
+        <activity android:name=".RegistrationActivity"></activity>
     </application>
 
 </manifest>
