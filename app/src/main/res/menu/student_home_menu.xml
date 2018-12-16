@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/scheduleLesson"
+        android:title="@string/schedule_a_lesson"
+        app:showAsAction="never"></item>
+
+    <item android:id="@+id/searchTeacher"
+        android:title="@string/search_teacher"
+        app:showAsAction="never"></item>
+
+    <item android:id="@+id/profile"
+        android:title="@string/profile"
+        app:showAsAction="never"></item>
+
+    <item android:id="@+id/recentActivities"
+        android:title="@string/recent_activities"
+        app:showAsAction="never"></item>
+
+    <item android:id="@+id/showProgress"
+        android:title="@string/show_progress"
+        app:showAsAction="never"></item>
+
+    <item android:id="@+id/logout"
+        android:title="@string/logout"
+        app:showAsAction="never"></item>
+</menu>

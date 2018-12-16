@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LoginActivity"
+            android:name=".StudentHomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +21,6 @@
         <activity android:name=".UserTypeChoiceActivity" />
         <activity android:name=".TeacherStudentPluralInfo" />
         <activity android:name=".TeacherHomeActivity" />
-        <activity android:name=".StudentHomeActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".TeacherScheduleActivity" />
         <activity android:name=".RegistrationActivity"></activity>

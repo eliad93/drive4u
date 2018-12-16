@@ -6,4 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".StudentHomeActivity">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/lessonNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            tools:layout_editor_absoluteX="29dp"
+            tools:layout_editor_absoluteY="31dp"
+            />
+
+        <TextView
+            android:id="@+id/balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            tools:layout_editor_absoluteX="287dp"
+            tools:layout_editor_absoluteY="30dp"
+            />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="352dp"
+        android:layout_height="242dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="143dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@drawable/fab_icon"
+        tools:layout_editor_absoluteX="354dp"
+        tools:layout_editor_absoluteY="546dp" />
 </android.support.constraint.ConstraintLayout>

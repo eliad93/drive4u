@@ -24,4 +24,10 @@
     <string name="teacher">teacher</string>
     <string name="student">student</string>
     <string name="signup">signUp</string>
+    <string name="schedule_a_lesson">Schedule lesson</string>
+    <string name="search_teacher">Search teacher</string>
+    <string name="profile">Profile</string>
+    <string name="recent_activities">Recent activities</string>
+    <string name="show_progress">Show progress</string>
+    <string name="logout">Logout</string>
 </resources>
