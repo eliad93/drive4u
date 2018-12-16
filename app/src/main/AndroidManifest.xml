@@ -23,7 +23,8 @@
         <activity android:name=".TeacherHomeActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".TeacherScheduleActivity" />
-        <activity android:name=".RegistrationActivity"></activity>
+        <activity android:name=".RegistrationActivity" />
+        <activity android:name=".StudentSearchTeacherActivity"></activity>
     </application>
 
 </manifest>

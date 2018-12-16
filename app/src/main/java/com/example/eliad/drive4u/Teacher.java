@@ -8,4 +8,16 @@ class Teacher extends User {
     public Teacher(Map<String,Object> params) {
         super(params);
     }
+
+    public Teacher(){
+        super();
+    }
+
+    public Integer getNumberOfStudents() {
+        return numberOfStudents;
+    }
+
+    public void setNumberOfStudents(Integer numberOfStudents) {
+        this.numberOfStudents = numberOfStudents;
+    }
 }

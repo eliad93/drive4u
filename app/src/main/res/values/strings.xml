@@ -30,4 +30,7 @@
     <string name="recent_activities">Recent activities</string>
     <string name="show_progress">Show progress</string>
     <string name="logout">Logout</string>
+    <string name="teacher_picture">teacher picture</string>
+    <string name="student_choose_teacher">student choose teacher</string>
+    <string name="number_of_students">Number of students: %1$d</string>
 </resources>

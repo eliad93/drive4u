@@ -25,7 +25,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class LoginActivity extends AppCompatActivity {
-
     // Tag for the Log
     private final static String TAG = "LoginActivity";
 
