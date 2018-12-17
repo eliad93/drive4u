@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class Teacher extends User {
     private HashMap<String, Student> students=null; // key is uId from firebase auth
+    private Integer price;
 
     public Teacher(Map<String,Object> params) {
         super(params);

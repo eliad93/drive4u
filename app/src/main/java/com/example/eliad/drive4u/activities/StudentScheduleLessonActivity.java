@@ -3,6 +3,8 @@ package com.example.eliad.drive4u.activities;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.eliad.drive4u.R;
+
 public class StudentScheduleLessonActivity extends AppCompatActivity {
 
     @Override
