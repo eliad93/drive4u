@@ -6,8 +6,8 @@ public class Student extends User {
     private int numberOfLessons = 0;
     private Boolean hasTeacher = false;
 
-    public Student(Map<String, Object> params) {
-        super(params);
+    public Student(String mId, String mName, String mPhoneNumber, String mEmail) {
+        super(mId, mName, mPhoneNumber, mEmail);
     }
 
     public int getNumberOfLessons() {

@@ -5,10 +5,10 @@ import java.util.Map;
 
 public class Teacher extends User {
     private HashMap<String, Student> students=null; // key is uId from firebase auth
-    private Integer price;
+    private Integer price=100;
 
-    public Teacher(Map<String,Object> params) {
-        super(params);
+    public Teacher(String mId, String mName, String mPhoneNumber, String mEmail) {
+        super(mId, mName, mPhoneNumber, mEmail);
     }
 
     public Teacher(){
@@ -32,5 +32,13 @@ public class Teacher extends User {
 
     public void setStudents(HashMap<String, Student> students) {
         this.students = students;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 }

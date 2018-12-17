@@ -21,9 +21,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class RegistrationActivity extends AppCompatActivity {
 
     // Tag for the Log
@@ -80,7 +77,6 @@ public class RegistrationActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Log.d(TAG, "registered successfully");
-
                             FirebaseUser newUser = mAuth.getCurrentUser();
                             assert newUser != null;
                             createNewUser(newUser, name, phone, email);
@@ -96,28 +92,22 @@ public class RegistrationActivity extends AppCompatActivity {
     private void createNewUser(@NonNull FirebaseUser newUser, String name, String phone, String email) {
         Log.d(TAG, "in createNewUser");
         String uId = newUser.getUid();
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", uId);
-        params.put("name", name);
-        params.put("phone", phone);
-        params.put("email", email);
-
         Bundle extras = getIntent().getExtras();
         assert extras != null;
         String userType = extras.getString(getString(R.string.user_home_activity));
         assert userType != null;
         if(userType.equals(getString(R.string.student))){
-            createNewStudent(params, uId);
+            createNewStudent(uId, name, phone, email);
         } else {
-            createNewTeacher(params, uId);
+            createNewTeacher(uId, name, phone, email);
         }
     }
 
-    private void createNewStudent(Map<String, Object> params, String uId) {
+    private void createNewStudent(String mId, String mName, String mPhoneNumber, String mEmail) {
         Log.d(TAG, "in createNewStudent");
         userHomeActivity = StudentHomeActivity.class;
-        Student newStudent = new Student(params);
-        db.collection("Students").document(uId).set(newStudent)
+        Student newStudent = new Student(mId, mName, mPhoneNumber, mEmail);
+        db.collection("Students").document(mId).set(newStudent)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -133,11 +123,11 @@ public class RegistrationActivity extends AppCompatActivity {
                 });
     }
 
-    private void createNewTeacher(Map<String, Object> params, String uId) {
+    private void createNewTeacher(String mId, String mName, String mPhoneNumber, String mEmail) {
         Log.d(TAG, "in createNewTeacher");
         userHomeActivity = TeacherHomeActivity.class;
-        Teacher newTeacher = new Teacher(params);
-        db.collection("Teachers").document(uId).set(newTeacher)
+        Teacher newTeacher = new Teacher(mId, mName, mPhoneNumber, mEmail);
+        db.collection("Teachers").document(mId).set(newTeacher)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
