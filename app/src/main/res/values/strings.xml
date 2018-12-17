@@ -37,4 +37,8 @@
     <string name="students_requests">Students requests</string>
     <string name="budget_management">Budget management</string>
     <string name="my_students">My students</string>
+    <string name="select_date">Select Date</string>
+    <string name="starting_location">Starting location</string>
+    <string name="ending_location">Ending location</string>
+    <string name="submit">Submit</string>
 </resources>

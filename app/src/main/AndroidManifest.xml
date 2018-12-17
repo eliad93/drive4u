@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.StudentHomeActivity"
+            android:name=".activities.StudentScheduleLessonActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,6 @@
         <activity android:name=".activities.TeacherScheduleActivity" />
         <activity android:name=".activities.RegistrationActivity" />
         <activity android:name=".activities.StudentSearchTeacherActivity" />
-        <activity android:name=".activities.StudentScheduleLessonActivity"></activity>
     </application>
 
 </manifest>
