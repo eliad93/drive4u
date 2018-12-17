@@ -1,4 +1,4 @@
-package com.example.eliad.drive4u;
+package com.example.eliad.drive4u.models;
 
 import android.content.Intent;
 

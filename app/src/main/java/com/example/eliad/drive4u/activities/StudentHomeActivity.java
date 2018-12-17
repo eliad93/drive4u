@@ -1,10 +1,12 @@
-package com.example.eliad.drive4u;
+package com.example.eliad.drive4u.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.eliad.drive4u.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class StudentHomeActivity extends AppCompatActivity {
@@ -32,7 +34,9 @@ public class StudentHomeActivity extends AppCompatActivity {
             //schedule lesson activity
         }
         if(item.getItemId() == R.id.searchTeacher){
-            //search teacher activity
+            Intent intent = new Intent(this, StudentSearchTeacherActivity.class);
+            finish();
+            startActivity(intent);
         }
         if(item.getItemId() == R.id.profile){
             //profile activity

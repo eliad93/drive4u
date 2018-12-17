@@ -1,4 +1,4 @@
-package com.example.eliad.drive4u;
+package com.example.eliad.drive4u.activities;
 
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.models.Student;
+import com.example.eliad.drive4u.models.Teacher;
+import com.example.eliad.drive4u.adapters.TeacherSearchAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,7 +20,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.LinkedList;
-import java.util.List;
 
 public class StudentSearchTeacherActivity extends AppCompatActivity {
     // Tag for the Log
@@ -30,6 +33,8 @@ public class StudentSearchTeacherActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private Student mStudent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +50,6 @@ public class StudentSearchTeacherActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         initializeRecyclerView();
-
-
 
         presentAllTeachers();
     }
@@ -64,7 +67,7 @@ public class StudentSearchTeacherActivity extends AppCompatActivity {
                                 Teacher teacher = document.toObject(Teacher.class);
                                 teachers.addLast(teacher);
                             }
-                            mAdapter = new TeacherSearchAdapter(teachers);
+                            mAdapter = new TeacherSearchAdapter(teachers, false);
                             mRecyclerView.setAdapter(mAdapter);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

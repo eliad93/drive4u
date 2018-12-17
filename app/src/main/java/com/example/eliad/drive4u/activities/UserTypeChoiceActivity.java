@@ -1,10 +1,12 @@
-package com.example.eliad.drive4u;
+package com.example.eliad.drive4u.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
+import com.example.eliad.drive4u.R;
 
 public class UserTypeChoiceActivity extends AppCompatActivity {
 

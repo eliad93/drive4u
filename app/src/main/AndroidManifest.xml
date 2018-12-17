@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".StudentHomeActivity"
+            android:name=".activities.StudentHomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,13 +18,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserTypeChoiceActivity" />
+        <activity android:name=".activities.UserTypeChoiceActivity" />
         <activity android:name=".TeacherStudentPluralInfo" />
-        <activity android:name=".TeacherHomeActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".TeacherScheduleActivity" />
-        <activity android:name=".RegistrationActivity" />
-        <activity android:name=".StudentSearchTeacherActivity"></activity>
+        <activity android:name=".activities.TeacherHomeActivity" />
+        <activity android:name=".activities.ProfileActivity" />
+        <activity android:name=".activities.TeacherScheduleActivity" />
+        <activity android:name=".activities.RegistrationActivity" />
+        <activity android:name=".activities.StudentSearchTeacherActivity"></activity>
     </application>
 
 </manifest>

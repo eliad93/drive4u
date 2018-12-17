@@ -1,12 +1,12 @@
-package com.example.eliad.drive4u;
+package com.example.eliad.drive4u.models;
 
 import java.util.Map;
 
-class Student extends User {
+public class Student extends User {
     private int numberOfLessons = 0;
     private Boolean hasTeacher = false;
 
-    Student(Map<String, Object> params) {
+    public Student(Map<String, Object> params) {
         super(params);
     }
 

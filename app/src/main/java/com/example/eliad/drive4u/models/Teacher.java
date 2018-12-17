@@ -1,8 +1,8 @@
-package com.example.eliad.drive4u;
+package com.example.eliad.drive4u.models;
 
 import java.util.Map;
 
-class Teacher extends User {
+public class Teacher extends User {
     private Integer numberOfStudents = 0;
 
     public Teacher(Map<String,Object> params) {
