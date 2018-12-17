@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/schedule"
+        android:title="@string/schedule"
+        app:showAsAction="never"></item>
+
+    <item android:id="@+id/students_requests"
+        android:title="@string/students_requests"
+        app:showAsAction="never"></item>
+
+    <item android:id="@+id/profile"
+        android:title="@string/profile"
+        app:showAsAction="never"></item>
+
+    <item android:id="@+id/my_students"
+        android:title="@string/my_students"
+        app:showAsAction="never"></item>
+
+    <item android:id="@+id/budget_management"
+        android:title="@string/budget_management"
+        app:showAsAction="never"></item>
+
+    <item android:id="@+id/logout"
+        android:title="@string/logout"
+        app:showAsAction="never"></item>
+</menu>

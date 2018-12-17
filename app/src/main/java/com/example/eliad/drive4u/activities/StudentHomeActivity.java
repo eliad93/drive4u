@@ -31,11 +31,11 @@ public class StudentHomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.scheduleLesson){
-            //schedule lesson activity
+            Intent intent = new Intent(this, StudentScheduleLessonActivity.class);
+            startActivity(intent);
         }
         if(item.getItemId() == R.id.searchTeacher){
             Intent intent = new Intent(this, StudentSearchTeacherActivity.class);
-            finish();
             startActivity(intent);
         }
         if(item.getItemId() == R.id.profile){

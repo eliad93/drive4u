@@ -24,7 +24,8 @@
         <activity android:name=".activities.ProfileActivity" />
         <activity android:name=".activities.TeacherScheduleActivity" />
         <activity android:name=".activities.RegistrationActivity" />
-        <activity android:name=".activities.StudentSearchTeacherActivity"></activity>
+        <activity android:name=".activities.StudentSearchTeacherActivity" />
+        <activity android:name=".activities.StudentScheduleLessonActivity"></activity>
     </application>
 
 </manifest>
