@@ -5,19 +5,28 @@ import android.content.Intent;
 import java.util.Map;
 
 public abstract class User {
-    protected String uId=null;
+    protected String ID=null;
     protected String name=null;
     protected String phoneNumber=null;
     protected String email=null;
 
-    protected User(Map<String, Object> params){
-        uId = (String) params.get("id");
-        name = (String)params.get("name");
-        phoneNumber = (String)params.get("phone");
-        email = (String)params.get("email");
+    protected User(String mId, String mName, String mPhoneNumber, String mEmail){
+        ID = mId;
+        name = mName;
+        phoneNumber = mPhoneNumber;
+        email = mEmail;
     }
 
-    public User(){}
+    public User(){}  // empty constructor for firebase
+
+    // getters and setters for firebase
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
 
     public String getName() {
         return name;
@@ -25,14 +34,6 @@ public abstract class User {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getuId() {
-        return uId;
-    }
-
-    public void setuId(String uId) {
-        this.uId = uId;
     }
 
     public String getPhoneNumber() {
@@ -50,5 +51,4 @@ public abstract class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
 }
