@@ -50,7 +50,7 @@ public class TeacherSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
         holder.setIsRecyclable(false);
         holder.mName.setText(teacher.getName());
         String numberOfStudentsText = res
-                .getString(R.string.number_of_students, teacher.getNumberOfStudents());
+                .getString(R.string.number_of_students, teacher.numberOfStudents());
         holder.mNumStudents.setText(numberOfStudentsText);
         if(mTeacherChoose){
             holder.mTeacherChoose.setOnClickListener(new NoTeacherOnClick());
