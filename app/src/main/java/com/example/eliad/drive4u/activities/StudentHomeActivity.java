@@ -1,24 +1,91 @@
 package com.example.eliad.drive4u.activities;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.models.Student;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.w3c.dom.Text;
+
+import java.util.Map;
 
 public class StudentHomeActivity extends AppCompatActivity {
+    // Tag for the Log
+    private static final String TAG = StudentHomeActivity.class.getName();
+
+    // the user
+    private Student student;
 
     // Firebase
     private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
+    private FirebaseFirestore db;
 
+    // widgets and recycler view items
+    private TextView textViewLessonsCompleted;
+    private TextView textViewBalance;
+
+    // RecyclerView items
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_home);
+
+        // init widgets
+        textViewBalance = findViewById(R.id.textViewBalance);
+        textViewLessonsCompleted = findViewById(R.id.textViewLessonsCompleted);
+
+        Log.d(TAG, "get current firebase user");
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        assert mUser != null;
+
+        db = FirebaseFirestore.getInstance();
+
+        String uId = mUser.getUid();
+        DocumentReference docRef = db.collection(getString(R.string.DB_Students)).document(uId);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        student = document.toObject(Student.class);
+                        textViewBalance.setText(String.format("%d", student.getBalance()));
+                        textViewLessonsCompleted.setText(String.format("%d", student.getNumberOfLessons()));
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+        initializeNextLessonsRecyclerView();
+
+        presentNextLessons();
     }
 
 
@@ -55,5 +122,17 @@ public class StudentHomeActivity extends AppCompatActivity {
 
     public void logoutUser(){
         FirebaseAuth.getInstance().signOut();
+    }
+
+    private void presentNextLessons() {
+
+    }
+
+    private void initializeNextLessonsRecyclerView() {
+        Log.d(TAG, "in initializeNextLessonsRecyclerView");
+        mRecyclerView = findViewById(R.id.recyclerViewNextLessons);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
     }
 }

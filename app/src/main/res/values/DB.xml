@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Students Collection-->
+    <string name="DB_Students">Students</string>
+    <!--Teacher Collection-->
+    <string name="DB_Teachers">Teachers</string>
+
+    <!--Student and Teacher fields-->
+    <string name="DB_FirstName">firstName</string>
+    <string name="DB_LastName">lastName</string>
+    <string name="DB_PhoneNumber">phoneNumber</string>
+    <string name="DB_City">City</string>
+    <string name="DB_EmailAddress">emailAddress</string>
+    <string name="DB_uId">uId</string>
+    <string name="DB_Balance">balance</string>
+    <string name="DB_Lessons">lessons</string>
+
+    <!--Student special fields-->
+    <string name="DB_Teacher">teacher</string>
+
+    <!--Teacher special fields-->
+    <string name="DB_CarModel">carModel</string>
+    <string name="DB_IsManual">isManual</string>
+    <!--<string name="Student"></string>-->
+    <string name="DB_LessonsDuration">lessonsDuration</string>
+    <string name="DB_LessonsPrice">lessonsPrice</string>
+
+    <!--Lessons collection-->
+    <!--<string name="Teacher"></string>-->
+    <string name="DB_Student"></string>
+    <string name="DB_Date">date</string>
+    <string name="DB_Hour">hour</string>
+    <string name="DB_PaymentStatus">paymentStatus</string>
+    <string name="DB_StartingPoint">startingPoint</string>
+    <string name="DB_EndingPoint">endingPoint</string>
+    <string name="DB_LessonNumber">lessonNumber</string>
+    <string name="DB_LessonSubject">lessonSubject</string>
+    <string name="DB_InfoLink">infoLink</string>
+    <string name="DB_TeacherReview">teacherReview</string>
+    <string name="DB_ConformationStatus">conformationStatus</string>
+</resources>
