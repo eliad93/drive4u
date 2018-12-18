@@ -4,14 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Teacher extends User {
-    private HashMap<String, Student> students=null; // key is uId from firebase auth
-
-
+    private HashMap<String, Student> students = null; // key is uId from firebase auth
     private Integer price=100;
+    private Integer totalPayed = 0;
+    private String carModel = null;
+    private String gearType = null;
 
 
-    public Teacher(String mId, String mName, String mPhoneNumber, String mEmail) {
-        super(mId, mName, mPhoneNumber, mEmail);
+    public Teacher(String mId, String mFirstName, String mLastName, String mPhoneNumber,
+                   String mEmail, String mCity) {
+        super(mId, mFirstName, mLastName, mPhoneNumber, mEmail, mCity);
     }
 
     public Teacher(){
