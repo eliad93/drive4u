@@ -8,8 +8,8 @@ public class Student extends User {
     private Integer totalExpence = 0;
 
     public Student(String mId, String mFirstName, String mLastName, String mPhoneNumber,
-                   String mEmail, String mCity) {
-        super(mId, mFirstName, mLastName, mPhoneNumber, mEmail, mCity);
+                    String mCity, String mEmail) {
+        super(mId, mFirstName, mLastName, mPhoneNumber, mCity, mEmail);
     }
 
     public int getNumberOfLessons() {

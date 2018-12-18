@@ -9,18 +9,18 @@ public abstract class User {
     protected String firstName=null;
     protected String lastName=null;
     protected String phoneNumber=null;
-    protected String email=null;
     protected String city=null;
+    protected String email=null;
     protected int balance=0;
 
     protected User(String mId, String mFirstName,String mLastName, String mPhoneNumber,
-                   String mEmail, String mCity){
+                   String mCity, String mEmail){
         ID = mId;
         firstName = mFirstName;
         lastName = mLastName;
         phoneNumber = mPhoneNumber;
-        email = mEmail;
         city = mCity;
+        email = mEmail;
     }
 
     public User(){}  // empty constructor for firebase

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
@@ -21,15 +22,21 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class RegistrationActivity extends AppCompatActivity {
+import java.util.Collection;
+import java.util.LinkedList;
+
+public class StudentRegistrationActivity extends AppCompatActivity {
 
     // Tag for the Log
-    private final static String TAG = "RegistrationActivity";
+    private static final String TAG = StudentSearchTeacherActivity.class.getName();
 
-    private EditText editTextName;
+    private EditText editTextFirstName;
+    private EditText editTextLastName;
     private EditText editTextPhone;
+    private EditText editTextCity;
     private EditText editTextEmail;
     private EditText editTextPassword;
+
     // user home activity
     private Class<? extends AppCompatActivity> userHomeActivity;
 
@@ -41,45 +48,42 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "in onCreate");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
+        setContentView(R.layout.activity_student_registration);
 
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
-        editTextName = findViewById(R.id.editTextRegistrationName);
+        editTextFirstName = findViewById(R.id.editTextRegistrationFirstName);
+        editTextLastName = findViewById(R.id.editTextRegistrationLastName);
         editTextPhone = findViewById(R.id.editTextRegistrationPhone);
         editTextEmail = findViewById(R.id.editTextRegistrationEmail);
         editTextPassword = findViewById(R.id.editTextRegistrationPassword);
+        editTextCity = findViewById(R.id.editTextRegistrationCity);
     }
-
-
 
     public void signUp(View view) {
         Log.d(TAG, "in signUp");
-        final String name = editTextName.getText().toString();
-        final String phone = editTextPhone.getText().toString();
-        final String email = editTextEmail.getText().toString();
-        String password = editTextPassword.getText().toString();
+        LinkedList<String> inputs = new LinkedList<>();
+        final String firstName = getTextAndInsert(editTextFirstName, inputs);
+        final String lastName = getTextAndInsert(editTextLastName, inputs);
+        final String phone = getTextAndInsert(editTextPhone, inputs);
+        final String city = getTextAndInsert(editTextCity, inputs);
+        final String email = getTextAndInsert(editTextEmail, inputs);
+        final String password = editTextPassword.getText().toString();
 
-        if(email.isEmpty()){
-            Toast.makeText(this,getString(R.string.empty_email), Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(password.isEmpty()){
-            Toast.makeText(this, getString(R.string.empty_password),
-                    Toast.LENGTH_SHORT).show();
+        if (!isValidInput(inputs)) {
             return;
         }
 
-        mAuth.createUserWithEmailAndPassword(email ,password)
+        mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Log.d(TAG, "registered successfully");
                             FirebaseUser newUser = mAuth.getCurrentUser();
                             assert newUser != null;
-                            createNewUser(newUser, name, phone, email);
+                            createNewStudent(newUser, firstName, lastName, phone, city, email);
                             finish();
                             startActivity(new Intent(getApplicationContext(), userHomeActivity));
                         } else {
@@ -89,25 +93,28 @@ public class RegistrationActivity extends AppCompatActivity {
                 });
     }
 
-    private void createNewUser(@NonNull FirebaseUser newUser, String name, String phone, String email) {
-        Log.d(TAG, "in createNewUser");
-        String uId = newUser.getUid();
-        Bundle extras = getIntent().getExtras();
-        assert extras != null;
-        String userType = extras.getString(getString(R.string.user_home_activity));
-        assert userType != null;
-        if(userType.equals(getString(R.string.student))){
-            createNewStudent(uId, name, phone, email);
-        } else {
-            createNewTeacher(uId, name, phone, email);
+    private boolean isValidInput(Collection<String> inputs) {
+        for (String s : inputs) {
+            if (s.isEmpty()) {
+                Toast.makeText(this, "Invalid input", Toast.LENGTH_SHORT).show();
+                return false;
+            }
         }
+        return true;
     }
 
-    private void createNewStudent(String mId, String mName, String mPhoneNumber, String mEmail) {
+    private static String getTextAndInsert(EditText editText, LinkedList<String> list) {
+        String s = editText.getText().toString();
+        list.addLast(s);
+        return s;
+    }
+
+    private void createNewStudent(FirebaseUser newUser, String firstName, String lastName,
+                                  String phone, String city, String email) {
         Log.d(TAG, "in createNewStudent");
-        userHomeActivity = StudentHomeActivity.class;
-        Student newStudent = new Student(mId, mName, mPhoneNumber, mEmail);
-        db.collection("Students").document(mId).set(newStudent)
+        String uId = newUser.getUid();
+        Student newStudent = new Student(uId, firstName, lastName, phone, city, email);
+        db.collection("Students").document(uId).set(newStudent)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -117,28 +124,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
                         Log.d(TAG, "firestore student creation failed");
-                    }
-                });
-    }
-
-    private void createNewTeacher(String mId, String mName, String mPhoneNumber, String mEmail) {
-        Log.d(TAG, "in createNewTeacher");
-        userHomeActivity = TeacherHomeActivity.class;
-        Teacher newTeacher = new Teacher(mId, mName, mPhoneNumber, mEmail);
-        db.collection("Teachers").document(mId).set(newTeacher)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "firestore teacher created successfully");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                        Log.d(TAG, "firestore teacher creation failed");
                     }
                 });
     }

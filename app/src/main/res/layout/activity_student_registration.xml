@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.RegistrationActivity">
+    tools:context=".activities.StudentRegistrationActivity">
 
     <TextView
         android:id="@+id/textViewRegistrationHeader"
@@ -15,14 +15,14 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="@string/registration_header"
+        android:text="@string/student_registration_header"
         android:textSize="@dimen/main_headers"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextRegistrationName"
+        android:id="@+id/editTextRegistrationFirstName"
         style="@style/editTextRegFormField"
         android:inputType="text"
         android:layout_marginStart="24dp"
@@ -30,6 +30,17 @@
         android:layout_marginTop="64dp"
         android:hint="@string/registration_name"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRegistrationHeader" />
+
+    <EditText
+        android:id="@+id/editTextRegistrationLastName"
+        style="@style/editTextRegFormField"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="64dp"
+        android:hint="@string/registration_last_name"
+        android:inputType="text"
+        app:layout_constraintStart_toEndOf="@+id/editTextRegistrationFirstName"
         app:layout_constraintTop_toBottomOf="@+id/textViewRegistrationHeader" />
 
     <EditText
@@ -41,7 +52,18 @@
         android:hint="@string/registration_phone"
         android:inputType="phone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextRegistrationName" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextRegistrationFirstName" />
+
+    <EditText
+        android:id="@+id/editTextRegistrationCity"
+        style="@style/editTextRegFormField"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
+        android:inputType="text"
+        android:hint="@string/registration_city"
+        app:layout_constraintStart_toEndOf="@+id/editTextRegistrationPhone"
+        app:layout_constraintTop_toBottomOf="@+id/editTextRegistrationLastName" />
 
     <EditText
         android:id="@+id/editTextRegistrationEmail"
@@ -62,8 +84,8 @@
         android:layout_marginTop="24dp"
         android:hint="@string/registration_password"
         android:inputType="textPassword"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextRegistrationEmail" />
+        app:layout_constraintStart_toEndOf="@+id/editTextRegistrationEmail"
+        app:layout_constraintTop_toBottomOf="@+id/editTextRegistrationCity" />
 
     <Button
         android:id="@+id/button"

@@ -16,7 +16,8 @@
     <string name="user_type_choice_teacher">I am a teacher</string>
     <string name="user_email">User Email</string>
     <string name="search_a_student">Search a student</string>
-    <string name="registration_header">Registration</string>
+    <string name="student_registration_header">\    Student\nregistration</string>
+    <string name="teacher_registration_header">\    Teacher\nregistration</string>
     <string name="empty" />
     <string name="empty_email">Please enter email</string>
     <string name="empty_password">Please enter password</string>

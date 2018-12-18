@@ -22,18 +22,8 @@ public class UserTypeChoiceActivity extends AppCompatActivity {
 
     public void studentRegistration(View view) {
         Log.d(TAG, "in studentRegistration");
-        register(getString(R.string.student));
-    }
-
-    public void teacherRegistration(View view) {
-        Log.d(TAG, "in studentRegistration");
-        register(getString(R.string.teacher));
-    }
-
-    private void register(String userType) {
         finish();
-        Intent intent = new Intent(this, RegistrationActivity.class);
-        intent.putExtra(getString(R.string.user_home_activity), userType);
+        Intent intent = new Intent(this, StudentRegistrationActivity.class);
         startActivity(intent);
     }
 }
