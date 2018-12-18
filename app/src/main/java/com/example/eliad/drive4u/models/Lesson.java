@@ -11,7 +11,7 @@ public class Lesson {
         S_CANCELED(3, "student canceled the lesson"),
         S_CONFIRMED(4, "student confirmed the lesson"),
         S_REQUEST(5, "student request the lesson"),
-        S_UPDATE(6, "student update the lesson")
+        S_UPDATE(6, "student update the lesson");
 
         private int code;
         private String userMessage;
@@ -23,9 +23,6 @@ public class Lesson {
         public String getUserMessage(){
             return userMessage;
         }
-    }
-    public enum Hours {
-        H_0700, H_0800, H_0900, H_1000, H_1100, H_1200, H_1300, H_1400, H_1500, H_1600, H_1700, H_1800, H_1900, H_2000
     }
     protected String teacherUID = null;
     protected String studentUID = null;
