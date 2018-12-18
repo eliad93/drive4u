@@ -88,8 +88,8 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            login();
                             Log.d(TAG, "signInWithEmail:success");
+                            login();
                         } else {
                             Log.d(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
@@ -101,20 +101,22 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onNewUserClick(){
         Log.d(TAG, "in onNewUserClick");
+        Log.d(TAG, "Moving to UserTypeChoiceActivity");
         // start a new activity for registration.
         finish();
         Intent intent = new Intent(this, UserTypeChoiceActivity.class);
         startActivity(intent);
-
-        //Intent intent = new Intent(this, newUserActivity.class)
-
     }
+
     public void login (){
+        Log.d(TAG, "in login");
         FirebaseUser user = mAuth.getCurrentUser();
         Intent intent;
         if(CollectionRef.document(user.getUid()) != null){
+            Log.d(TAG, "moving to StudentHomeActivity");
             intent = new Intent(this, StudentHomeActivity.class);
         }else{
+            Log.d(TAG, "moving to TeacherHomeActivity");
             intent = new Intent(this, TeacherHomeActivity.class);
         }
         finish();
