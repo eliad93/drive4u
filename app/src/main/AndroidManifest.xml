@@ -24,6 +24,7 @@
         <activity android:name=".activities.TeacherScheduleActivity" />
         <activity android:name=".activities.RegistrationActivity" />
         <activity android:name=".activities.StudentSearchTeacherActivity" />
+        <activity android:name=".activities.PresentLessonActivity"></activity>
     </application>
 
 </manifest>
