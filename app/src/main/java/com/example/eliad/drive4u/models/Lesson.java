@@ -11,7 +11,7 @@ public class Lesson {
         S_CANCELED(3, "student canceled the lesson"),
         S_CONFIRMED(4, "student confirmed the lesson"),
         S_REQUEST(5, "student request the lesson"),
-        S_UPDATE(6, "student update the lesson")
+        S_UPDATE(6, "student update the lesson");
 
         private int code;
         private String userMessage;

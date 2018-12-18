@@ -23,22 +23,8 @@ public class RegistrationBaseActivity extends AppCompatActivity {
     protected EditText editTextEmail;
     protected EditText editTextPassword;
 
-    // Firebase
-    protected FirebaseAuth mAuth;
-    protected FirebaseFirestore db;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        db = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-
-        editTextFirstName = findViewById(R.id.editTextRegistrationFirstName);
-        editTextLastName = findViewById(R.id.editTextRegistrationLastName);
-        editTextPhone = findViewById(R.id.editTextRegistrationPhone);
-        editTextEmail = findViewById(R.id.editTextRegistrationEmail);
-        editTextPassword = findViewById(R.id.editTextRegistrationPassword);
-        editTextCity = findViewById(R.id.editTextRegistrationCity);
     }
 }

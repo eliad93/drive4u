@@ -20,7 +20,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -30,6 +32,10 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
 
     // Tag for the Log
     private static final String TAG = StudentSearchTeacherActivity.class.getName();
+
+    // Firebase
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     private EditText editTextCarModel;
     private EditText editTextPrice;
@@ -42,8 +48,18 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_registration);
 
-        editTextCarModel = findViewById(R.id.editTextRegistrationCarModel);
-        editTextPrice = findViewById(R.id.editTextRegistrationPrice);
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
+        editTextFirstName = findViewById(R.id.editTextTeacherRegistrationFirstName);
+        editTextLastName = findViewById(R.id.editTextTeacherRegistrationLastName);
+        editTextPhone = findViewById(R.id.editTextTeacherRegistrationPhone);
+        editTextEmail = findViewById(R.id.editTextTeacherRegistrationEmail);
+        editTextPassword = findViewById(R.id.editTextTeacherRegistrationPassword);
+        editTextCity = findViewById(R.id.editTextTeacherRegistrationCity);
+
+        editTextCarModel = findViewById(R.id.editTextTeacherRegistrationCarModel);
+        editTextPrice = findViewById(R.id.editTextTeacherRegistrationPrice);
         spinnerGearType = findViewById(R.id.spinnerChooseGearType);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.gear_types, android.R.layout.simple_spinner_item);

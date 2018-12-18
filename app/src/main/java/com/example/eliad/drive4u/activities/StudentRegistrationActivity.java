@@ -29,11 +29,26 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity {
     // Tag for the Log
     private static final String TAG = StudentSearchTeacherActivity.class.getName();
 
+    // Firebase
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "in onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_registration);
+
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
+        editTextFirstName = findViewById(R.id.editTextStudentRegistrationFirstName);
+        editTextLastName = findViewById(R.id.editTextStudentRegistrationLastName);
+        editTextPhone = findViewById(R.id.editTextStudentRegistrationPhone);
+        editTextEmail = findViewById(R.id.editTextStudentRegistrationEmail);
+        editTextPassword = findViewById(R.id.editTextStudentRegistrationPassword);
+        editTextCity = findViewById(R.id.editTextStudentRegistrationCity);
     }
 
     public void signUp(View view) {
@@ -63,7 +78,7 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity {
                             startActivity(new Intent(getApplicationContext(),
                                     StudentHomeActivity.class));
                         } else {
-                            Log.d(TAG, "registration failed");
+                            Log.d(TAG, "registration failed" + task.getException());
                         }
                     }
                 });

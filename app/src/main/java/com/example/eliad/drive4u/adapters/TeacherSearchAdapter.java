@@ -1,9 +1,11 @@
 package com.example.eliad.drive4u.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +25,7 @@ public class TeacherSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
     // Tag for the Log
     private final static String TAG = TeacherSearchAdapter.class.getName();
 
-
+    private Context context;
     private Boolean mTeacherChoose;
     private List<Teacher> teachers;
     private ChooseTeacherFragment chooseTeacherFragment;
@@ -32,14 +34,15 @@ public class TeacherSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
         mTeacherChoose = teacherChoose;
         teachers = items;
         chooseTeacherFragment = new ChooseTeacherFragment();
-//        Bundle
-//        chooseTeacherFragment.setArguments();
+        Bundle args = new Bundle();
+        args.putBoolean("canChooseTeacher", mTeacherChoose);
+        chooseTeacherFragment.setArguments(args);
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        Context context = viewGroup.getContext();
+        context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.teacher_search_item, viewGroup, false);
         return new TeacherSearchViewHolder(view);
@@ -65,14 +68,14 @@ public class TeacherSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
     private class NoTeacherOnClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            chooseTeacherFragment.show(((AppCompatActivity)context).getSupportFragmentManager(),
+                    "student choose teacher");
         }
     }
 
     private class HasTeacherOnClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Toast.makeText(v.getContext(), "Already connected to a teacher. please disconnect" +
-                    "first", Toast.LENGTH_SHORT).show();
         }
     }
 
