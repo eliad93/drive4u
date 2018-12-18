@@ -48,7 +48,7 @@ public class TeacherSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
         TeacherSearchViewHolder holder = (TeacherSearchViewHolder) viewHolder;
         Teacher teacher = this.teachers.get(position);
         holder.setIsRecyclable(false);
-        holder.mName.setText(teacher.getName());
+        holder.mName.setText(teacher.getFirstName() + " " + teacher.getLastName());
         String numberOfStudentsText = res
                 .getString(R.string.number_of_students, teacher.numberOfStudents());
         holder.mNumStudents.setText(numberOfStudentsText);

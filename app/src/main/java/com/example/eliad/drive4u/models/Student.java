@@ -3,11 +3,13 @@ package com.example.eliad.drive4u.models;
 import java.util.Map;
 
 public class Student extends User {
-    private int numberOfLessons = 0;
+    private int numberOfLessons = 0; // TODO: manage this number with more details
     private Boolean hasTeacher = false;
+    private Teacher teacher = null;
 
-    public Student(String mId, String mName, String mPhoneNumber, String mEmail) {
-        super(mId, mName, mPhoneNumber, mEmail);
+    public Student(String mId, String mFirstName, String mLastName, String mPhoneNumber,
+                   String mEmail, String mCity) {
+        super(mId, mFirstName, mLastName, mPhoneNumber, mEmail, mCity);
     }
 
     public int getNumberOfLessons() {
@@ -25,4 +27,6 @@ public class Student extends User {
     public void setHasTeacher(Boolean hasTeacher) {
         this.hasTeacher = hasTeacher;
     }
+
+    public int getBalance() { return 0; /*TODO: manage the balance*/}
 }

@@ -6,34 +6,69 @@ import java.util.Map;
 
 public abstract class User {
     protected String ID=null;
-    protected String name=null;
+    protected String firstName=null;
+    protected String lastName=null;
     protected String phoneNumber=null;
     protected String email=null;
+    protected String city=null;
+    protected int balance=0;
 
-    protected User(String mId, String mName, String mPhoneNumber, String mEmail){
+    protected User(String mId, String mFirstName,String mLastName, String mPhoneNumber,
+                   String mEmail, String mCity){
         ID = mId;
-        name = mName;
+        firstName = mFirstName;
+        lastName = mLastName;
         phoneNumber = mPhoneNumber;
         email = mEmail;
+        city = mCity;
     }
 
     public User(){}  // empty constructor for firebase
 
     // getters and setters for firebase
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
+    public void changeBalanceBy(int diff) {
+        balance += diff;
+    }
+
     public String getID() {
         return ID;
     }
 
     public void setID(String ID) {
         this.ID = ID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getPhoneNumber() {

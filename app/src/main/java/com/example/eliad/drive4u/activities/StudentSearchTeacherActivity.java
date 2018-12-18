@@ -55,7 +55,7 @@ public class StudentSearchTeacherActivity extends AppCompatActivity {
     }
 
     private void presentAllTeachers() {
-        db.collection("Teachers")
+        db.collection(getString(R.string.DB_Teachers))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
