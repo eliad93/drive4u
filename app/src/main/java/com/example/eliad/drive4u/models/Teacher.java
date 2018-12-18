@@ -5,9 +5,9 @@ import java.util.Map;
 
 public class Teacher extends User {
     private HashMap<String, Student> students = null; // key is uId from firebase auth
-    private Integer price=100;
     private Integer totalPayed = 0;
     private String carModel = null;
+    private Integer price=100;
     private String gearType = null;
 
 
@@ -19,6 +19,14 @@ public class Teacher extends User {
 
     public Teacher(){
         super();
+    }
+
+    public Teacher(String mId, String mFirstName, String mLastName, String mPhoneNumber,
+                   String mCity, String mEmail, String mCarModel, Integer mPrice, String mGearType){
+        super(mId, mFirstName, mLastName, mPhoneNumber, mEmail, mCity);
+        carModel = mCarModel;
+        price = mPrice;
+        gearType = mGearType;
     }
 
     public void addStudent(String uId, Student student){
