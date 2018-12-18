@@ -49,6 +49,7 @@ public class StudentPluralInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_plural_info);
+        Log.d(TAG, "onCreate");
 
         Log.d(TAG, "get current firebase user");
         mAuth = FirebaseAuth.getInstance();
@@ -81,6 +82,7 @@ public class StudentPluralInfoActivity extends AppCompatActivity {
     }
 
     private void presentStudents() {
+        Log.d(TAG, "presentStudents");
         db.collection(getString(R.string.DB_Students))
                 .whereEqualTo(getString(R.string.DB_Teacher), teacher.getID())
                 .get()
@@ -91,6 +93,7 @@ public class StudentPluralInfoActivity extends AppCompatActivity {
                             LinkedList<Student> students = new LinkedList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Student student = document.toObject(Student.class);
+                                Log.d(TAG, "current student by email: " + student.getEmail());
                                 students.addLast(student);
                             }
                             mAdapter = new StudentPluralInfoAdapter(students);
