@@ -4,8 +4,8 @@ import java.util.Map;
 
 public class Student extends User {
     private int numberOfLessons = 0; // TODO: manage this number with more details
-    private Boolean hasTeacher = false;
-    private Teacher teacher = null;
+    private String teacherId = null;
+    private Integer totalExpence = 0;
 
     public Student(String mId, String mFirstName, String mLastName, String mPhoneNumber,
                    String mEmail, String mCity) {
@@ -20,13 +20,21 @@ public class Student extends User {
         this.numberOfLessons = numberOfLessons;
     }
 
-    public Boolean getHasTeacher() {
-        return hasTeacher;
-    }
-
-    public void setHasTeacher(Boolean hasTeacher) {
-        this.hasTeacher = hasTeacher;
-    }
-
     public int getBalance() { return 0; /*TODO: manage the balance*/}
+
+    public String getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(String teacherId) {
+        this.teacherId = teacherId;
+    }
+
+    public Integer getTotalExpence() {
+        return totalExpence;
+    }
+
+    public void setTotalExpence(Integer totalExpence) {
+        this.totalExpence = totalExpence;
+    }
 }
