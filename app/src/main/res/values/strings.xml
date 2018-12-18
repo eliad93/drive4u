@@ -43,4 +43,5 @@
     <string name="starting_location">Starting location</string>
     <string name="ending_location">Ending location</string>
     <string name="submit">Submit</string>
+    <string name="lesson_starting_time">Lesson starting time</string>
 </resources>
