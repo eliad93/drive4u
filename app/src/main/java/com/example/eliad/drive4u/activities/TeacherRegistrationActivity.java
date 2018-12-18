@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -23,7 +25,8 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Collection;
 import java.util.LinkedList;
 
-public class TeacherRegistrationActivity extends RegistrationBaseActivity {
+public class TeacherRegistrationActivity extends RegistrationBaseActivity
+        implements AdapterView.OnItemSelectedListener {
 
     // Tag for the Log
     private static final String TAG = StudentSearchTeacherActivity.class.getName();
@@ -31,6 +34,8 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity {
     private EditText editTextCarModel;
     private EditText editTextPrice;
     private Spinner spinnerGearType;
+
+    private String gearType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,11 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity {
         editTextCarModel = findViewById(R.id.editTextRegistrationCarModel);
         editTextPrice = findViewById(R.id.editTextRegistrationPrice);
         spinnerGearType = findViewById(R.id.spinnerChooseGearType);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.gear_types, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerGearType.setAdapter(adapter);
+        spinnerGearType.setOnItemSelectedListener(this);
     }
 
     public void signUp(View view) {
@@ -53,8 +63,6 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity {
         final String password = getTextAndInsert(editTextPassword, inputs);
         final String carModel = getTextAndInsert(editTextCarModel, inputs);
         final Integer price = Integer.valueOf(editTextPrice.getText().toString());
-        final String gearType = spinnerGearType.getSelectedItem().toString();
-        inputs.addLast(gearType);
 
         if (!isValidInput(inputs)) {
             return;
@@ -81,6 +89,10 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity {
     }
 
     private boolean isValidInput(Collection<String> inputs) {
+        if(gearType == null){
+            Toast.makeText(this, "Invalid input", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         for (String s : inputs) {
             if (s.isEmpty()) {
                 Toast.makeText(this, "Invalid input", Toast.LENGTH_SHORT).show();
@@ -116,5 +128,15 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity {
                         Log.d(TAG, "firestore teacher creation failed");
                     }
     });
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        gearType = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        gearType = null;
     }
 }

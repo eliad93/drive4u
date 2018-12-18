@@ -49,4 +49,8 @@
     <string name="registration_car_model">Car model</string>
     <string name="registration_gear_type">Gear type</string>
     <string name="lesson_starting_time">Lesson starting time</string>
+    <string-array name="gear_types">
+        <item>manual</item>
+        <item>automatic</item>
+    </string-array>
 </resources>
