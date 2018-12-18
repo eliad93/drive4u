@@ -20,6 +20,9 @@ import com.example.eliad.drive4u.models.Teacher;
 import java.util.List;
 
 public class TeacherSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    // Tag for the Log
+    private final static String TAG = TeacherSearchAdapter.class.getName();
+
 
     private Boolean mTeacherChoose;
     private List<Teacher> teachers;

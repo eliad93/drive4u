@@ -6,5 +6,5 @@
     <dimen name="main_headers">40sp</dimen>
     <dimen name="big_buttons_width">240dp</dimen>
     <dimen name="big_buttons_height">60dp</dimen>
-    <dimen name="teacher_search_item_height">100dp</dimen>
+    <dimen name="recycler_view_row_height">100dp</dimen>
 </resources>

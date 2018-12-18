@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.models.Lesson;
 import com.example.eliad.drive4u.models.Student;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,9 +21,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Text;
 
+import java.util.LinkedList;
 import java.util.Map;
 
 public class StudentHomeActivity extends AppCompatActivity {
@@ -125,6 +129,24 @@ public class StudentHomeActivity extends AppCompatActivity {
     }
 
     private void presentNextLessons() {
+        Log.d(TAG, "in presentNextLessons");
+        db.collection(getString(R.string.DB_Lessons))
+                .whereEqualTo(getString(R.string.DB_Student), student.getID())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            LinkedList<Lesson> lessons = new LinkedList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, "received document " + document.getId());
+                                Lesson lesson = document.toObject(Lesson.class);
+                                lessons.addLast(lesson);
+                            }
+
+                        }
+                    }
+                });
 
     }
 

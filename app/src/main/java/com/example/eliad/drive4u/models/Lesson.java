@@ -4,8 +4,28 @@ import com.google.protobuf.Enum;
 
 
 public class Lesson {
-    enum Status {
-        T_CANCELED,T_CONFIRMED,T_REQUEST,T_UPDATE,S_CANCELED,S_CONFIRMED,S_REQUEST,S_UPDATE
+    public enum Status {
+        T_CANCELED(0, "teacher canceled the lesson"),
+        T_CONFIRMED(1, "teacher confirmed the lesson"),
+        T_UPDATE(2, "teacher updated the lesson"),
+        S_CANCELED(3, "student canceled the lesson"),
+        S_CONFIRMED(4, "student confirmed the lesson"),
+        S_REQUEST(5, "student request the lesson"),
+        S_UPDATE(6, "student update the lesson")
+
+        private int code;
+        private String userMessage;
+        private Status(int c, String userMessage){
+            code = c;
+            userMessage = userMessage;
+        }
+
+        public String getUserMessage(){
+            return userMessage;
+        }
+    }
+    public enum Hours {
+        H_0700, H_0800, H_0900, H_1000, H_1100, H_1200, H_1300, H_1400, H_1500, H_1600, H_1700, H_1800, H_1900, H_2000
     }
     protected String teacherUID = null;
     protected String studentUID = null;
