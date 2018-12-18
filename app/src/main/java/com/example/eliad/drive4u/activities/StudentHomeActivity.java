@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.adapters.StudentNextLessonsAdapter;
 import com.example.eliad.drive4u.models.Lesson;
 import com.example.eliad.drive4u.models.Student;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -143,7 +144,10 @@ public class StudentHomeActivity extends AppCompatActivity {
                                 Lesson lesson = document.toObject(Lesson.class);
                                 lessons.addLast(lesson);
                             }
-
+                            mAdapter = new StudentNextLessonsAdapter(lessons);
+                            mRecyclerView.setAdapter(mAdapter);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
