@@ -18,6 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.StudentScheduleLessonActivity" />
         <activity android:name=".activities.UserTypeChoiceActivity" />
         <activity android:name=".activities.TeacherHomeActivity" />
         <activity android:name=".activities.ProfileActivity" />
@@ -25,7 +26,8 @@
         <activity android:name=".activities.StudentRegistrationActivity" />
         <activity android:name=".activities.StudentSearchTeacherActivity" />
         <activity android:name=".activities.TeacherRegistrationActivity"></activity>
-        <activity android:name=".activities.PresentLessonActivity"></activity>
+        <activity android:name=".activities.PresentLessonActivity" />
+        <activity android:name=".activities.StudentPluralInfoActivity"></activity>
     </application>
 
 </manifest>

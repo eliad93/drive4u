@@ -1,20 +1,21 @@
 package com.example.eliad.drive4u.activities;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.adapters.StudentNextLessonsAdapter;
-import com.example.eliad.drive4u.models.Lesson;
+import com.example.eliad.drive4u.adapters.StudentPluralInfoAdapter;
 import com.example.eliad.drive4u.models.Student;
+import com.example.eliad.drive4u.models.Teacher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,26 +26,19 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.w3c.dom.Text;
-
 import java.util.LinkedList;
-import java.util.Map;
 
-public class StudentHomeActivity extends AppCompatActivity {
-    // Tag for the Log
-    private static final String TAG = StudentHomeActivity.class.getName();
+public class StudentPluralInfoActivity extends AppCompatActivity {
+
+    private static final String TAG = StudentPluralInfoActivity.class.getName();
 
     // the user
-    private Student student;
+    private Teacher teacher;
 
     // Firebase
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private FirebaseFirestore db;
-
-    // widgets and recycler view items
-    private TextView textViewLessonsCompleted;
-    private TextView textViewBalance;
 
     // RecyclerView items
     private RecyclerView mRecyclerView;
@@ -54,11 +48,7 @@ public class StudentHomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_home);
-
-        // init widgets
-        textViewBalance = findViewById(R.id.textViewBalance);
-        textViewLessonsCompleted = findViewById(R.id.textViewLessonsCompleted);
+        setContentView(R.layout.activity_student_plural_info);
 
         Log.d(TAG, "get current firebase user");
         mAuth = FirebaseAuth.getInstance();
@@ -76,9 +66,7 @@ public class StudentHomeActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        student = document.toObject(Student.class);
-                        textViewBalance.setText(String.format("%d", student.getBalance()));
-                        textViewLessonsCompleted.setText(String.format("%d", student.getNumberOfLessons()));
+                        teacher = document.toObject(Teacher.class);
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -88,63 +76,24 @@ public class StudentHomeActivity extends AppCompatActivity {
             }
         });
 
-        initializeNextLessonsRecyclerView();
-
-        presentNextLessons();
+        initializeRecyclerView();
+        presentStudents();
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.student_home_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.scheduleLesson){
-            Intent intent = new Intent(this, StudentScheduleLessonActivity.class);
-            startActivity(intent);
-        }
-        if(item.getItemId() == R.id.searchTeacher){
-            Intent intent = new Intent(this, StudentSearchTeacherActivity.class);
-            startActivity(intent);
-        }
-        if(item.getItemId() == R.id.profile){
-            //profile activity
-        }
-        if(item.getItemId() == R.id.recentActivities){
-            //Recent activities activity
-        }
-        if(item.getItemId() == R.id.showProgress){
-            //Show progress activity
-        }
-        if(item.getItemId() == R.id.logout){
-            logoutUser();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void logoutUser(){
-        FirebaseAuth.getInstance().signOut();
-    }
-
-    private void presentNextLessons() {
-        Log.d(TAG, "in presentNextLessons");
-        db.collection(getString(R.string.DB_Lessons))
-                .whereEqualTo(getString(R.string.DB_Student), student.getID())
+    private void presentStudents() {
+        db.collection(getString(R.string.DB_Students))
+                .whereEqualTo(getString(R.string.DB_Teacher), teacher.getID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            LinkedList<Lesson> lessons = new LinkedList<>();
+                            LinkedList<Student> students = new LinkedList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, "received document " + document.getId());
-                                Lesson lesson = document.toObject(Lesson.class);
-                                lessons.addLast(lesson);
+                                Student student = document.toObject(Student.class);
+                                students.addLast(student);
                             }
-                            mAdapter = new StudentNextLessonsAdapter(lessons);
+                            mAdapter = new StudentPluralInfoAdapter(students);
                             mRecyclerView.setAdapter(mAdapter);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -154,9 +103,9 @@ public class StudentHomeActivity extends AppCompatActivity {
 
     }
 
-    private void initializeNextLessonsRecyclerView() {
-        Log.d(TAG, "in initializeNextLessonsRecyclerView");
-        mRecyclerView = findViewById(R.id.recyclerViewNextLessons);
+    private void initializeRecyclerView() {
+        Log.d(TAG, "in initializeRecyclerView");
+        mRecyclerView         = findViewById(R.id.recyclerViewTeachers);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);

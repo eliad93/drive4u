@@ -28,7 +28,7 @@
 
     <!--Lessons collection-->
     <!--<string name="Teacher"></string>-->
-    <string name="DB_Student"></string>
+    <string name="DB_Student">student</string>
     <string name="DB_Date">date</string>
     <string name="DB_Hour">hour</string>
     <string name="DB_PaymentStatus">paymentStatus</string>
