@@ -7,12 +7,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.base_activities.RegistrationBaseActivity;
 import com.example.eliad.drive4u.models.Student;
-import com.example.eliad.drive4u.models.Teacher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,40 +24,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Collection;
 import java.util.LinkedList;
 
-public class StudentRegistrationActivity extends AppCompatActivity {
+public class StudentRegistrationActivity extends RegistrationBaseActivity {
 
     // Tag for the Log
     private static final String TAG = StudentSearchTeacherActivity.class.getName();
-
-    private EditText editTextFirstName;
-    private EditText editTextLastName;
-    private EditText editTextPhone;
-    private EditText editTextCity;
-    private EditText editTextEmail;
-    private EditText editTextPassword;
-
-    // user home activity
-    private Class<? extends AppCompatActivity> userHomeActivity;
-
-    // Firebase
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "in onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_registration);
-
-        db = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-
-        editTextFirstName = findViewById(R.id.editTextRegistrationFirstName);
-        editTextLastName = findViewById(R.id.editTextRegistrationLastName);
-        editTextPhone = findViewById(R.id.editTextRegistrationPhone);
-        editTextEmail = findViewById(R.id.editTextRegistrationEmail);
-        editTextPassword = findViewById(R.id.editTextRegistrationPassword);
-        editTextCity = findViewById(R.id.editTextRegistrationCity);
     }
 
     public void signUp(View view) {
@@ -69,7 +44,7 @@ public class StudentRegistrationActivity extends AppCompatActivity {
         final String phone = getTextAndInsert(editTextPhone, inputs);
         final String city = getTextAndInsert(editTextCity, inputs);
         final String email = getTextAndInsert(editTextEmail, inputs);
-        final String password = editTextPassword.getText().toString();
+        final String password = getTextAndInsert(editTextPassword, inputs);
 
         if (!isValidInput(inputs)) {
             return;
@@ -85,7 +60,8 @@ public class StudentRegistrationActivity extends AppCompatActivity {
                             assert newUser != null;
                             createNewStudent(newUser, firstName, lastName, phone, city, email);
                             finish();
-                            startActivity(new Intent(getApplicationContext(), userHomeActivity));
+                            startActivity(new Intent(getApplicationContext(),
+                                    StudentHomeActivity.class));
                         } else {
                             Log.d(TAG, "registration failed");
                         }

@@ -12,8 +12,9 @@ public class Teacher extends User {
 
 
     public Teacher(String mId, String mFirstName, String mLastName, String mPhoneNumber,
-                   String mEmail, String mCity) {
+                   String mEmail, String mCity, String mGearType) {
         super(mId, mFirstName, mLastName, mPhoneNumber, mEmail, mCity);
+        gearType = mGearType;
     }
 
     public Teacher(){
@@ -45,5 +46,29 @@ public class Teacher extends User {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public Integer getTotalPayed() {
+        return totalPayed;
+    }
+
+    public void setTotalPayed(Integer totalPayed) {
+        this.totalPayed = totalPayed;
+    }
+
+    public String getCarModel() {
+        return carModel;
+    }
+
+    public void setCarModel(String carModel) {
+        this.carModel = carModel;
+    }
+
+    public String getGearType() {
+        return gearType;
+    }
+
+    public void setGearType(String gearType) {
+        this.gearType = gearType;
     }
 }
