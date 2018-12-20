@@ -43,10 +43,14 @@
     <string name="select_date">Select Date</string>
     <string name="starting_location">Starting location</string>
     <string name="ending_location">Ending location</string>
+    <string name="set_starting_location">Set starting location</string>
+    <string name="set_ending_location">set ending location</string>
     <string name="submit">Submit</string>
     <string name="registration_last_name">Last name</string>
     <string name="registration_city">City</string>
     <string name="registration_car_model">Car model</string>
     <string name="registration_gear_type">Gear type</string>
+    <string name="lesson_ending_time">Lesson ending time</string>
     <string name="lesson_starting_time">Lesson starting time</string>
+    <string name="lesson_date">Lesson date</string>
 </resources>
