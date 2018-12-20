@@ -26,4 +26,11 @@ public class UserTypeChoiceActivity extends AppCompatActivity {
         Intent intent = new Intent(this, StudentRegistrationActivity.class);
         startActivity(intent);
     }
+
+    public void teacherRegistration(View view) {
+        Log.d(TAG, "in teacherRegistration");
+        finish();
+        Intent intent = new Intent(this, TeacherRegistrationActivity.class);
+        startActivity(intent);
+    }
 }
