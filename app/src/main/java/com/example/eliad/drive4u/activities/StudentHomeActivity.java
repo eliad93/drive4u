@@ -121,6 +121,7 @@ public class StudentHomeActivity extends AppCompatActivity {
     public void logoutUser(){
         Log.d(TAG, "logoutUser");
         FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(getBaseContext(), LoginActivity.class));
     }
 
     private void presentNextLessons() {

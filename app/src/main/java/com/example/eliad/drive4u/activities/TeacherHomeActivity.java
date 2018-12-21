@@ -68,7 +68,7 @@ public class TeacherHomeActivity extends AppCompatActivity {
 
         initLessonsRecyclerView();
 
-//        presentNextLessons();
+        presentNextLessons();
     }
 
     @Override
@@ -101,6 +101,7 @@ public class TeacherHomeActivity extends AppCompatActivity {
     }
     public void logoutUser(){
         FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(getBaseContext(), LoginActivity.class));
     }
 
     private void presentNextLessons() {
