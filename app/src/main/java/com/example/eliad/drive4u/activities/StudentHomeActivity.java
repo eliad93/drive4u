@@ -45,6 +45,7 @@ public class StudentHomeActivity extends AppCompatActivity {
     // widgets and recycler view items
     private TextView textViewLessonsCompleted;
     private TextView textViewBalance;
+    private TextView textViewNoLessons;
 
     // RecyclerView items
     private RecyclerView mRecyclerView;
@@ -64,10 +65,11 @@ public class StudentHomeActivity extends AppCompatActivity {
         // init widgets
         textViewBalance = findViewById(R.id.textViewBalance);
         textViewLessonsCompleted = findViewById(R.id.textViewLessonsCompleted);
+        textViewNoLessons = findViewById(R.id.textViewNoLessons);
 
         String text = Integer.toString(mStudent.getBalance());
         textViewBalance.setText(text);
-        text = Integer.toString(mStudent.getNumberOfLessons());
+        text = Integer.toString(mStudent.getNumberOfLessons());  // TODO: fix to the correct number
         textViewLessonsCompleted.setText(text);
 
         Log.d(TAG, "get current firebase user");
@@ -136,10 +138,16 @@ public class StudentHomeActivity extends AppCompatActivity {
                                 Lesson lesson = document.toObject(Lesson.class);
                                 lessons.addLast(lesson);
                             }
-                            mAdapter = new LessonsAdapter(lessons);
-                            mRecyclerView.setAdapter(mAdapter);
+                            if (lessons.size() > 0) {
+                                mAdapter = new LessonsAdapter(lessons);
+                                mRecyclerView.setAdapter(mAdapter);
+                            } else {
+                                Log.d(TAG, "Student " + mStudent.getEmail() + " has no lessons to present");
+                                textViewNoLessons.setText(R.string.you_have_no_lessons);
+                            }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
+
                         }
                     }
                 });

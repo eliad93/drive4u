@@ -41,7 +41,8 @@ public class TeacherHomeActivity extends AppCompatActivity {
     private FirebaseFirestore db;
 
     // widgets
-    TextView textViewLessonsRemainingToday;
+    private TextView textViewLessonsRemainingToday;
+    private TextView textViewNoLessons;
 
     // RecyclerView items
     private RecyclerView mRecyclerView;
@@ -56,6 +57,7 @@ public class TeacherHomeActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate");
 
         textViewLessonsRemainingToday = findViewById(R.id.textViewLessonsRemainingToday);
+        textViewNoLessons = findViewById(R.id.TeacherHomeTextViewNoLessosns);
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -117,8 +119,13 @@ public class TeacherHomeActivity extends AppCompatActivity {
                                 Lesson lesson = document.toObject(Lesson.class);
                                 lessons.addLast(lesson);
                             }
-                            mAdapter = new LessonsAdapter(lessons);
-                            mRecyclerView.setAdapter(mAdapter);
+                            if (lessons.size() > 0 ) {
+                                mAdapter = new LessonsAdapter(lessons);
+                                mRecyclerView.setAdapter(mAdapter);
+                            } else {
+                                Log.d(TAG, "Teacher " + teacher.getEmail() + " has no lessons to present");
+                                textViewNoLessons.setText(R.string.you_have_no_lessons);
+                            }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
