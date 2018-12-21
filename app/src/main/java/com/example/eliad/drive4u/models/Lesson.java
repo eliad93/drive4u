@@ -24,21 +24,28 @@ public class Lesson {
             return userMessage;
         }
     }
-    public enum Hours {
-        H_0700, H_0800, H_0900, H_1000, H_1100, H_1200, H_1300, H_1400, H_1500, H_1600, H_1700, H_1800, H_1900, H_2000
-    }
     protected String teacherUID = null;
     protected String studentUID = null;
     protected String date = null;
     protected String hour = null;
-    protected boolean isPayed = false;
     protected String startingLocation = null;
     protected String endingLocation = null;
-    protected Integer lessonNumber = 0;
     protected Status conformationStatus = Status.S_REQUEST;
 
     private Lesson() {} // empty constructor for firebase
 
+    public Lesson(String teacherUID, String studentUID, String date, String hour,
+                     String startingLocation, String endingLocation,
+                     Status conformationStatus){
+        this.teacherUID = teacherUID;
+        this.studentUID = studentUID;
+        this.date = date;
+        this.hour = hour;
+        this.startingLocation= startingLocation;
+        this.endingLocation= endingLocation;
+        this.conformationStatus = conformationStatus;
+
+    }
     // getters and setters for firebase
     public String getTeacherUID() {
         return teacherUID;
@@ -64,27 +71,13 @@ public class Lesson {
 
     public void setHour(String hour) {this.hour = hour;}
 
-    public boolean getIsPayed() {
-        return isPayed;
-    }
-
-    public void setIsPayed(boolean isPayed) {this.isPayed = isPayed;}
-
-    public String getStartingLocation() {
-        return startingLocation;
-    }
+    public String getStartingLocation() {return startingLocation;}
 
     public void setStartingLocation(String startingLocation) {this.startingLocation = startingLocation;}
 
     public String getEndingLocation() {return endingLocation;}
 
     public void setEndingLocation(String endingLocation) {this.endingLocation = endingLocation;}
-
-    public Integer getLessonNumber() {
-        return lessonNumber;
-    }
-
-    public void setLessonNumber(Integer lessonNumber) { this.lessonNumber = lessonNumber; }
 
     public Status getConformationStatus() {return conformationStatus;}
 

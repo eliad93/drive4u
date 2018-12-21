@@ -23,39 +23,8 @@
         android:layout_marginTop="152dp"
         android:layout_alignParentLeft="true" />
 
-    <TextView
-        android:id="@+id/starting_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="31dp"
-        android:layout_marginLeft="31dp"
-        android:layout_marginBottom="160dp"
-        android:text="TextView" />
 
 
-    <TextView
-        android:id="@+id/ending_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/starting_location"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="2dp"
-        android:layout_marginBottom="117dp"
-        android:text="TextView"
-        android:layout_alignLeft="@+id/starting_location"
-        android:layout_marginLeft="2dp" />
-
-    <Button
-        android:id="@+id/add_lesson"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="18dp"
-        android:text="@string/submit" />
 </RelativeLayout>
 
 

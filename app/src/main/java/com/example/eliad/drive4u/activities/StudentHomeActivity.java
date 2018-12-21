@@ -57,6 +57,7 @@ public class StudentHomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "in onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_home);
 
@@ -98,18 +99,20 @@ public class StudentHomeActivity extends AppCompatActivity {
 
         initializeNextLessonsRecyclerView();
 
-//        presentNextLessons();
+        presentNextLessons();
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "onCreateOptionMenu");
         getMenuInflater().inflate(R.menu.student_home_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected");
         if(item.getItemId() == R.id.scheduleLesson){
             Intent intent = new Intent(this, StudentScheduleLessonActivity.class);
             startActivity(intent);
@@ -134,6 +137,7 @@ public class StudentHomeActivity extends AppCompatActivity {
     }
 
     public void logoutUser(){
+        Log.d(TAG, "logoutUser");
         FirebaseAuth.getInstance().signOut();
     }
 

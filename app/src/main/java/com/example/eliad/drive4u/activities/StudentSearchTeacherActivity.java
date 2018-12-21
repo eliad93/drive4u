@@ -66,6 +66,7 @@ public class StudentSearchTeacherActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 Teacher teacher = document.toObject(Teacher.class);
+                                Log.d(TAG, "presenting teacher by email: " + teacher.getEmail());
                                 teachers.addLast(teacher);
                             }
                             mAdapter = new TeacherSearchAdapter(teachers, false);
