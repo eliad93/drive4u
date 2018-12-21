@@ -94,9 +94,6 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
                             assert newUser != null;
                             createNewTeacher(newUser, firstName, lastName, phone, city, email,
                                     carModel, price, gearType);
-                            finish();
-                            startActivity(new Intent(getApplicationContext(),
-                                    StudentHomeActivity.class));
                         } else {
                             Log.d(TAG, "registration failed");
                         }
@@ -129,13 +126,18 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
                                   String carModel, Integer price, String gearType) {
         Log.d(TAG, "in createNewTeacher");
         String uId = newUser.getUid();
-        Teacher newTeacher = new Teacher(uId, firstName, lastName, phone, city, email,
+        final Teacher newTeacher = new Teacher(uId, firstName, lastName, phone, city, email,
                 carModel, price, gearType);
         db.collection(getResources().getString(R.string.DB_Teachers)).document(uId).set(newTeacher)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "firestore teacher created successfully");
+                        Intent intent = new Intent(getApplicationContext(),
+                                TeacherHomeActivity.class);
+                        intent.putExtra("Teacher", newTeacher);
+                        finish();
+                        startActivity(intent);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -143,7 +145,7 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
                     public void onFailure(@NonNull Exception e) {
                         Log.d(TAG, "firestore teacher creation failed");
                     }
-    });
+                });
     }
 
     @Override

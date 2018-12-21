@@ -73,9 +73,6 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity {
                             FirebaseUser newUser = mAuth.getCurrentUser();
                             assert newUser != null;
                             createNewStudent(newUser, firstName, lastName, phone, city, email);
-                            finish();
-                            startActivity(new Intent(getApplicationContext(),
-                                    StudentHomeActivity.class));
                         } else {
                             Log.d(TAG, "registration failed" + task.getException());
                         }
@@ -103,12 +100,17 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity {
                                   String phone, String city, String email) {
         Log.d(TAG, "in createNewStudent");
         String uId = newUser.getUid();
-        Student newStudent = new Student(uId, firstName, lastName, phone, city, email);
+        final Student newStudent = new Student(uId, firstName, lastName, phone, city, email);
         db.collection("Students").document(uId).set(newStudent)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "firestore student created successfully");
+                        Intent intent = new Intent(getApplicationContext(),
+                                StudentHomeActivity.class);
+                        intent.putExtra("Student", newStudent);
+                        finish();
+                        startActivity(intent);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

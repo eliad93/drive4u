@@ -25,17 +25,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.w3c.dom.Text;
-
 import java.util.LinkedList;
-import java.util.Map;
 
 public class StudentHomeActivity extends AppCompatActivity {
     // Tag for the Log
     private static final String TAG = StudentHomeActivity.class.getName();
 
     // Intent for Parcelables
-    private Intent ParcelablesIntent;
+    private Intent parcelablesIntent;
 
     // the user
     private Student mStudent;
@@ -60,9 +57,9 @@ public class StudentHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_home);
 
-        ParcelablesIntent = getIntent();
+        parcelablesIntent = getIntent();
 
-        mStudent = ParcelablesIntent.getParcelableExtra("Student");
+        mStudent = parcelablesIntent.getParcelableExtra("Student");
 
         // init widgets
         textViewBalance = findViewById(R.id.textViewBalance);
