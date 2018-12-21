@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.activities.StudentScheduleLessonActivity;
 import com.example.eliad.drive4u.models.Lesson;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -23,22 +24,23 @@ public class StudentScheduleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private String studentID;
     private Dialog lessonCreate;
     private Context mcontext;
-    private String dateSelected;
+    String dateSelected;
     private TextView lessonDate;
     private TextView lessonStartingTime;
     private TextView lessonEndingTime;
     private TextView lessonStartingLocation;
     private TextView lessonEndingLocation;
+    private Button submit;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private String[] hours = new String[]{"07:00", "08:00","09:00","10:00","11:00","12:00","13:00","14:00",
             "15:00","16:00","17:00","18:00","19:00","20:00", "21:00"};
-    public StudentScheduleAdapter(Context context, Lesson.Status[] items, String dateSelected,String teacherID, String studentID ){
+    public StudentScheduleAdapter(Context context, Lesson.Status[] items, String date,String teacher, String student ){
         lessonsHours = items;
-        dateSelected = dateSelected;
-        teacherID = teacherID;
-        studentID = studentID;
+        dateSelected = date;
+        teacherID = teacher;
+        studentID = student;
         mcontext = context;
     }
 
@@ -55,10 +57,13 @@ public class StudentScheduleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         lessonEndingTime = (TextView) lessonCreate.findViewById(R.id.ending_time);
         lessonStartingLocation = (TextView) lessonCreate.findViewById(R.id.starting_location);
         lessonEndingLocation = (TextView) lessonCreate.findViewById(R.id.ending_location);
+        submit = (Button) lessonCreate.findViewById(R.id.add_lesson);
 
-        Button submit = (Button) lessonCreate.findViewById(R.id.add_lesson);
-
-
+        submit.setOnClickListener(new View.OnClickListener() {
+                                      public void onClick(View v) {
+                                          addLesson();
+                                      }
+                                  });
         Context context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.student_dayview_hour_item, viewGroup, false);
@@ -75,10 +80,9 @@ public class StudentScheduleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                                     public void onClick(View view) {
                                         view.setBackgroundColor(Color.GREEN);
                                         view.setSelected(true);
-
                                         lessonDate.setText(dateSelected);
-                                        lessonStartingTime.setText(hours[position]);
-                                        lessonEndingTime.setText(hours[position+1]);
+                                        lessonStartingTime.setText(hours[position+1]);
+                                        lessonEndingTime.setText(hours[position+2]);
 
                                         lessonCreate.show();
 
@@ -106,7 +110,7 @@ public class StudentScheduleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-        return hours.length;
+        return hours.length-1;
     }
 
     public static class StudentScheduleViewHolder extends RecyclerView.ViewHolder{
@@ -119,11 +123,15 @@ public class StudentScheduleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     }
 
-    public void addLesson(View v){
-        Lesson lesson = new Lesson( teacherID, studentID, dateSelected,lessonStartingTime.getText().toString(),
-                lessonStartingLocation.getText().toString(),lessonEndingLocation.getText().toString(), Lesson.Status.S_REQUEST);
+    public void addLesson(){
+        //Lesson lesson = new Lesson( teacherID, studentID, dateSelected,lessonStartingTime.getText().toString(),
+          //      lessonStartingLocation.getText().toString(),lessonEndingLocation.getText().toString(), Lesson.Status.S_REQUEST);
 
-        db.collection("Lessons").add(lesson);
+        Lesson lesson = new Lesson( teacherID, studentID, dateSelected,lessonStartingTime.getText().toString(),
+                "1","1", Lesson.Status.S_REQUEST);
+
+
+        db.collection("lessons").add(lesson);
         lessonCreate.hide();
 
     }

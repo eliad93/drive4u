@@ -137,7 +137,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/submit"
-            android:onClick="addLesson"
             android:layout_gravity="center"/>
 
     </LinearLayout>

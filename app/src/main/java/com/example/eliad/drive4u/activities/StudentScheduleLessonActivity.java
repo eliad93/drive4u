@@ -1,6 +1,7 @@
 package com.example.eliad.drive4u.activities;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -35,6 +37,9 @@ public class StudentScheduleLessonActivity extends AppCompatActivity {
     private TextView SelectedDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
+    // Intent for Parcelables
+    private Intent parcelablesIntent;
+
     // Firebase
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
@@ -48,7 +53,7 @@ public class StudentScheduleLessonActivity extends AppCompatActivity {
     private Button submit;
     private TextView setStartingLocation;
     private TextView setEndingLocation;
-
+    private String date;
 
     Lesson.Status[] hours = new Lesson.Status[14];
     @Override
@@ -64,21 +69,9 @@ public class StudentScheduleLessonActivity extends AppCompatActivity {
         setStartingLocation = (TextView) findViewById(R.id.setStartingLocation);
         setEndingLocation = (TextView) findViewById(R.id.setEndingLocation);
 
-        Arrays.fill(hours, -1);
-        db.collection(getString(R.string.DB_Students)).whereEqualTo("ID", mUser.getUid() )
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                           @Override
-                                           public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                               if (task.isSuccessful()) {
-                                                   for (QueryDocumentSnapshot document : task.getResult()) {
-                                                       mStudent = document.toObject(Student.class);
-                                                   }
-                                               }
-                                           }
-                                       });
+        parcelablesIntent = getIntent();
 
-
+        mStudent = parcelablesIntent.getParcelableExtra("Student");
 
         db = FirebaseFirestore.getInstance();
 
@@ -101,7 +94,6 @@ public class StudentScheduleLessonActivity extends AppCompatActivity {
                         year,month,day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
-                updateDayView();
             }
         });
 
@@ -109,15 +101,16 @@ public class StudentScheduleLessonActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
-                String date = month + "/" + day + "/" + year;
+                date = day + "/" + month + "/" + year;
                 SelectedDate.setText(date);
+                updateDayView();
             }
         };
 
     }
 
     private void initializeRecyclerView(){
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewTeachers);
+        mRecyclerView = (RecyclerView) findViewById(R.id.hours_list);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -138,7 +131,7 @@ public class StudentScheduleLessonActivity extends AppCompatActivity {
                                 int i = getArrayindexFromHour(l.getHour());
                                 hours[i] = l.getConformationStatus();
                             }
-                            mAdapter = new StudentScheduleAdapter(StudentScheduleLessonActivity.this, hours, SelectedDate.getText().toString(),mStudent.getTeacherId(),mStudent.getID());
+                            mAdapter = new StudentScheduleAdapter(StudentScheduleLessonActivity.this, hours,date ,mStudent.getTeacherId(),mStudent.getID());
                             mRecyclerView.setAdapter(mAdapter);
                         }
                     }
