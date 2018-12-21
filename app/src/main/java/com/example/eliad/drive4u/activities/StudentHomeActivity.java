@@ -97,19 +97,19 @@ public class StudentHomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(TAG, "onOptionsItemSelected");
         if(item.getItemId() == R.id.scheduleLesson){
-            Intent intent = new Intent(this, StudentScheduleLessonActivity.class);
-            intent.putExtra("Student", mStudent);
-            startActivity(intent);
-        }
-        if(item.getItemId() == R.id.searchTeacher){
             if(mStudent.getTeacherId() == null){
                 Toast.makeText(this, "Choose teacher first!", Toast.LENGTH_SHORT);
                 Intent intent = new Intent(this, StudentSearchTeacherActivity.class);
                 startActivity(intent);
-            }else{
-                Intent intent = new Intent(this, StudentSearchTeacherActivity.class);
+            }else {
+                Intent intent = new Intent(this, StudentScheduleLessonActivity.class);
+                intent.putExtra("Student", mStudent);
                 startActivity(intent);
             }
+        }
+        if(item.getItemId() == R.id.searchTeacher){
+            Intent intent = new Intent(this, StudentSearchTeacherActivity.class);
+            startActivity(intent);
         }
         if(item.getItemId() == R.id.profile){
             //profile activity
