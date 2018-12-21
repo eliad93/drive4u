@@ -1,10 +1,7 @@
 package com.example.eliad.drive4u.models;
 
-import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.util.Map;
 
 public abstract class User implements Parcelable{
     protected String id = null;

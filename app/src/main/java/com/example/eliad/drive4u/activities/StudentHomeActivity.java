@@ -76,6 +76,7 @@ public class StudentHomeActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
+        // TODO: this is redundant - can use mStudent
         String uId = mUser.getUid();
         DocumentReference docRef = db.collection(getString(R.string.DB_Students)).document(uId);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
