@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.adapters.StudentNextLessonsAdapter;
+import com.example.eliad.drive4u.adapters.LessonsAdapter;
 import com.example.eliad.drive4u.models.Lesson;
 import com.example.eliad.drive4u.models.Student;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,10 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.w3c.dom.Text;
-
 import java.util.LinkedList;
-import java.util.Map;
 
 public class StudentHomeActivity extends AppCompatActivity {
     // Tag for the Log
@@ -69,28 +66,9 @@ public class StudentHomeActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        String uId = mUser.getUid();
-        DocumentReference docRef = db.collection(getString(R.string.DB_Students)).document(uId);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        student = document.toObject(Student.class);
-                        textViewBalance.setText(String.format("%d", student.getBalance()));
-                        textViewLessonsCompleted.setText(String.format("%d", student.getNumberOfLessons()));
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
+        initUser();
 
-        initializeNextLessonsRecyclerView();
+        initLessonsRecyclerView();
 
         presentNextLessons();
     }
@@ -149,7 +127,7 @@ public class StudentHomeActivity extends AppCompatActivity {
                                 Lesson lesson = document.toObject(Lesson.class);
                                 lessons.addLast(lesson);
                             }
-                            mAdapter = new StudentNextLessonsAdapter(lessons);
+                            mAdapter = new LessonsAdapter(lessons);
                             mRecyclerView.setAdapter(mAdapter);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -159,11 +137,34 @@ public class StudentHomeActivity extends AppCompatActivity {
 
     }
 
-    private void initializeNextLessonsRecyclerView() {
-        Log.d(TAG, "in initializeNextLessonsRecyclerView");
+    private void initLessonsRecyclerView() {
+        Log.d(TAG, "in initLessonsRecyclerView");
         mRecyclerView = findViewById(R.id.recyclerViewNextLessons);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+    }
+
+    private void initUser() {
+        String uId = mUser.getUid();
+        DocumentReference docRef = db.collection(getString(R.string.DB_Students)).document(uId);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        student = document.toObject(Student.class);
+                        textViewBalance.setText(String.format("%d", student.getBalance()));
+                        textViewLessonsCompleted.setText(String.format("%d", student.getNumberOfLessons()));
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
     }
 }

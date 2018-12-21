@@ -53,6 +53,7 @@
     <string name="lesson_ending_time">Lesson ending time</string>
     <string name="lesson_starting_time">Lesson starting time</string>
     <string name="lesson_date">Lesson date</string>
+    <string name="lessons_remaining_today">Lessons remaining today:</string>
     <string-array name="gear_types">
         <item>manual</item>
         <item>automatic</item>
