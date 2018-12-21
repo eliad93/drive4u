@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 public class Student extends User {
     private Integer numberOfLessons = 0;
-    private String teacherId = null;
+    private String teacherId = "";
     private Integer totalExpense = 0;
 
     public Student(String mId, String mFirstName, String mLastName, String mPhoneNumber,
