@@ -34,8 +34,12 @@ public class StudentHomeActivity extends AppCompatActivity {
     // Tag for the Log
     private static final String TAG = StudentHomeActivity.class.getName();
 
+    // Intent for Parcelables
+    private Intent ParcelablesIntent;
+
     // the user
     private Student student;
+    private Student mStudent;
 
     // Firebase
     private FirebaseAuth mAuth;
@@ -55,6 +59,10 @@ public class StudentHomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_home);
+
+        ParcelablesIntent = getIntent();
+
+        mStudent = ParcelablesIntent.getParcelableExtra("Student");
 
         // init widgets
         textViewBalance = findViewById(R.id.textViewBalance);
