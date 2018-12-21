@@ -55,7 +55,7 @@ public class StudentSearchTeacherActivity extends AppCompatActivity {
     }
 
     private void presentAllTeachers() {
-        Log.d(TAG, "presentAllTeachers");
+        Log.d(TAG, "in presentAllTeachers");
         db.collection(getString(R.string.DB_Teachers))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -64,6 +64,7 @@ public class StudentSearchTeacherActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             LinkedList<Teacher> teachers = new LinkedList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
                                 Teacher teacher = document.toObject(Teacher.class);
                                 Log.d(TAG, "presenting teacher by email: " + teacher.getEmail());
                                 teachers.addLast(teacher);

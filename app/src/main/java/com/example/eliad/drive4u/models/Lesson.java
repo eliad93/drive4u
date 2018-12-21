@@ -1,9 +1,13 @@
 package com.example.eliad.drive4u.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.protobuf.Enum;
 
 
-public class Lesson {
+public class Lesson implements Parcelable {
+
     public enum Status {
         T_CANCELED(0, "teacher canceled the lesson"),
         T_CONFIRMED(1, "teacher confirmed the lesson"),
@@ -13,9 +17,9 @@ public class Lesson {
         S_REQUEST(5, "student request the lesson"),
         S_UPDATE(6, "student update the lesson");
 
-        private int code;
+        private Integer code;
         private String userMessage;
-        private Status(int c, String userMessage){
+        private Status(Integer c, String userMessage){
             code = c;
             userMessage = userMessage;
         }
@@ -82,4 +86,40 @@ public class Lesson {
     public Status getConformationStatus() {return conformationStatus;}
 
     public void setConformationStatus(Status conformationStatus) {this.conformationStatus = conformationStatus;}
+
+    protected Lesson(Parcel in) {
+        teacherUID = in.readString();
+        studentUID = in.readString();
+        date = in.readString();
+        hour = in.readString();
+        startingLocation = in.readString();
+        endingLocation = in.readString();
+    }
+
+    public static final Creator<Lesson> CREATOR = new Creator<Lesson>() {
+        @Override
+        public Lesson createFromParcel(Parcel in) {
+            return new Lesson(in);
+        }
+
+        @Override
+        public Lesson[] newArray(int size) {
+            return new Lesson[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(teacherUID);
+        dest.writeString(studentUID);
+        dest.writeString(date);
+        dest.writeString(hour);
+        dest.writeString(startingLocation);
+        dest.writeString(endingLocation);
+    }
 }

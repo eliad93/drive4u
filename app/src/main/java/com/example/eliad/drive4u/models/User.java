@@ -1,21 +1,20 @@
 package com.example.eliad.drive4u.models;
 
-import android.content.Intent;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-import java.util.Map;
-
-public abstract class User {
-    protected String ID=null;
-    protected String firstName=null;
-    protected String lastName=null;
-    protected String phoneNumber=null;
-    protected String city=null;
-    protected String email=null;
-    protected int balance=0;
+public abstract class User implements Parcelable{
+    protected String id = null;
+    protected String firstName = null;
+    protected String lastName = null;
+    protected String phoneNumber = null;
+    protected String city = null;
+    protected String email = null;
+    protected Integer balance = 0;
 
     protected User(String mId, String mFirstName,String mLastName, String mPhoneNumber,
                    String mCity, String mEmail){
-        ID = mId;
+        id = mId;
         firstName = mFirstName;
         lastName = mLastName;
         phoneNumber = mPhoneNumber;
@@ -51,24 +50,24 @@ public abstract class User {
         this.city = city;
     }
 
-    public int getBalance() {
+    public Integer getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(Integer balance) {
         this.balance = balance;
     }
 
-    public void changeBalanceBy(int diff) {
+    public void changeBalanceBy(Integer diff) {
         balance += diff;
     }
 
     public String getID() {
-        return ID;
+        return id;
     }
 
     public void setID(String ID) {
-        this.ID = ID;
+        this.id = ID;
     }
 
     public String getPhoneNumber() {
@@ -85,5 +84,25 @@ public abstract class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    // Parcelling part
+    protected User(Parcel in){
+        this.id = in.readString();
+        this.firstName = in.readString();
+        this.lastName =  in.readString();
+        this.phoneNumber = in.readString();
+        this.city = in.readString();
+        this.email =  in.readString();
+    }
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(phoneNumber);
+        dest.writeString(city);
+        dest.writeString(email);
+        dest.writeInt(balance);
     }
 }

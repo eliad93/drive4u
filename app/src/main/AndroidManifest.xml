@@ -24,6 +24,7 @@
         <activity android:name=".activities.ProfileActivity" />
         <activity android:name=".activities.TeacherScheduleActivity" />
         <activity android:name=".activities.StudentRegistrationActivity" />
+        <activity android:name=".activities.StudentHomeActivity" />
         <activity android:name=".activities.StudentSearchTeacherActivity" />
         <activity android:name=".activities.TeacherRegistrationActivity"></activity>
         <activity android:name=".activities.PresentLessonActivity" />

@@ -1,5 +1,9 @@
 package com.example.eliad.drive4u.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.UncheckedIOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,5 +82,47 @@ public class Teacher extends User {
 
     public void setGearType(String gearType) {
         this.gearType = gearType;
+    }
+
+    public static final Parcelable.Creator<Teacher> CREATOR = new Parcelable.Creator<Teacher>() {
+        public Teacher createFromParcel(Parcel in) {
+            return new Teacher(in);
+        }
+
+        public Teacher[] newArray(int size) {
+            return new Teacher[size];
+        }
+    };
+
+    // Parcelling part
+    @SuppressWarnings("unchecked")
+    protected Teacher(Parcel in){
+        super(in);
+        students = new HashMap<>();
+        int size = in.readInt();
+        for(int i = 0; i < size; i++){
+            String key = in.readString();
+            Student value = in.readParcelable(Student.class.getClassLoader());
+            students.put(key,value);
+        }
+        totalPayed = in.readInt();
+        carModel = in.readString();
+        price = in.readInt();
+        gearType = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags){
+        super.writeToParcel(dest, flags);
+        dest.writeInt(students.size());
+        for(Map.Entry<String,Student> entry : students.entrySet()){
+            dest.writeString(entry.getKey());
+            dest.writeParcelable(entry.getValue(), flags);
+        }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 }

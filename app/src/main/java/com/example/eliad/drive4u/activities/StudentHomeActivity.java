@@ -25,14 +25,20 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.w3c.dom.Text;
+
 import java.util.LinkedList;
+import java.util.Map;
 
 public class StudentHomeActivity extends AppCompatActivity {
     // Tag for the Log
     private static final String TAG = StudentHomeActivity.class.getName();
 
+    // Intent for Parcelables
+    private Intent ParcelablesIntent;
+
     // the user
-    private Student student;
+    private Student mStudent;
 
     // Firebase
     private FirebaseAuth mAuth;
@@ -50,14 +56,22 @@ public class StudentHomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "in onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_home);
 
-        Log.d(TAG, "in onCreate");
+        ParcelablesIntent = getIntent();
+
+        mStudent = ParcelablesIntent.getParcelableExtra("Student");
 
         // init widgets
         textViewBalance = findViewById(R.id.textViewBalance);
         textViewLessonsCompleted = findViewById(R.id.textViewLessonsCompleted);
+
+        String text = Integer.toString(mStudent.getBalance());
+        textViewBalance.setText(text);
+        text = Integer.toString(mStudent.getNumberOfLessons());
+        textViewLessonsCompleted.setText(text);
 
         Log.d(TAG, "get current firebase user");
         mAuth = FirebaseAuth.getInstance();
@@ -65,8 +79,6 @@ public class StudentHomeActivity extends AppCompatActivity {
         assert mUser != null;
 
         db = FirebaseFirestore.getInstance();
-
-        initUser();
 
         initLessonsRecyclerView();
 
@@ -115,7 +127,7 @@ public class StudentHomeActivity extends AppCompatActivity {
     private void presentNextLessons() {
         Log.d(TAG, "in presentNextLessons");
         db.collection(getString(R.string.DB_Lessons))
-                .whereEqualTo(getString(R.string.DB_Student), student.getID())
+                .whereEqualTo(getString(R.string.DB_Student), mStudent.getID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -143,28 +155,5 @@ public class StudentHomeActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-    }
-
-    private void initUser() {
-        String uId = mUser.getUid();
-        DocumentReference docRef = db.collection(getString(R.string.DB_Students)).document(uId);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        student = document.toObject(Student.class);
-                        textViewBalance.setText(String.format("%d", student.getBalance()));
-                        textViewLessonsCompleted.setText(String.format("%d", student.getNumberOfLessons()));
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
     }
 }
