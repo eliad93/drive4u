@@ -14,12 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.models.Student;
+import com.example.eliad.drive4u.models.Teacher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
@@ -36,7 +40,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editTextPassword;
     private Button   buttonLogin;
     private TextView textViewNewUser;
-    private CollectionReference CollectionRef;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -45,7 +48,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         db = FirebaseFirestore.getInstance();
-        CollectionRef = db.collection("Students");
         mAuth = FirebaseAuth.getInstance();
 
         if(mAuth.getCurrentUser() != null){
@@ -109,13 +111,60 @@ public class LoginActivity extends AppCompatActivity {
     }
     public void login (){
         FirebaseUser user = mAuth.getCurrentUser();
-        Intent intent;
-        if(CollectionRef.document(user.getUid()) != null){
-            intent = new Intent(this, StudentHomeActivity.class);
-        }else{
-            intent = new Intent(this, TeacherHomeActivity.class);
-        }
-        finish();
-        startActivity(intent);
+        assert user != null;
+        tryStudentLogin(user);
+        tryTeacherLogin(user);
+    }
+
+    private void tryStudentLogin(FirebaseUser user) {
+        DocumentReference userDoc = db.collection("Students")
+                .document(user.getUid());
+        userDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    assert document != null;
+                    if(document.exists()){
+                        Intent intent = new Intent(getApplicationContext(),
+                                StudentHomeActivity.class);
+                        Student student = document.toObject(Student.class);
+                        intent.putExtra("Student", student);
+                        finish();
+                        startActivity(intent);
+                    } else {
+                        Log.d(TAG, "No such student");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+    private void tryTeacherLogin(FirebaseUser user) {
+        DocumentReference userDoc = db.collection("Teachers")
+                .document(user.getUid());
+        userDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    assert document != null;
+                    if(document.exists()){
+                        Intent intent = new Intent(getApplicationContext(),
+                                TeacherHomeActivity.class);
+                        Teacher teacher = document.toObject(Teacher.class);
+                        intent.putExtra("Teacher", teacher);
+                        finish();
+                        startActivity(intent);
+                    } else {
+                        Log.d(TAG, "No such teacher");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
     }
 }

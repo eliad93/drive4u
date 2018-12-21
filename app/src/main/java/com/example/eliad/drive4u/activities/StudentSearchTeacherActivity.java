@@ -55,6 +55,7 @@ public class StudentSearchTeacherActivity extends AppCompatActivity {
     }
 
     private void presentAllTeachers() {
+        Log.d(TAG, "in presentAllTeachers");
         db.collection(getString(R.string.DB_Teachers))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

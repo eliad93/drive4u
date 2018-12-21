@@ -90,7 +90,7 @@ public class StudentHomeActivity extends AppCompatActivity {
 
         initializeNextLessonsRecyclerView();
 
-        presentNextLessons();
+//        presentNextLessons();
     }
 
 
