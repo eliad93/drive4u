@@ -68,7 +68,7 @@ public class TeacherHomeActivity extends AppCompatActivity {
 
         initLessonsRecyclerView();
 
-        presentNextLessons();
+//        presentNextLessons();
     }
 
     @Override

@@ -18,6 +18,7 @@ public class Teacher extends User {
     public Teacher(String mId, String mFirstName, String mLastName, String mPhoneNumber,
                    String mEmail, String mCity, String mGearType) {
         super(mId, mFirstName, mLastName, mPhoneNumber, mEmail, mCity);
+        students = new HashMap<>();
         gearType = mGearType;
     }
 
@@ -28,6 +29,7 @@ public class Teacher extends User {
     public Teacher(String mId, String mFirstName, String mLastName, String mPhoneNumber,
                    String mCity, String mEmail, String mCarModel, Integer mPrice, String mGearType){
         super(mId, mFirstName, mLastName, mPhoneNumber, mEmail, mCity);
+        students = new HashMap<>();
         carModel = mCarModel;
         price = mPrice;
         gearType = mGearType;

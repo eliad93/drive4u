@@ -14,7 +14,7 @@ public class ChooseTeacherFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        mCanChooseTeacher = savedInstanceState.getBoolean("canChooseTeacher");
+        mCanChooseTeacher = getArguments().getBoolean("canChooseTeacher");
         String message;
         if(mCanChooseTeacher){
             message = "connection request sent"; // TODO: more info

@@ -58,24 +58,14 @@ public class TeacherSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
         String numberOfStudentsText = res
                 .getString(R.string.number_of_students, teacher.numberOfStudents());
         holder.mNumStudents.setText(numberOfStudentsText);
-        if(mTeacherChoose){
-            holder.mTeacherChoose.setOnClickListener(new NoTeacherOnClick());
-        } else {
-            holder.mTeacherChoose.setOnClickListener(new HasTeacherOnClick());
-        }
+        holder.mTeacherChoose.setOnClickListener(new OnClick());
     }
 
-    private class NoTeacherOnClick implements View.OnClickListener {
+    private class OnClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             chooseTeacherFragment.show(((AppCompatActivity)context).getSupportFragmentManager(),
                     "student choose teacher");
-        }
-    }
-
-    private class HasTeacherOnClick implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
         }
     }
 

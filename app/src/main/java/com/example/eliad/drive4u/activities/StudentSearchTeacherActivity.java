@@ -69,7 +69,7 @@ public class StudentSearchTeacherActivity extends AppCompatActivity {
                                 Log.d(TAG, "presenting teacher by email: " + teacher.getEmail());
                                 teachers.addLast(teacher);
                             }
-                            mAdapter = new TeacherSearchAdapter(teachers, false);
+                            mAdapter = new TeacherSearchAdapter(teachers, true);
                             mRecyclerView.setAdapter(mAdapter);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
