@@ -31,7 +31,7 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
         implements AdapterView.OnItemSelectedListener {
 
     // Tag for the Log
-    private static final String TAG = StudentSearchTeacherActivity.class.getName();
+    private static final String TAG = TeacherRegistrationActivity.class.getName();
 
     // Firebase
     private FirebaseAuth mAuth;
@@ -95,7 +95,7 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
                             createNewTeacher(newUser, firstName, lastName, phone, city, email,
                                     carModel, price, gearType);
                         } else {
-                            Log.d(TAG, "registration failed");
+                            Log.d(TAG, "registration failed " + task.getException());
                         }
                     }
                 });

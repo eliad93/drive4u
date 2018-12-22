@@ -1,5 +1,6 @@
 package com.example.eliad.drive4u.activities;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -25,10 +28,16 @@ public class StudentSearchTeacherActivity extends AppCompatActivity {
     // Tag for the Log
     private static final String TAG = StudentSearchTeacherActivity.class.getName();
 
+    // Intent for Parcelables
+    private Intent parcelablesIntent;
+
     // Firebase
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private FirebaseFirestore db;
+    private DocumentReference mStudentDoc;
+    private CollectionReference mTeachersDb;
+
     // RecyclerView items
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -47,7 +56,14 @@ public class StudentSearchTeacherActivity extends AppCompatActivity {
         mUser = mAuth.getCurrentUser();
         assert mUser != null;
 
+        parcelablesIntent = getIntent();
+
+        mStudent = parcelablesIntent.getParcelableExtra("Student");
+
         db = FirebaseFirestore.getInstance();
+
+        mStudentDoc = db.collection("Students").document(mStudent.getID());
+        mTeachersDb = db.collection("Teachers");
 
         initializeRecyclerView();
 
@@ -56,7 +72,7 @@ public class StudentSearchTeacherActivity extends AppCompatActivity {
 
     private void presentAllTeachers() {
         Log.d(TAG, "in presentAllTeachers");
-        db.collection(getString(R.string.DB_Teachers))
+        mTeachersDb
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -69,7 +85,8 @@ public class StudentSearchTeacherActivity extends AppCompatActivity {
                                 Log.d(TAG, "presenting teacher by email: " + teacher.getEmail());
                                 teachers.addLast(teacher);
                             }
-                            mAdapter = new TeacherSearchAdapter(teachers, true);
+                            mAdapter = new TeacherSearchAdapter(teachers, mStudent, mStudentDoc,
+                                    mTeachersDb);
                             mRecyclerView.setAdapter(mAdapter);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

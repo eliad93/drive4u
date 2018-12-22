@@ -3,24 +3,14 @@ package com.example.eliad.drive4u.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.UncheckedIOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class Teacher extends User {
-    private HashMap<String, Student> students = null; // key is uId from firebase auth
+    private ArrayList<String> students = new ArrayList<>(); // storing students id
     private Integer totalPayed = 0;
-    private String carModel = null;
-    private Integer price=100;
-    private String gearType = null;
-
-
-    public Teacher(String mId, String mFirstName, String mLastName, String mPhoneNumber,
-                   String mEmail, String mCity, String mGearType) {
-        super(mId, mFirstName, mLastName, mPhoneNumber, mEmail, mCity);
-        students = new HashMap<>();
-        gearType = mGearType;
-    }
+    private String carModel;
+    private Integer price;
+    private String gearType;
 
     public Teacher(){
         super();
@@ -29,28 +19,31 @@ public class Teacher extends User {
     public Teacher(String mId, String mFirstName, String mLastName, String mPhoneNumber,
                    String mCity, String mEmail, String mCarModel, Integer mPrice, String mGearType){
         super(mId, mFirstName, mLastName, mPhoneNumber, mEmail, mCity);
-        students = new HashMap<>();
         carModel = mCarModel;
         price = mPrice;
         gearType = mGearType;
     }
 
-    public void addStudent(String uId, Student student){
+    public void addStudent(String student){
         assert student != null;
-        if(!students.containsKey(uId)){
-            students.put(uId, student);
+        if(!students.contains(student)){
+            students.add(student);
         }
+    }
+
+    public Boolean isConnected(String student){
+        return students.contains(student);
     }
 
     public Integer numberOfStudents(){
         return students.size();
     }
 
-    public HashMap<String, Student> getStudents() {
+    public ArrayList<String> getStudents() {
         return students;
     }
 
-    public void setStudents(HashMap<String, Student> students) {
+    public void setStudents(ArrayList<String> students) {
         this.students = students;
     }
 
@@ -100,13 +93,8 @@ public class Teacher extends User {
     @SuppressWarnings("unchecked")
     protected Teacher(Parcel in){
         super(in);
-        students = new HashMap<>();
-        int size = in.readInt();
-        for(int i = 0; i < size; i++){
-            String key = in.readString();
-            Student value = in.readParcelable(Student.class.getClassLoader());
-            students.put(key,value);
-        }
+        students = new ArrayList<>();
+        students = in.readArrayList(String.class.getClassLoader());
         totalPayed = in.readInt();
         carModel = in.readString();
         price = in.readInt();
@@ -116,11 +104,11 @@ public class Teacher extends User {
     @Override
     public void writeToParcel(Parcel dest, int flags){
         super.writeToParcel(dest, flags);
-        dest.writeInt(students.size());
-        for(Map.Entry<String,Student> entry : students.entrySet()){
-            dest.writeString(entry.getKey());
-            dest.writeParcelable(entry.getValue(), flags);
-        }
+        dest.writeList(students);
+        dest.writeInt(totalPayed);
+        dest.writeString(carModel);
+        dest.writeInt(price);
+        dest.writeString(gearType);
     }
 
     @Override

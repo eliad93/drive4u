@@ -99,18 +99,14 @@ public class StudentHomeActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.scheduleLesson){
             if(mStudent.getTeacherId().equals("")){
                 Toast.makeText(this, "Choose teacher first!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, StudentSearchTeacherActivity.class);
-                startActivity(intent);
+                myStartActivity(StudentSearchTeacherActivity.class);
             }else {
                 Toast.makeText(this, mStudent.getTeacherId(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, StudentScheduleLessonActivity.class);
-                intent.putExtra("Student", mStudent);
-                startActivity(intent);
+                myStartActivity(StudentScheduleLessonActivity.class);
             }
         }
         if(item.getItemId() == R.id.searchTeacher){
-            Intent intent = new Intent(this, StudentSearchTeacherActivity.class);
-            startActivity(intent);
+            myStartActivity(StudentSearchTeacherActivity.class);
         }
         if(item.getItemId() == R.id.profile){
             //profile activity
@@ -125,6 +121,12 @@ public class StudentHomeActivity extends AppCompatActivity {
             logoutUser();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void myStartActivity(Class<? extends  AppCompatActivity> activity) {
+        Intent intent = new Intent(this, activity);
+        intent.putExtra("Student", mStudent);
+        startActivity(intent);
     }
 
     public void logoutUser(){

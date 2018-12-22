@@ -112,10 +112,9 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         assert user != null;
         tryStudentLogin(user);
-        tryTeacherLogin(user);
     }
 
-    private void tryStudentLogin(FirebaseUser user) {
+    private void tryStudentLogin(final FirebaseUser user) {
         DocumentReference userDoc = db.collection("Students")
                 .document(user.getUid());
         userDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -133,6 +132,7 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(intent);
                     } else {
                         Log.d(TAG, "No such student");
+                        tryTeacherLogin(user);
                     }
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
