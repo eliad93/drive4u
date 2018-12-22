@@ -69,10 +69,10 @@ public class StudentScheduleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         View view = inflater.inflate(R.layout.student_dayview_hour_item, viewGroup, false);
         if (lessonsHours[i] == Lesson.Status.S_CONFIRMED || lessonsHours[i] == Lesson.Status.T_CONFIRMED) {
             view.setClickable(false);
-            view.setBackgroundColor(Color.RED);
+            viewGroup.setBackgroundColor(Color.RED);
         }else {
             if (lessonsHours[i] == Lesson.Status.S_UPDATE || lessonsHours[i] == Lesson.Status.S_UPDATE || lessonsHours[i] == Lesson.Status.S_REQUEST) {
-                view.setBackgroundColor(Color.YELLOW);
+                viewGroup.setBackgroundColor(Color.YELLOW);
             }
         }
         view.setOnClickListener(new View.OnClickListener() {

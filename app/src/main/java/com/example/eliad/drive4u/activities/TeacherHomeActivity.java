@@ -68,7 +68,7 @@ public class TeacherHomeActivity extends AppCompatActivity {
 
         initLessonsRecyclerView();
 
-        presentNextLessons();
+//        presentNextLessons();
     }
 
     @Override
@@ -80,7 +80,9 @@ public class TeacherHomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.schedule){
-            //teacher schedule activity
+            Intent intent = new Intent(this, TeacherScheduleActivity.class);
+            intent.putExtra("Teacher", teacher);
+            startActivity(intent);
         }
         if(item.getItemId() == R.id.students_requests){
             //students requests activity
