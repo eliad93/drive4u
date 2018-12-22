@@ -13,11 +13,6 @@ public class ChooseTeacherFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 //        mCanChooseTeacher = getArguments().getBoolean("canChooseTeacher");
         String message = getArguments().getString("message");
-//        if(mCanChooseTeacher){
-//            message = "connection request sent"; // TODO: more info
-//        } else {
-//            message = "Already has a teacher, disconnect first.";
-//        }
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(message) // TODO: better message

@@ -24,19 +24,19 @@
     <EditText
         android:id="@+id/editTextStudentRegistrationFirstName"
         style="@style/editTextRegFormField"
-        android:inputType="text"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="64dp"
         android:hint="@string/registration_name"
+        android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewStudentRegistrationHeader" />
 
     <EditText
         android:id="@+id/editTextStudentRegistrationLastName"
         style="@style/editTextRegFormField"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="64dp"
         android:hint="@string/registration_last_name"
         android:inputType="text"
@@ -57,11 +57,11 @@
     <EditText
         android:id="@+id/editTextStudentRegistrationCity"
         style="@style/editTextRegFormField"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="24dp"
-        android:inputType="text"
         android:hint="@string/registration_city"
+        android:inputType="text"
         app:layout_constraintStart_toEndOf="@+id/editTextStudentRegistrationPhone"
         app:layout_constraintTop_toBottomOf="@+id/editTextStudentRegistrationLastName" />
 
@@ -79,8 +79,8 @@
     <EditText
         android:id="@+id/editTextStudentRegistrationPassword"
         style="@style/editTextRegFormField"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="24dp"
         android:hint="@string/registration_password"
         android:inputType="textPassword"
@@ -95,10 +95,10 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="32dp"
+        android:onClick="signUp"
+        android:text="@string/signup"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/signup"
-        android:onClick="signUp"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

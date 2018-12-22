@@ -59,10 +59,6 @@ public class StudentHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_home);
 
-        parcelablesIntent = getIntent();
-
-        mStudent = parcelablesIntent.getParcelableExtra("Student");
-
         // init widgets
         textViewBalance = findViewById(R.id.textViewBalance);
         textViewLessonsCompleted = findViewById(R.id.textViewLessonsCompleted);
@@ -83,6 +79,16 @@ public class StudentHomeActivity extends AppCompatActivity {
         initLessonsRecyclerView();
 
         presentNextLessons();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        parcelablesIntent = getIntent();
+        if(parcelablesIntent.hasExtra("Student")){
+            mStudent = parcelablesIntent.getParcelableExtra("Student");
+        }
+        assert mStudent != null; // we must get a student on first run at least
     }
 
 

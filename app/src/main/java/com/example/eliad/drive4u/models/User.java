@@ -94,6 +94,7 @@ public abstract class User implements Parcelable{
         this.phoneNumber = in.readString();
         this.city = in.readString();
         this.email =  in.readString();
+        this.balance =  in.readInt();
     }
     @Override
     public void writeToParcel(Parcel dest, int flags) {

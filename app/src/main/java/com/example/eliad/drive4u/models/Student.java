@@ -25,8 +25,6 @@ public class Student extends User {
         this.numberOfLessons = numberOfLessons;
     }
 
-    public Integer getBalance() { return 0; }
-
     public String getTeacherId() {
         return teacherId;
     }
@@ -34,6 +32,8 @@ public class Student extends User {
     public void setTeacherId(String teacherId) {
         this.teacherId = teacherId;
     }
+
+    public Integer getBalance() { return 0; }
 
     public Integer getTotalExpense() {
         return totalExpense;
