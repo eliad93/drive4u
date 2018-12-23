@@ -14,34 +14,19 @@ import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.LessonsAdapter;
+import com.example.eliad.drive4u.base_activities.StudentBaseActivity;
 import com.example.eliad.drive4u.models.Lesson;
-import com.example.eliad.drive4u.models.Student;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.LinkedList;
 
-public class StudentHomeActivity extends AppCompatActivity {
+public class StudentHomeActivity extends StudentBaseActivity {
     // Tag for the Log
     private static final String TAG = StudentHomeActivity.class.getName();
-
-    // Intent for Parcelables
-    private Intent parcelablesIntent;
-
-    // the user
-    private Student mStudent;
-
-    // Firebase
-    private FirebaseAuth mAuth;
-    private FirebaseUser mUser;
-    private FirebaseFirestore db;
 
     // widgets and recycler view items
     private TextView textViewLessonsCompleted;
@@ -69,13 +54,6 @@ public class StudentHomeActivity extends AppCompatActivity {
         text = Integer.toString(mStudent.getNumberOfLessons());  // TODO: fix to the correct number
         textViewLessonsCompleted.setText(text);
 
-        Log.d(TAG, "get current firebase user");
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-        assert mUser != null;
-
-        db = FirebaseFirestore.getInstance();
-
         initLessonsRecyclerView();
 
         presentNextLessons();
@@ -84,13 +62,7 @@ public class StudentHomeActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        parcelablesIntent = getIntent();
-        if(parcelablesIntent.hasExtra("Student")){
-            mStudent = parcelablesIntent.getParcelableExtra("Student");
-        }
-        assert mStudent != null; // we must get a student on first run at least
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -112,7 +84,7 @@ public class StudentHomeActivity extends AppCompatActivity {
             }
         }
         if(item.getItemId() == R.id.searchTeacher){
-            myStartActivity(StudentSearchTeacherActivity.class);
+            myStartActivityForResult(StudentSearchTeacherActivity.class);
         }
         if(item.getItemId() == R.id.profile){
             //profile activity
@@ -127,12 +99,6 @@ public class StudentHomeActivity extends AppCompatActivity {
             logoutUser();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void myStartActivity(Class<? extends  AppCompatActivity> activity) {
-        Intent intent = new Intent(this, activity);
-        intent.putExtra("Student", mStudent);
-        startActivity(intent);
     }
 
     public void logoutUser(){

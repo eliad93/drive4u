@@ -11,11 +11,10 @@ public class ChooseTeacherFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-//        mCanChooseTeacher = getArguments().getBoolean("canChooseTeacher");
         String message = getArguments().getString("message");
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(message) // TODO: better message
+        builder.setMessage(message)
                 .setTitle("teacher choose")
                 .setNeutralButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

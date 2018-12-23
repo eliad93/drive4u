@@ -43,6 +43,13 @@ public class Student extends User {
         this.totalExpense = totalExpense;
     }
 
+    public boolean hasTeacher(){
+        if(teacherId != null){
+            return (!teacherId.isEmpty());
+        }
+        return false;
+    }
+
     public static final Parcelable.Creator<Student> CREATOR = new Parcelable.Creator<Student>() {
         public Student createFromParcel(Parcel in) {
             return new Student(in);
