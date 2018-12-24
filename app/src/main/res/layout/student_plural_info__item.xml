@@ -10,7 +10,7 @@
 
 
     <TextView
-        android:id="@+id/textViewFirstName"
+        android:id="@+id/StudentPluralInfoItemFirstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textViewLastName"
+        android:id="@+id/StudentPluralInfoItemLastName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -30,7 +30,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/DB_LastName"
         android:textSize="24sp"
-        app:layout_constraintStart_toEndOf="@+id/textViewFirstName"
+        app:layout_constraintStart_toEndOf="@+id/StudentPluralInfoItemFirstName"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -43,11 +43,11 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFirstName"
+        app:layout_constraintTop_toBottomOf="@+id/StudentPluralInfoItemFirstName"
         app:srcCompat="@drawable/google_location_icon_location" />
 
     <TextView
-        android:id="@+id/textViewCity"
+        android:id="@+id/StudentPluralInfoItemCity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -57,5 +57,16 @@
         android:text="@string/DB_City"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFirstName" />
+        app:layout_constraintTop_toBottomOf="@+id/StudentPluralInfoItemFirstName" />
+
+    <TextView
+        android:id="@+id/StudentPluralInfoItemPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/StudentPluralInfoItemCity"
+        app:layout_constraintTop_toBottomOf="@+id/StudentPluralInfoItemLastName" />
 </android.support.constraint.ConstraintLayout>
