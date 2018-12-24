@@ -1,19 +1,18 @@
-package com.example.eliad.drive4u;
+package com.example.eliad.drive4u.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.base_activities.StudentBaseActivity;
-import com.example.eliad.drive4u.models.Student;
 
 public class StudentProfileActivity extends StudentBaseActivity {
     // tag for log
     private static final String TAG = StudentProfileActivity.class.getName();
 
     private TextView textViewFirstName, textViewLastName, textViewPhoneNumber, textViewEmail;
-    private TextView textViewCity, textViewBalance, textViewTotaleExpence, textViewNumberOfLessons;
+    private TextView textViewCity, textViewBalance, textViewTotalExpence, textViewNumberOfLessons;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +27,7 @@ public class StudentProfileActivity extends StudentBaseActivity {
         textViewEmail           = findViewById(R.id.StudentProfileEmail);
         textViewCity            = findViewById(R.id.StudentProfileCity);
         textViewBalance         = findViewById(R.id.StudentProfileBalance);
-        textViewTotaleExpence   = findViewById(R.id.StudentProfileTotalExpense);
+        textViewTotalExpence = findViewById(R.id.StudentProfileTotalExpense);
         textViewNumberOfLessons = findViewById(R.id.StudentProfileNumberOfLessons);
 
         // set the content
@@ -40,7 +39,7 @@ public class StudentProfileActivity extends StudentBaseActivity {
         text = Integer.toString(mStudent.getBalance());
         textViewBalance.setText(text);
         text = Integer.toString(mStudent.getTotalExpense());
-        textViewTotaleExpence.setText(text);
+        textViewTotalExpence.setText(text);
         text = Integer.toString(mStudent.getNumberOfLessons());
         textViewNumberOfLessons.setText(text);
 

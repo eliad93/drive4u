@@ -68,4 +68,8 @@
     <string name="email_title">Email:</string>
     <string name="city_title">City:</string>
     <string name="balance_title">Balance:</string>
+    <string name="cat_model_title">Car Model:</string>
+    <string name="gear_type_title">Gear Type:</string>
+    <string name="price_per_lesson_title">Price Per Lesson:</string>
+    <string name="total_payed_title">Total Payed:</string>
 </resources>

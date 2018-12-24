@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.StudentScheduleAdapter;
+import com.example.eliad.drive4u.base_activities.TeacherBaseActivity;
 import com.example.eliad.drive4u.models.Lesson;
 import com.example.eliad.drive4u.models.Teacher;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -60,7 +61,7 @@ public class TeacherScheduleActivity extends AppCompatActivity {
         assert mUser != null;
 
         parcelablesIntent = getIntent();
-        mTeacher = parcelablesIntent.getParcelableExtra("Teacher");
+        mTeacher = parcelablesIntent.getParcelableExtra(TeacherBaseActivity.ARG_TEACHER);
 
         db = FirebaseFirestore.getInstance();
 

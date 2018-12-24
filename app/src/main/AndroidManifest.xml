@@ -31,8 +31,8 @@
         <activity android:name=".activities.TeacherRegistrationActivity" />
         <activity android:name=".activities.PresentLessonActivity" />
         <activity android:name=".activities.StudentPluralInfoActivity" />
-        <activity android:name=".TeacherProfileActivity" />
-        <activity android:name=".StudentProfileActivity"></activity>
+        <activity android:name=".activities.TeacherProfileActivity" />
+        <activity android:name=".activities.StudentProfileActivity"></activity>
     </application>
 
 </manifest>

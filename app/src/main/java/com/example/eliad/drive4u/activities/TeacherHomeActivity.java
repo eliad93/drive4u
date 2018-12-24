@@ -13,32 +13,20 @@ import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.LessonsAdapter;
+import com.example.eliad.drive4u.base_activities.TeacherBaseActivity;
 import com.example.eliad.drive4u.models.Lesson;
-import com.example.eliad.drive4u.models.Teacher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.LinkedList;
 
-public class TeacherHomeActivity extends AppCompatActivity {
+public class TeacherHomeActivity extends TeacherBaseActivity {
 
     // Log
     private static final String TAG = TeacherHomeActivity.class.getName();
-
-    // the user
-    Teacher teacher;
-
-    // Firebase
-    private FirebaseAuth mAuth;
-    private FirebaseUser mUser;
-    private FirebaseFirestore db;
 
     // widgets
     private TextView textViewLessonsRemainingToday;
@@ -59,16 +47,11 @@ public class TeacherHomeActivity extends AppCompatActivity {
         textViewLessonsRemainingToday = findViewById(R.id.textViewLessonsRemainingToday);
         textViewNoLessons = findViewById(R.id.TeacherHomeTextViewNoLessosns);
 
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-        assert mUser != null;
-        db = FirebaseFirestore.getInstance();
-
-        initUser();
+        textViewLessonsRemainingToday.setText("0"); // TODO
 
         initLessonsRecyclerView();
 
-//        presentNextLessons();
+        presentNextLessons();
     }
 
     @Override
@@ -81,7 +64,7 @@ public class TeacherHomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.schedule){
             Intent intent = new Intent(this, TeacherScheduleActivity.class);
-            intent.putExtra("Teacher", teacher);
+            intent.putExtra(TeacherBaseActivity.ARG_TEACHER, mTeacher);
             startActivity(intent);
         }
         if(item.getItemId() == R.id.students_requests){
@@ -89,6 +72,7 @@ public class TeacherHomeActivity extends AppCompatActivity {
         }
         if(item.getItemId() == R.id.profile){
             //profile activity
+            myStartActivity(TeacherProfileActivity.class);
         }
         if(item.getItemId() == R.id.my_students){
             //all students info activity
@@ -110,7 +94,7 @@ public class TeacherHomeActivity extends AppCompatActivity {
         Log.d(TAG, "in presentNextLessons");
 
         db.collection(getString(R.string.DB_Lessons))
-                .whereEqualTo(getString(R.string.DB_Student), teacher.getID())
+                .whereEqualTo(getString(R.string.DB_Teacher), mTeacher.getID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -126,7 +110,7 @@ public class TeacherHomeActivity extends AppCompatActivity {
                                 mAdapter = new LessonsAdapter(lessons);
                                 mRecyclerView.setAdapter(mAdapter);
                             } else {
-                                Log.d(TAG, "Teacher " + teacher.getEmail() + " has no lessons to present");
+                                Log.d(TAG, "Teacher " + mTeacher.getEmail() + " has no lessons to present");
                                 textViewNoLessons.setText(R.string.you_have_no_lessons);
                             }
                         } else {
@@ -135,27 +119,6 @@ public class TeacherHomeActivity extends AppCompatActivity {
                     }
                 });
 
-    }
-
-    private void initUser() {
-        String uId = mUser.getUid();
-        DocumentReference docRef = db.collection(getString(R.string.DB_Students)).document(uId);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        teacher = document.toObject(Teacher.class);
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
     }
 
     private void initLessonsRecyclerView() {
