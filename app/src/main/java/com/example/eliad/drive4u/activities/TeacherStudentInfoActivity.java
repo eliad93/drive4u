@@ -1,11 +1,14 @@
 package com.example.eliad.drive4u.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
@@ -55,6 +58,9 @@ public class TeacherStudentInfoActivity extends TeacherBaseActivity {
         // init the text views and set their content
         initTextViews();
         setTextViewsContent();
+
+        //set a click listener to call the student on click.
+        setPhoneCall();
 
         initializeRecyclerView();
 
@@ -123,4 +129,16 @@ public class TeacherStudentInfoActivity extends TeacherBaseActivity {
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    private void setPhoneCall() {
+        Log.d(TAG, "setPhoneCall");
+        textViewStudentPhoneNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "textViewStudentPhoneNumber clicked");
+                Intent phoneIntent = new Intent(Intent.ACTION_DIAL);  // or ACTION_CALL
+                phoneIntent.setData(Uri.parse("tel:" + mStudent.getPhoneNumber()));
+                startActivity(phoneIntent);
+            }
+        });
+    }
 }
