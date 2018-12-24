@@ -21,9 +21,14 @@ public class Lesson implements Parcelable {
 
         private Integer code;
         private String userMessage;
+
         Status(Integer c, String userMessage){
             this.code = c;
             this.userMessage = userMessage;
+        }
+
+        public String getUserMessage(){
+            return userMessage;
         }
     }
 

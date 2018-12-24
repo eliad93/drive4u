@@ -76,6 +76,7 @@ public class TeacherHomeActivity extends TeacherBaseActivity {
         }
         if(item.getItemId() == R.id.my_students){
             //all students info activity
+            myStartActivity(TeacherMyStudentsActivity.class);
         }
         if(item.getItemId() == R.id.budget_management){
             //budget management activity

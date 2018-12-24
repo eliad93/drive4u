@@ -50,8 +50,8 @@
         android:id="@+id/StudentPluralInfoItemCity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:text="@string/DB_City"
@@ -65,8 +65,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:text="TextView"
-        app:layout_constraintStart_toEndOf="@+id/StudentPluralInfoItemCity"
-        app:layout_constraintTop_toBottomOf="@+id/StudentPluralInfoItemLastName" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/StudentPluralInfoItemCity" />
 </android.support.constraint.ConstraintLayout>

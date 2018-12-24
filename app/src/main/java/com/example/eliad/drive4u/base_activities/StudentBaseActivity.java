@@ -18,7 +18,7 @@ public class StudentBaseActivity extends AppCompatActivity {
     private static final String TAG = StudentHomeActivity.class.getName();
 
     // string for passing the student
-    public static String STUDENT_KEY = "com.android.eliad.base_activities.StudentBaseActivity.student_key";
+    public static String ARG_STUDENT = "com.android.eliad.base_activities.StudentBaseActivity.student_key";
 
     // Intent for Parcelables
     protected Intent parcelablesIntent;
@@ -37,7 +37,7 @@ public class StudentBaseActivity extends AppCompatActivity {
         Log.d(TAG, "in onCreate");
         initDbVariables();
         parcelablesIntent = getIntent();
-        mStudent = parcelablesIntent.getParcelableExtra(STUDENT_KEY);
+        mStudent = parcelablesIntent.getParcelableExtra(ARG_STUDENT);
     }
 
     protected void initDbVariables() {
@@ -54,7 +54,7 @@ public class StudentBaseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         Intent intent = new Intent();
-        intent.putExtra(STUDENT_KEY, mStudent);
+        intent.putExtra(ARG_STUDENT, mStudent);
         setResult(RESULT_OK, intent);
         super.onBackPressed();
     }
@@ -66,20 +66,20 @@ public class StudentBaseActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
-                mStudent = data.getParcelableExtra(STUDENT_KEY);
+                mStudent = data.getParcelableExtra(ARG_STUDENT);
             }
         }
     }
 
     protected void myStartActivity(Class<? extends  AppCompatActivity> activity) {
         Intent intent = new Intent(this, activity);
-        intent.putExtra(STUDENT_KEY, mStudent);
+        intent.putExtra(ARG_STUDENT, mStudent);
         startActivity(intent);
     }
 
     protected void myStartActivityForResult(Class<? extends  AppCompatActivity> activity) {
         Intent intent = new Intent(this, activity);
-        intent.putExtra(STUDENT_KEY, mStudent);
+        intent.putExtra(ARG_STUDENT, mStudent);
         startActivityForResult(intent, 1);
     }
 

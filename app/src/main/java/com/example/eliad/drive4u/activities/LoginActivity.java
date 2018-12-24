@@ -130,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(),
                                 StudentHomeActivity.class);
                         Student student = document.toObject(Student.class);
-                        intent.putExtra(StudentBaseActivity.STUDENT_KEY, student);
+                        intent.putExtra(StudentBaseActivity.ARG_STUDENT, student);
                         finish();
                         startActivity(intent);
                     } else {
