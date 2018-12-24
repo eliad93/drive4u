@@ -40,7 +40,7 @@ public class LessonsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             public void onClick(View v) {
                 Lesson lesson = lessonList.get(j);
                 Intent intent = new Intent(v.getContext(), PresentLessonActivity.class);
-//                intent.putExtra(LESSON_KEY, lesson); TODO: issue 55
+                intent.putExtra(LESSON_KEY, lesson);
                 v.getContext().startActivity(intent);
             }
         });

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.StudentProfileActivity;
 import com.example.eliad.drive4u.adapters.LessonsAdapter;
 import com.example.eliad.drive4u.base_activities.StudentBaseActivity;
 import com.example.eliad.drive4u.models.Lesson;
@@ -87,7 +88,7 @@ public class StudentHomeActivity extends StudentBaseActivity {
             myStartActivityForResult(StudentSearchTeacherActivity.class);
         }
         if(item.getItemId() == R.id.profile){
-            //profile activity
+            myStartActivity(StudentProfileActivity.class);
         }
         if(item.getItemId() == R.id.recentActivities){
             //Recent activities activity

@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.base_activities.RegistrationBaseActivity;
+import com.example.eliad.drive4u.base_activities.StudentBaseActivity;
 import com.example.eliad.drive4u.models.Student;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -108,8 +109,8 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity {
                         Log.d(TAG, "firestore student created successfully");
                         Intent intent = new Intent(getApplicationContext(),
                                 StudentHomeActivity.class);
-                        intent.putExtra("Student", newStudent);
-                        finish();
+                        intent.putExtra(StudentBaseActivity.STUDENT_KEY, newStudent);
+
                         startActivity(intent);
                     }
                 })

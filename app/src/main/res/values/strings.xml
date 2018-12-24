@@ -59,4 +59,13 @@
         <item>automatic</item>
     </string-array>
     <string name="you_have_no_lessons">You have no lessons</string>
+    <string name="teacher_title">Teacher:</string>
+    <string name="student_title">Student:</string>
+    <string name="name_title">Name:</string>
+    <string name="total_expense" >Total Expense:</string>
+    <string name="number_of_lessons_title">Number of Lessons:</string>
+    <string name="phone_number_title">Phone number:</string>
+    <string name="email_title">Email:</string>
+    <string name="city_title">City:</string>
+    <string name="balance_title">Balance:</string>
 </resources>

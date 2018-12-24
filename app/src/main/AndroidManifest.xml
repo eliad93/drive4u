@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.eliad.drive4u">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -26,9 +28,11 @@
         <activity android:name=".activities.StudentRegistrationActivity" />
         <activity android:name=".activities.StudentHomeActivity" />
         <activity android:name=".activities.StudentSearchTeacherActivity" />
-        <activity android:name=".activities.TeacherRegistrationActivity"></activity>
+        <activity android:name=".activities.TeacherRegistrationActivity" />
         <activity android:name=".activities.PresentLessonActivity" />
-        <activity android:name=".activities.StudentPluralInfoActivity"></activity>
+        <activity android:name=".activities.StudentPluralInfoActivity" />
+        <activity android:name=".TeacherProfileActivity" />
+        <activity android:name=".StudentProfileActivity"></activity>
     </application>
 
 </manifest>

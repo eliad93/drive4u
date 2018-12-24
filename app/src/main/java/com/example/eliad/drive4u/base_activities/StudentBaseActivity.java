@@ -16,10 +16,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class StudentBaseActivity extends AppCompatActivity {
     // Tag for the Log
     private static final String TAG = StudentHomeActivity.class.getName();
+
+    // string for passing the student
+    public static String STUDENT_KEY = "com.android.eliad.base_activities.StudentBaseActivity.student_key";
+
     // Intent for Parcelables
     protected Intent parcelablesIntent;
+
     // the user
     protected Student mStudent;
+
     // Firebase
     protected FirebaseAuth mAuth;
     protected FirebaseUser mUser;
@@ -30,7 +36,7 @@ public class StudentBaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initDbVariables();
         parcelablesIntent = getIntent();
-        mStudent = parcelablesIntent.getParcelableExtra("Student");
+        mStudent = parcelablesIntent.getParcelableExtra(STUDENT_KEY);
     }
 
     protected void initDbVariables() {
@@ -47,7 +53,7 @@ public class StudentBaseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         Intent intent = new Intent();
-        intent.putExtra("Student", mStudent);
+        intent.putExtra(STUDENT_KEY, mStudent);
         setResult(RESULT_OK, intent);
         super.onBackPressed();
     }
@@ -59,20 +65,21 @@ public class StudentBaseActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
-                mStudent = data.getParcelableExtra("Student");
+                mStudent = data.getParcelableExtra(STUDENT_KEY);
             }
         }
     }
 
     protected void myStartActivity(Class<? extends  AppCompatActivity> activity) {
         Intent intent = new Intent(this, activity);
-        intent.putExtra("Student", mStudent);
+        intent.putExtra(STUDENT_KEY, mStudent);
         startActivity(intent);
     }
 
     protected void myStartActivityForResult(Class<? extends  AppCompatActivity> activity) {
         Intent intent = new Intent(this, activity);
-        intent.putExtra("Student", mStudent);
+        intent.putExtra(STUDENT_KEY, mStudent);
         startActivityForResult(intent, 1);
     }
+
 }
