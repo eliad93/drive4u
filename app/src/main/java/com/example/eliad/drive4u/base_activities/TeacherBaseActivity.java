@@ -6,20 +6,19 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.example.eliad.drive4u.activities.StudentHomeActivity;
-import com.example.eliad.drive4u.models.Student;
+import com.example.eliad.drive4u.models.Teacher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 @SuppressLint("Registered")
-public class StudentBaseActivity extends AppCompatActivity {
+public class TeacherBaseActivity extends AppCompatActivity {
     // Tag for the Log
-    private static final String TAG = StudentHomeActivity.class.getName();
+    private static final String TAG = TeacherBaseActivity.class.getName();
     // Intent for Parcelables
     protected Intent parcelablesIntent;
     // the user
-    protected Student mStudent;
+    protected Teacher mTeacher;
     // Firebase
     protected FirebaseAuth mAuth;
     protected FirebaseUser mUser;
@@ -30,7 +29,7 @@ public class StudentBaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initDbVariables();
         parcelablesIntent = getIntent();
-        mStudent = parcelablesIntent.getParcelableExtra("Student");
+        mTeacher = parcelablesIntent.getParcelableExtra("Teacher");
     }
 
     protected void initDbVariables() {
@@ -42,37 +41,37 @@ public class StudentBaseActivity extends AppCompatActivity {
     }
 
     /*
-        all student activities should send an updated student to the prev activity
+        all teacher activities should send an updated teacher to the prev activity
      */
     @Override
     public void onBackPressed(){
         Intent intent = new Intent();
-        intent.putExtra("Student", mStudent);
+        intent.putExtra("Teacher", mTeacher);
         setResult(RESULT_OK, intent);
         super.onBackPressed();
     }
     /*
-        all student activities should update their student
+        all teacher activities should update their teacher
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
-                mStudent = data.getParcelableExtra("Student");
+                mTeacher = data.getParcelableExtra("Teacher");
             }
         }
     }
 
     protected void myStartActivity(Class<? extends  AppCompatActivity> activity) {
         Intent intent = new Intent(this, activity);
-        intent.putExtra("Student", mStudent);
+        intent.putExtra("Teacher", mTeacher);
         startActivity(intent);
     }
 
     protected void myStartActivityForResult(Class<? extends  AppCompatActivity> activity) {
         Intent intent = new Intent(this, activity);
-        intent.putExtra("Student", mStudent);
+        intent.putExtra("Teacher", mTeacher);
         startActivityForResult(intent, 1);
     }
 }
