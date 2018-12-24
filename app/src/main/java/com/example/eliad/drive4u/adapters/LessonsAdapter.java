@@ -38,10 +38,10 @@ public class LessonsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Lesson lesson = lessonList.get(j);
-                Intent intent = new Intent(v.getContext(), PresentLessonActivity.class);
-                intent.putExtra(LESSON_KEY, lesson);
-                v.getContext().startActivity(intent);
+//                Lesson lesson = lessonList.get(j);
+//                Intent intent = new Intent(v.getContext(), PresentLessonActivity.class);
+//                intent.putExtra(LESSON_KEY, lesson);
+//                v.getContext().startActivity(intent);
             }
         });
         return new LessonViewHolder(view);

@@ -96,7 +96,7 @@ public class StudentPluralInfoActivity extends AppCompatActivity {
                                 Log.d(TAG, "current student by email: " + student.getEmail());
                                 students.addLast(student);
                             }
-                            mAdapter = new StudentPluralInfoAdapter(students);
+//                            mAdapter = new StudentPluralInfoAdapter(students, );
                             mRecyclerView.setAdapter(mAdapter);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

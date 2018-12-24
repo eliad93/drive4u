@@ -109,7 +109,7 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity {
                         Log.d(TAG, "firestore student created successfully");
                         Intent intent = new Intent(getApplicationContext(),
                                 StudentHomeActivity.class);
-                        intent.putExtra(StudentBaseActivity.STUDENT_KEY, newStudent);
+                        intent.putExtra(StudentBaseActivity.ARG_STUDENT, newStudent);
 
                         startActivity(intent);
                     }
