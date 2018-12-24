@@ -13,7 +13,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,7 +34,6 @@
         <activity android:name=".activities.StudentPluralInfoActivity" />
         <activity android:name=".activities.TeacherProfileActivity" />
         <activity android:name=".activities.StudentProfileActivity"></activity>
-        <activity android:name=".activities.StudentPluralInfoActivity" />
         <activity android:name=".activities.StudentPastLessonsActivity"></activity>
     </application>
 

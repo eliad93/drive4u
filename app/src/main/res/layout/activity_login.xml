@@ -36,7 +36,11 @@
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLogo" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewLogo"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        tools:ignore="Autofill">
+    </EditText>
 
     <EditText
         android:id="@+id/editTextPassword"
@@ -52,7 +56,8 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextUserEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextUserEmail"
+        tools:ignore="Autofill" />
 
     <Button
         android:id="@+id/buttonLogin"

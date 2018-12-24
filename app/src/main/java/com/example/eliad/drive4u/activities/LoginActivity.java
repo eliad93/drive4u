@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         // set all the widgets
         editTextUserEmail = findViewById(R.id.editTextUserEmail);
+        editTextUserEmail.requestFocus();
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin      = findViewById(R.id.buttonLogin);
         textViewNewUser  = findViewById(R.id.textViewNewUserClick);
