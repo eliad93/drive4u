@@ -33,6 +33,8 @@
         <activity android:name=".activities.StudentPluralInfoActivity" />
         <activity android:name=".activities.TeacherProfileActivity" />
         <activity android:name=".activities.StudentProfileActivity"></activity>
+        <activity android:name=".activities.StudentPluralInfoActivity" />
+        <activity android:name=".activities.StudentPastLessonsActivity"></activity>
     </application>
 
 </manifest>

@@ -45,17 +45,6 @@ public class StudentSearchTeacherActivity extends StudentBaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_search_teacher);
 
-        Log.d(TAG, "get current firebase user");
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-        assert mUser != null;
-
-        parcelablesIntent = getIntent();
-
-        mStudent = parcelablesIntent.getParcelableExtra("Student");
-
-        db = FirebaseFirestore.getInstance();
-
         mStudentDoc = db.collection("Students").document(mStudent.getID());
         mTeachersDb = db.collection("Teachers");
 

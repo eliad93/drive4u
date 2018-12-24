@@ -34,6 +34,7 @@ public class StudentBaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "in onCreate");
         initDbVariables();
         parcelablesIntent = getIntent();
         mStudent = parcelablesIntent.getParcelableExtra(STUDENT_KEY);

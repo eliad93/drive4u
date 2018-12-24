@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.protobuf.Enum;
 
+import io.opencensus.stats.Aggregation;
+
 
 public class Lesson implements Parcelable {
 
@@ -19,15 +21,65 @@ public class Lesson implements Parcelable {
 
         private Integer code;
         private String userMessage;
-        private Status(Integer c, String userMessage){
-            code = c;
-            userMessage = userMessage;
-        }
-
-        public String getUserMessage(){
-            return userMessage;
+        Status(Integer c, String userMessage){
+            this.code = c;
+            this.userMessage = userMessage;
         }
     }
+
+    public enum Grade{
+        BAD(1, "bad lesson"),
+        GOOD(2, "good lesson"),
+        EXCELLENT(3, "excellent lesson");
+        private Integer grade;
+        private String description;
+        Grade(Integer grade, String description){
+            this.grade = grade;
+            this.description = description;
+        }
+    }
+
+    public class Summary implements Parcelable{
+
+        protected Summary(Parcel in) {
+            paragraph = in.readString();
+            grade = Grade.valueOf(in.readString());
+        }
+        private Grade grade;
+        private String paragraph;
+        public String getParagraph() {
+            return paragraph;
+        }
+        public void setParagraph(String paragraph) {
+            this.paragraph = paragraph;
+        }
+        public Grade getGrade() {
+            return grade;
+        }
+        public void setGrade(Grade grade) {
+            this.grade = grade;
+        }
+        public final Creator<Summary> CREATOR = new Creator<Summary>() {
+            @Override
+            public Summary createFromParcel(Parcel in) {
+                return new Summary(in);
+            }
+            @Override
+            public Summary[] newArray(int size) {
+                return new Summary[size];
+            }
+        };
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(paragraph);
+            dest.writeString(grade.name());
+        }
+    }
+
     protected String teacherUID = null;
     protected String studentUID = null;
     protected String date = null;
@@ -35,6 +87,7 @@ public class Lesson implements Parcelable {
     protected String startingLocation = null;
     protected String endingLocation = null;
     protected Status conformationStatus = Status.S_REQUEST;
+    protected Summary summary;
 
     private Lesson() {} // empty constructor for firebase
 
@@ -87,6 +140,19 @@ public class Lesson implements Parcelable {
 
     public void setConformationStatus(Status conformationStatus) {this.conformationStatus = conformationStatus;}
 
+    public Summary getSummary() {
+        return summary;
+    }
+
+    public void setSummary(Summary summary) {
+        this.summary = summary;
+    }
+
+    public void summarize(String paragraph, int grade){
+        summary.setParagraph(paragraph);
+        summary.setGrade(Grade.values()[grade]);
+    }
+
     protected Lesson(Parcel in) {
         teacherUID = in.readString();
         studentUID = in.readString();
@@ -94,6 +160,8 @@ public class Lesson implements Parcelable {
         hour = in.readString();
         startingLocation = in.readString();
         endingLocation = in.readString();
+        conformationStatus = Status.valueOf(in.readString());
+        summary = in.readParcelable(Summary.class.getClassLoader());
     }
 
     public static final Creator<Lesson> CREATOR = new Creator<Lesson>() {
@@ -121,5 +189,7 @@ public class Lesson implements Parcelable {
         dest.writeString(hour);
         dest.writeString(startingLocation);
         dest.writeString(endingLocation);
+        dest.writeString(conformationStatus.name());
+        dest.writeParcelable(summary, flags);
     }
 }

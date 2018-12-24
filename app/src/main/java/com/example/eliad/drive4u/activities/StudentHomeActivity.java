@@ -85,6 +85,9 @@ public class StudentHomeActivity extends StudentBaseActivity {
         if(item.getItemId() == R.id.searchTeacher){
             myStartActivityForResult(StudentSearchTeacherActivity.class);
         }
+        if(item.getItemId() == R.id.pastLessons){
+            myStartActivity(StudentPastLessonsActivity.class);
+        }
         if(item.getItemId() == R.id.profile){
             myStartActivity(StudentProfileActivity.class);
         }
@@ -144,4 +147,10 @@ public class StudentHomeActivity extends StudentBaseActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
+
+    /*
+        fragment test
+     */
+
+
 }

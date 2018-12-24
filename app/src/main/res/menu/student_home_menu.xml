@@ -10,6 +10,10 @@
         android:title="@string/search_teacher"
         app:showAsAction="never"></item>
 
+    <item android:id="@+id/pastLessons"
+        android:title="Past lessons"
+        app:showAsAction="never"></item>
+
     <item android:id="@+id/profile"
         android:title="@string/profile"
         app:showAsAction="never"></item>

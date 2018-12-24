@@ -79,11 +79,13 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
         final String email = getTextAndInsert(editTextEmail, inputs);
         final String password = getTextAndInsert(editTextPassword, inputs);
         final String carModel = getTextAndInsert(editTextCarModel, inputs);
-        final Integer price = Integer.valueOf(editTextPrice.getText().toString());
+        final String priceString = getTextAndInsert(editTextPrice, inputs);
 
         if (!isValidInput(inputs)) {
             return;
         }
+
+        final Integer price = Integer.valueOf(priceString);
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
