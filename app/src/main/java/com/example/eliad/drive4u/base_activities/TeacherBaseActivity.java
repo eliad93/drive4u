@@ -15,6 +15,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class TeacherBaseActivity extends AppCompatActivity {
     // Tag for the Log
     private static final String TAG = TeacherBaseActivity.class.getName();
+
+    // key for passing the teacher between activities
+    public static final String ARG_TEACHER = "com.android.eliad.base_activities.StudentBaseActivity.teacher_key";
     // Intent for Parcelables
     protected Intent parcelablesIntent;
     // the user
@@ -29,7 +32,7 @@ public class TeacherBaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initDbVariables();
         parcelablesIntent = getIntent();
-        mTeacher = parcelablesIntent.getParcelableExtra("Teacher");
+        mTeacher = parcelablesIntent.getParcelableExtra(ARG_TEACHER);
     }
 
     protected void initDbVariables() {
@@ -46,7 +49,7 @@ public class TeacherBaseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         Intent intent = new Intent();
-        intent.putExtra("Teacher", mTeacher);
+        intent.putExtra(ARG_TEACHER, mTeacher);
         setResult(RESULT_OK, intent);
         super.onBackPressed();
     }
@@ -58,20 +61,20 @@ public class TeacherBaseActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
-                mTeacher = data.getParcelableExtra("Teacher");
+                mTeacher = data.getParcelableExtra(ARG_TEACHER);
             }
         }
     }
 
     protected void myStartActivity(Class<? extends  AppCompatActivity> activity) {
         Intent intent = new Intent(this, activity);
-        intent.putExtra("Teacher", mTeacher);
+        intent.putExtra(ARG_TEACHER, mTeacher);
         startActivity(intent);
     }
 
     protected void myStartActivityForResult(Class<? extends  AppCompatActivity> activity) {
         Intent intent = new Intent(this, activity);
-        intent.putExtra("Teacher", mTeacher);
+        intent.putExtra(ARG_TEACHER, mTeacher);
         startActivityForResult(intent, 1);
     }
 }

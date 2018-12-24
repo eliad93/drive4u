@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.base_activities.RegistrationBaseActivity;
+import com.example.eliad.drive4u.base_activities.TeacherBaseActivity;
 import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.Teacher;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -135,7 +136,7 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
                         Log.d(TAG, "firestore teacher created successfully");
                         Intent intent = new Intent(getApplicationContext(),
                                 TeacherHomeActivity.class);
-                        intent.putExtra("Teacher", newTeacher);
+                        intent.putExtra(TeacherBaseActivity.ARG_TEACHER, newTeacher);
                         finish();
                         startActivity(intent);
                     }
