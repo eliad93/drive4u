@@ -7,9 +7,10 @@
     tools:context=".activities.TeacherHomeActivity">
 
     <android.support.v7.widget.RecyclerView
+        android:background="@drawable/border_line"
         android:id="@+id/recyclerViewTeacherLessons"
-        android:layout_width="0dp"
-        android:layout_height="427dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

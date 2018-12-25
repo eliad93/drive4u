@@ -15,6 +15,7 @@ import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.LessonsAdapter;
 import com.example.eliad.drive4u.adapters.TeacherHomeLessonsAdapter;
 import com.example.eliad.drive4u.base_activities.TeacherBaseActivity;
+import com.example.eliad.drive4u.built_in_utils.BorderLineDividerItemDecoration;
 import com.example.eliad.drive4u.models.Lesson;
 import com.example.eliad.drive4u.models.Teacher;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -98,5 +99,6 @@ public class TeacherHomeActivity extends TeacherBaseActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addItemDecoration(new BorderLineDividerItemDecoration(this));
     }
 }

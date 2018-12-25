@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.activities.LoginActivity;
+import com.example.eliad.drive4u.activities.TeacherHomeActivity;
 import com.example.eliad.drive4u.activities.TeacherMyStudentsActivity;
 import com.example.eliad.drive4u.activities.TeacherProfileActivity;
 import com.example.eliad.drive4u.activities.TeacherScheduleActivity;
@@ -110,8 +111,10 @@ public class TeacherBaseActivity extends AppCompatActivity {
             //all students info activity
             myStartActivity(TeacherMyStudentsActivity.class);
         }
-        if(item.getItemId() == R.id.budget_management){
-            //budget management activity
+//        if(item.getItemId() == R.id.budget_management){
+//            //budget management activity
+        if (item.getItemId() == R.id.teacher_home) {
+            myStartActivity(TeacherHomeActivity.class);
         }
         if(item.getItemId() == R.id.logout){
             logoutUser();

@@ -16,6 +16,7 @@ import com.example.eliad.drive4u.adapters.LessonsAdapter;
 import com.example.eliad.drive4u.adapters.StudentPluralInfoAdapter;
 import com.example.eliad.drive4u.base_activities.StudentBaseActivity;
 import com.example.eliad.drive4u.base_activities.TeacherBaseActivity;
+import com.example.eliad.drive4u.built_in_utils.BorderLineDividerItemDecoration;
 import com.example.eliad.drive4u.models.Lesson;
 import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.Teacher;
@@ -72,6 +73,7 @@ public class TeacherStudentInfoActivity extends TeacherBaseActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addItemDecoration(new BorderLineDividerItemDecoration(this));
     }
 
     private void setTextViewsContent() {

@@ -18,8 +18,12 @@
         android:title="@string/my_students"
         app:showAsAction="never"></item>
 
-    <item android:id="@+id/budget_management"
-        android:title="@string/budget_management"
+    <!--<item android:id="@+id/budget_management"-->
+        <!--android:title="@string/budget_management"-->
+        <!--app:showAsAction="never"></item>-->
+
+    <item android:id="@+id/teacher_home"
+        android:title="@string/home"
         app:showAsAction="never"></item>
 
     <item android:id="@+id/logout"
