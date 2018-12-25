@@ -63,51 +63,6 @@ public class StudentHomeActivity extends StudentBaseActivity {
         super.onResume();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(TAG, "onCreateOptionMenu");
-        getMenuInflater().inflate(R.menu.student_home_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "onOptionsItemSelected");
-        if(item.getItemId() == R.id.scheduleLesson){
-            if(mStudent.getTeacherId().equals("")){
-                Toast.makeText(this, "Choose teacher first!", Toast.LENGTH_SHORT).show();
-                myStartActivity(StudentSearchTeacherActivity.class);
-            }else {
-                myStartActivity(StudentScheduleLessonActivity.class);
-            }
-        }
-        if(item.getItemId() == R.id.searchTeacher){
-            myStartActivityForResult(StudentSearchTeacherActivity.class);
-        }
-        if(item.getItemId() == R.id.pastLessons){
-            myStartActivity(StudentLessonsArchiveActivity.class);
-        }
-        if(item.getItemId() == R.id.profile){
-            myStartActivity(StudentProfileActivity.class);
-        }
-        if(item.getItemId() == R.id.recentActivities){
-            //Recent activities activity
-        }
-        if(item.getItemId() == R.id.showProgress){
-            //Show progress activity
-        }
-        if(item.getItemId() == R.id.logout){
-            logoutUser();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void logoutUser(){
-        Log.d(TAG, "logoutUser");
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getBaseContext(), LoginActivity.class));
-    }
-
     private void presentNextLessons() {
         Log.d(TAG, "in presentNextLessons");
         db.collection(getString(R.string.DB_Lessons))

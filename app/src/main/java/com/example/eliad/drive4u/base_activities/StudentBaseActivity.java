@@ -5,8 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.activities.LoginActivity;
 import com.example.eliad.drive4u.activities.StudentHomeActivity;
+import com.example.eliad.drive4u.activities.StudentLessonsArchiveActivity;
+import com.example.eliad.drive4u.activities.StudentProfileActivity;
+import com.example.eliad.drive4u.activities.StudentScheduleLessonActivity;
+import com.example.eliad.drive4u.activities.StudentSearchTeacherActivity;
 import com.example.eliad.drive4u.models.Student;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -81,6 +90,56 @@ public class StudentBaseActivity extends AppCompatActivity {
         Intent intent = new Intent(this, activity);
         intent.putExtra(ARG_STUDENT, mStudent);
         startActivityForResult(intent, 1);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "onCreateOptionMenu");
+        getMenuInflater().inflate(R.menu.student_home_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected");
+        if(item.getItemId() == R.id.scheduleLesson){
+            if(mStudent.getTeacherId().equals("")){
+                Toast.makeText(this, "Choose teacher first!", Toast.LENGTH_SHORT).show();
+                myStartActivity(StudentSearchTeacherActivity.class);
+            }else {
+                myStartActivity(StudentScheduleLessonActivity.class);
+            }
+        }
+        if(item.getItemId() == R.id.searchTeacher){
+            myStartActivityForResult(StudentSearchTeacherActivity.class);
+        }
+        if(item.getItemId() == R.id.pastLessons){
+            myStartActivity(StudentLessonsArchiveActivity.class);
+        }
+        if(item.getItemId() == R.id.profile){
+            myStartActivity(StudentProfileActivity.class);
+        }
+
+        if (item.getItemId() == R.id.student_home) {
+            myStartActivity(StudentHomeActivity.class);
+        }
+
+//        if(item.getItemId() == R.id.recentActivities){
+//            //Recent activities activity
+//        }
+//        if(item.getItemId() == R.id.showProgress){
+//            //Show progress activity
+//        }
+
+        if(item.getItemId() == R.id.logout){
+            logoutUser();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void logoutUser(){
+        Log.d(TAG, "logoutUser");
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(getBaseContext(), LoginActivity.class));
     }
 
 }

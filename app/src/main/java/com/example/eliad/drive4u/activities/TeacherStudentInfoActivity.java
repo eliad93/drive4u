@@ -1,8 +1,11 @@
 package com.example.eliad.drive4u.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -139,6 +142,12 @@ public class TeacherStudentInfoActivity extends TeacherBaseActivity {
                 Log.d(TAG, "textViewStudentPhoneNumber clicked");
                 Intent phoneIntent = new Intent(Intent.ACTION_DIAL);  // or ACTION_CALL
                 phoneIntent.setData(Uri.parse("tel:" + mStudent.getPhoneNumber()));
+                if (ActivityCompat.checkSelfPermission(getBaseContext(),
+                        Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    Log.d(TAG, "no permission to use call phone");
+//                    ActivityCompat.requestPermissions(getBaseContext(), new String[]{Manifest.permission.CALL_PHONE});
+                    return;
+                }
                 startActivity(phoneIntent);
             }
         });

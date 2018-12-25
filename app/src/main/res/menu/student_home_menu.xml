@@ -18,13 +18,16 @@
         android:title="@string/profile"
         app:showAsAction="never"></item>
 
-    <item android:id="@+id/recentActivities"
-        android:title="@string/recent_activities"
+    <item android:id="@+id/student_home"
+        android:title="@string/home"
         app:showAsAction="never"></item>
+    <!--<item android:id="@+id/recentActivities"-->
+        <!--android:title="@string/recent_activities"-->
+        <!--app:showAsAction="never"></item>-->
 
-    <item android:id="@+id/showProgress"
-        android:title="@string/show_progress"
-        app:showAsAction="never"></item>
+    <!--<item android:id="@+id/showProgress"-->
+        <!--android:title="@string/show_progress"-->
+        <!--app:showAsAction="never"></item>-->
 
     <item android:id="@+id/logout"
         android:title="@string/logout"
