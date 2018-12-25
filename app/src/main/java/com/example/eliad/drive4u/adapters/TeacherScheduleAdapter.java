@@ -75,7 +75,7 @@ public class TeacherScheduleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             viewHolder.itemView.setBackgroundColor(Color.TRANSPARENT);
             holder.setIsRecyclable(false);
             holder.lessonTime.setText(hour);
-            if (lessonsHours[position] == Lesson.Status.S_CONFIRMED || lessonsHours[position] == Lesson.Status.T_CONFIRMED) {
+            if (lessonsHours[position] == Lesson.Status.T_CONFIRMED) {
                 viewHolder.itemView.setClickable(false);
                 viewHolder.itemView.setBackgroundColor(Color.GREEN);
                 Lesson l = allLessons.get(position).getFirst();
@@ -98,7 +98,7 @@ public class TeacherScheduleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         });
 
             } else {
-                if (lessonsHours[position] == Lesson.Status.S_UPDATE || lessonsHours[position] == Lesson.Status.T_UPDATE || lessonsHours[position] == Lesson.Status.S_REQUEST) {
+                if (lessonsHours[position] == Lesson.Status.S_UPDATE || lessonsHours[position] == Lesson.Status.T_UPDATE || lessonsHours[position] == Lesson.Status.S_REQUEST || lessonsHours[position] == Lesson.Status.S_CONFIRMED) {
                     viewHolder.itemView.setBackgroundColor(Color.YELLOW);
                     viewHolder.itemView.setClickable(true);
                 }else{

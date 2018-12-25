@@ -12,7 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.adapters.LessonsAdapter;
+import com.example.eliad.drive4u.adapters.StudentHomeLessonsAdapter;
+import com.example.eliad.drive4u.adapters.TeacherScheduleAdapter;
 import com.example.eliad.drive4u.base_activities.StudentBaseActivity;
 import com.example.eliad.drive4u.models.Lesson;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,7 +24,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.LinkedList;
 
-public class StudentHomeActivity extends StudentBaseActivity {
+public class StudentHomeActivity extends StudentBaseActivity implements StudentHomeLessonsAdapter.OnItemClickListener{
     // Tag for the Log
     private static final String TAG = StudentHomeActivity.class.getName();
 
@@ -76,10 +77,14 @@ public class StudentHomeActivity extends StudentBaseActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, "received document " + document.getId());
                                 Lesson lesson = document.toObject(Lesson.class);
-                                lessons.addLast(lesson);
+                                if(lesson.getConformationStatus() != Lesson.Status.S_CANCELED){
+                                    lessons.addLast(lesson);
+                                }
                             }
                             if (lessons.size() > 0) {
-                                mAdapter = new LessonsAdapter(lessons);
+                                mAdapter = new StudentHomeLessonsAdapter(StudentHomeActivity.this, lessons);
+                                ((StudentHomeLessonsAdapter) mAdapter)
+                                        .setOnItemClickListener(StudentHomeActivity.this);
                                 mRecyclerView.setAdapter(mAdapter);
                             } else {
                                 Log.d(TAG, "Student " + mStudent.getEmail() + " has no lessons to present");
@@ -102,9 +107,15 @@ public class StudentHomeActivity extends StudentBaseActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
-    /*
-        fragment test
-     */
+    @Override
+    public void onItemClick(int position) {
+        Toast.makeText(this,String.valueOf(position), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onEditButtonClick(int position) {
+        Toast.makeText(this,"EDIT "+ String.valueOf(position), Toast.LENGTH_SHORT).show();
+    }
 
 
 }

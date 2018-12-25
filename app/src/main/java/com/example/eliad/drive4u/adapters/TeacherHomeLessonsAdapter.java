@@ -81,6 +81,9 @@ public class TeacherHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemCount() {
+        if(lessonList == null){
+            return 0;
+        }
         return lessonList.size();
     }
 

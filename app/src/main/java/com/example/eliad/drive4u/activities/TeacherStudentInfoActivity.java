@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.adapters.LessonsAdapter;
+import com.example.eliad.drive4u.adapters.StudentHomeLessonsAdapter;
 import com.example.eliad.drive4u.adapters.StudentPluralInfoAdapter;
 import com.example.eliad.drive4u.base_activities.StudentBaseActivity;
 import com.example.eliad.drive4u.base_activities.TeacherBaseActivity;
@@ -130,7 +130,7 @@ public class TeacherStudentInfoActivity extends TeacherBaseActivity {
 
     private void presentMutualLessons() {
         Log.d(TAG, "presentMutualLessons");
-        mAdapter = new LessonsAdapter(lessonList);
+        mAdapter = new StudentHomeLessonsAdapter(this, lessonList);
         mRecyclerView.setAdapter(mAdapter);
     }
 

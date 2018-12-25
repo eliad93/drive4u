@@ -451,7 +451,9 @@ public class TeacherScheduleActivity extends TeacherBaseActivity implements Teac
                             LinkedList<Lesson> lessons = new LinkedList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Lesson lesson = document.toObject(Lesson.class);
-                                lessons.addLast(lesson);
+                                if(lesson.getConformationStatus() != Lesson.Status.S_CANCELED && lesson.getConformationStatus() != Lesson.Status.T_CANCELED){
+                                    lessons.addLast(lesson);
+                                }
                             }
                             for(Lesson l : lessons){
                                 int i = getArrayindexFromHour(l.getHour());
