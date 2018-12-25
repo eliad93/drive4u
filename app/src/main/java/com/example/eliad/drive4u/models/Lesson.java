@@ -31,6 +31,7 @@ public class Lesson implements Parcelable {
             return userMessage;
         }
     }
+    protected String lessonID = null;
 
     public enum Grade{
         BAD(1, "bad lesson"),
@@ -114,6 +115,12 @@ public class Lesson implements Parcelable {
     }
 
     public void setTeacherUID(String UID) {this.teacherUID = UID;}
+
+    public String getLessonID() {
+        return lessonID;
+    }
+
+    public void setLessonID(String UID) {this.lessonID = UID;}
 
     public String getStudentUID() {
         return studentUID;

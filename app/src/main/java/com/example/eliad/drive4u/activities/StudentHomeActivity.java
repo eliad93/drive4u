@@ -78,7 +78,6 @@ public class StudentHomeActivity extends StudentBaseActivity {
                 Toast.makeText(this, "Choose teacher first!", Toast.LENGTH_SHORT).show();
                 myStartActivity(StudentSearchTeacherActivity.class);
             }else {
-                Toast.makeText(this, mStudent.getTeacherId(), Toast.LENGTH_SHORT).show();
                 myStartActivity(StudentScheduleLessonActivity.class);
             }
         }

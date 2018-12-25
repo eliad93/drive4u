@@ -15,9 +15,14 @@ import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.LessonsAdapter;
 import com.example.eliad.drive4u.base_activities.TeacherBaseActivity;
 import com.example.eliad.drive4u.models.Lesson;
+import com.example.eliad.drive4u.models.Teacher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -95,7 +100,7 @@ public class TeacherHomeActivity extends TeacherBaseActivity {
         Log.d(TAG, "in presentNextLessons");
 
         db.collection(getString(R.string.DB_Lessons))
-                .whereEqualTo(getString(R.string.DB_Teacher), mTeacher.getID())
+                .whereEqualTo("teacherUID", mTeacher.getID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

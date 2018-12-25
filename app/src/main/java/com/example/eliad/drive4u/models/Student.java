@@ -5,12 +5,15 @@ import android.os.Parcelable;
 
 public class Student extends User {
     private Integer numberOfLessons = 0;
-    private String teacherId = "";
+    private String teacherId;
     private Integer totalExpense = 0;
 
     public Student(String mId, String mFirstName, String mLastName, String mPhoneNumber,
-                    String mCity, String mEmail) {
+                    String mCity, String mEmail, String teacherId,Integer totalExpense,Integer numberOfLessons ) {
         super(mId, mFirstName, mLastName, mPhoneNumber, mCity, mEmail);
+        this.teacherId = teacherId;
+        this.totalExpense =totalExpense;
+        this.numberOfLessons = numberOfLessons;
     }
 
     public Student(){

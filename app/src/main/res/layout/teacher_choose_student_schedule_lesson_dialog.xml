@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/optional_lessons"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:layout_gravity="center"/>
+    <TextView
+        android:id="@+id/date_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="16dp"
+        android:text="@string/selected_date"
+        android:layout_gravity="left"
+        android:layout_marginStart="16dp" />
+    <TextView
+        android:id="@+id/hour_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="@string/selected_hour"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="16dp"
+        android:layout_gravity="left"
+        android:layout_marginStart="16dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/hours_list_requests_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="233dp"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/finish_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/finish" />
+
+</LinearLayout>

@@ -22,14 +22,12 @@ public class UserTypeChoiceActivity extends AppCompatActivity {
 
     public void studentRegistration(View view) {
         Log.d(TAG, "in studentRegistration");
-        finish();
         Intent intent = new Intent(this, StudentRegistrationActivity.class);
         startActivity(intent);
     }
 
     public void teacherRegistration(View view) {
         Log.d(TAG, "in teacherRegistration");
-        finish();
         Intent intent = new Intent(this, TeacherRegistrationActivity.class);
         startActivity(intent);
     }

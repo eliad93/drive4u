@@ -41,8 +41,8 @@
     <string name="lessons_completed">Lessons completed:</string>
     <string name="balance">Balance:</string>
     <string name="select_date">Select Date</string>
-    <string name="starting_location">Starting location</string>
-    <string name="ending_location">Ending location</string>
+    <string name="starting_location">Starting location: </string>
+    <string name="ending_location">Ending location: </string>
     <string name="set_starting_location">Set starting location</string>
     <string name="set_ending_location">set ending location</string>
     <string name="submit">Submit</string>
@@ -59,6 +59,18 @@
         <item>automatic</item>
     </string-array>
     <string name="you_have_no_lessons">You have no lessons</string>
+    <string name="optional_lessons">Optional lessons</string>
+    <string name="request_sent">Your request sent to your teacher</string>
+    <string name="already_schedule_this_hour">You send request for this hour already!</string>
+    <string name="selected_hour">Selected hour: </string>
+    <string name="selected_date">Selected date: </string>
+    <string name="number_of_lessons">number of lessons: </string>
+    <string name="finish">finish</string>
+    <string name="alert_dialog_student_request_lesson_title">lesson confirmation</string>
+    <string name="alert_dialog_student_request_lesson_message">Confirm that lesson?</string>
+    <string name="confirm_lesson">Confirm</string>
+    <string name="reject_lesson">Reject</string>
+    <string name="cant_approve_more_than_one_request">Can not approve more than one lesson for the same hour!</string>
     <string name="teacher_title">Teacher:</string>
     <string name="student_title">Student:</string>
     <string name="name_title">Name:</string>

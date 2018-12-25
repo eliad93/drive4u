@@ -101,7 +101,7 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity {
                                   String phone, String city, String email) {
         Log.d(TAG, "in createNewStudent");
         String uId = newUser.getUid();
-        final Student newStudent = new Student(uId, firstName, lastName, phone, city, email);
+        final Student newStudent = new Student(uId, firstName, lastName, phone, city, email, "", 0, 0);
         db.collection("Students").document(uId).set(newStudent)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

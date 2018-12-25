@@ -106,7 +106,6 @@ public class LoginActivity extends AppCompatActivity {
     public void onNewUserClick(){
         Log.d(TAG, "in onNewUserClick");
         // start a new activity for registration.
-        finish();
         Intent intent = new Intent(this, UserTypeChoiceActivity.class);
         startActivity(intent);
 
