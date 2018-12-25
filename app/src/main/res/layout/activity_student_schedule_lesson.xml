@@ -7,13 +7,14 @@
     tools:context=".activities.StudentScheduleLessonActivity">
 
     <TextView
+        android:id="@+id/selecte_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/select_date"
-        android:id="@+id/selecte_date"
-        android:layout_marginTop="15dp"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textSize="20sp"/>
+        android:layout_marginTop="15dp"
+        android:text="@string/select_date"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/date_selected"
@@ -27,11 +28,16 @@
         android:id="@+id/hours_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/date_selected"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="152dp"
         android:layout_alignParentLeft="true"
-        android:background="@drawable/border_line"/>
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/border_line" />
 
 
 
