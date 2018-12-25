@@ -294,17 +294,20 @@ public class StudentHomeActivity extends StudentBaseActivity
                 }
             });
         }
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.reject_lesson), new DialogInterface.OnClickListener() {
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel_lesson), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 updateStatus = Lesson.Status.S_CANCELED;
-                updateLesson.setConformationStatus(updateStatus);
-                db.collection("lessons").document(updateLesson.getLessonID()).update("conformationStatus", updateStatus.toString());
+                if (updateLesson.getConformationStatus() == Lesson.Status.T_CONFIRMED) {
+                    updateLesson.setConformationStatus(updateStatus);
+                    db.collection("lessons").document(updateLesson.getLessonID()).update("conformationStatus", updateStatus.toString());
+                } else {
+                    db.collection("lessons").document(updateLesson.getLessonID()).delete();
+                }
                 Toast.makeText(getApplicationContext(), "Lesson rejected", Toast.LENGTH_SHORT).show();
                 updateLessonsView();
-                }
-            });
 
-
+            }
+        });
         alertDialog.show();
 
     }

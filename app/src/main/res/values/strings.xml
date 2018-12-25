@@ -72,8 +72,10 @@
     <string name="finish">finish</string>
     <string name="alert_dialog_request_lesson_title">lesson confirmation</string>
     <string name="alert_dialog_request_lesson_message">Confirm that lesson?</string>
+    <string name="update_or_delete_message">Update or cancel lesson?</string>
     <string name="confirm_lesson">Confirm</string>
     <string name="reject_lesson">Reject</string>
+    <string name="cancel_lesson">Cancel</string>
     <string name="cant_approve_more_than_one_request">Can not approve more than one lesson for the same hour!</string>
     <string name="teacher_title">Teacher:</string>
     <string name="student_title">Student:</string>
@@ -107,4 +109,7 @@
     <string name="lesson_did_not_deleted">The lesson did not delete, you could delete it later</string>
     <string name="no_teachers_found">No teachers found.</string>
     <string name="search_a_teacher">Search a teacher</string>
+    <string name="lesson_canceled_message">The lesson canceled</string>
+
+
 </resources>

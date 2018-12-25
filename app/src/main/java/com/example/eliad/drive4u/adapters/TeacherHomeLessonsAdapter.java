@@ -2,12 +2,14 @@ package com.example.eliad.drive4u.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
@@ -25,22 +27,32 @@ import java.util.List;
 
 public class TeacherHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = TeacherHomeLessonsAdapter.class.getName();
+
     private List<Lesson> lessonList;
+    private Context mContext;
 
     // Firebase
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
-    public TeacherHomeLessonsAdapter(List<Lesson> item) {
-        lessonList    = item;
+    private OnItemClickListener mListener;
+    // interface for callback to get position
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        mListener = onItemClickListener;
+    }
+
+
+    public TeacherHomeLessonsAdapter(Context context, List<Lesson> item) {
+        lessonList = item;
+        mContext = context;
         db = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        final int j = i;
         Context context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.teacher_home_lesson_item, viewGroup, false);
@@ -52,6 +64,7 @@ public class TeacherHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView
         final LessonViewHolder holder = (LessonViewHolder) viewHolder;
         Lesson lesson = this.lessonList.get(i);
         holder.setIsRecyclable(false);
+
         db.collection("Students")
                 .document(lesson.getStudentUID())
                 .get()
@@ -65,8 +78,6 @@ public class TeacherHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView
                                 Student student = document.toObject(Student.class);
                                 holder.textViewLastName.setText(student.getLastName());
                                 holder.textViewFirsName.setText(student.getFirstName());
-                                holder.mStudent = student; // TODO: we might not want this here!
-
                             } else {
                                 Log.d(TAG, "No such student");
                             }
@@ -77,6 +88,14 @@ public class TeacherHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView
                 });
         holder.textViewWhere.setText(lesson.getStartingLocation());
         holder.textViewWhen.setText(lesson.getHour());
+        if(lesson.getConformationStatus() == Lesson.Status.T_CONFIRMED){
+            viewHolder.itemView.setBackgroundColor(Color.GREEN);
+        }else{
+            if(lesson.getConformationStatus() == Lesson.Status.S_CANCELED){
+                viewHolder.itemView.setBackgroundColor(Color.RED);
+            }
+        }
+
     }
 
     @Override
@@ -87,13 +106,11 @@ public class TeacherHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView
         return lessonList.size();
     }
 
-    public static class LessonViewHolder extends RecyclerView.ViewHolder {
+    public class LessonViewHolder extends RecyclerView.ViewHolder {
         public TextView textViewWhere;
         public TextView textViewWhen;
         public TextView textViewFirsName;
         public TextView textViewLastName;
-
-        public Student mStudent;
 
         public LessonViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -101,6 +118,19 @@ public class TeacherHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView
             textViewWhere  = itemView.findViewById(R.id.TeacherHomeLessonItemLocation);
             textViewFirsName = itemView.findViewById(R.id.TeacherHomeLessonItemFirstName);
             textViewLastName = itemView.findViewById(R.id.TeacherHomeLessonItemLastName);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mListener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            mListener.onItemClick(position);
+                        }
+                    }
+                }
+            });
+
         }
     }
 }

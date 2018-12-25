@@ -22,8 +22,6 @@ TODO:
 show lessons ordered by date
  */
 public class StudentHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final static String TAG = StudentHomeLessonsAdapter.class.getName();
-    public final static String LESSON_KEY = "com.example.eliad.drive4u.adapters.LessonsAdapter.lesson";
     private List<Lesson> lessonList;
     private Context mContext;
 
