@@ -15,6 +15,8 @@ import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.StudentPastLessonsAdapter;
@@ -46,17 +48,26 @@ public class StudentLessonsArchiveActivity extends StudentBaseActivity
     // models
     private LinkedList<Lesson> lessons = new LinkedList<>();
 
+    private TextView noLessonsMsg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "in onCreate");
         setContentView(R.layout.activity_student_lessons_archive);
 
+        noLessonsMsg = findViewById(R.id.LessonArchiveNoLessons);
+
         initializeFragmentObjects();
 
         initializeRecyclerView();
 
         presentAllStudentPastLessons();
+
+        if (lessons.size() == 0) {
+            noLessonsMsg.setVisibility(View.VISIBLE);
+            noLessonsMsg.setText(R.string.you_have_no_lessons);
+        }
     }
 
     @SuppressLint("CommitTransaction")

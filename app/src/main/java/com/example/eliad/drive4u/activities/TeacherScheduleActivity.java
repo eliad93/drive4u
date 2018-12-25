@@ -148,13 +148,7 @@ public class TeacherScheduleActivity extends TeacherBaseActivity implements Teac
                 updateDayView();
             }
         };
-
-
-
-
     }
-
-
 
     private void updateDayView(){
         oneRequestApprove = false;
@@ -176,6 +170,7 @@ public class TeacherScheduleActivity extends TeacherBaseActivity implements Teac
                 closingStudentsRequestsDialog(position);
             }
         });
+
         String dateMessage = dateDialog.getText().toString() + " " + date;
         String hourMessage = hourDialog.getText().toString() + " " +hours[position];
         dateDialog.setText(dateMessage);
@@ -188,6 +183,7 @@ public class TeacherScheduleActivity extends TeacherBaseActivity implements Teac
                 closingStudentsRequestsDialog(position);
             }
         });
+
         requestsAdapter = new TeacherChooseStudentLessonAdapter(TeacherScheduleActivity.this, allLessons.get(position),position);
         ((TeacherChooseStudentLessonAdapter) requestsAdapter)
                 .setOnItemClickListener(TeacherScheduleActivity.this);

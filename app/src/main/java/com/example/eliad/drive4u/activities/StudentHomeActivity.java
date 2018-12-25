@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,6 +89,7 @@ public class StudentHomeActivity extends StudentBaseActivity implements StudentH
                                 mRecyclerView.setAdapter(mAdapter);
                             } else {
                                 Log.d(TAG, "Student " + mStudent.getEmail() + " has no lessons to present");
+                                textViewNoLessons.setVisibility(View.VISIBLE);
                                 textViewNoLessons.setText(R.string.you_have_no_lessons);
                             }
                         } else {
