@@ -98,9 +98,9 @@ public class TeacherBaseActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.schedule){
             myStartActivity( TeacherScheduleActivity.class);
         }
-        if(item.getItemId() == R.id.students_requests){
-            //students requests activity
-        }
+//        if(item.getItemId() == R.id.students_requests){
+//            //students requests activity
+//        }
         if(item.getItemId() == R.id.profile){
             //profile activity
             myStartActivity(TeacherProfileActivity.class);

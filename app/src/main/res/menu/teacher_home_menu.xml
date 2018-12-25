@@ -6,9 +6,9 @@
         android:title="@string/schedule"
         app:showAsAction="never"></item>
 
-    <item android:id="@+id/students_requests"
-        android:title="@string/students_requests"
-        app:showAsAction="never"></item>
+    <!--<item android:id="@+id/students_requests"-->
+        <!--android:title="@string/students_requests"-->
+        <!--app:showAsAction="never"></item>-->
 
     <item android:id="@+id/profile"
         android:title="@string/profile"
