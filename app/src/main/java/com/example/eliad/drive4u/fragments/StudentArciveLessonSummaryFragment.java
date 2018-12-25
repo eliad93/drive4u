@@ -81,7 +81,7 @@ public class StudentArciveLessonSummaryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_student_lesson_Arcive_summary,
+        View view = inflater.inflate(R.layout.fragment_student_lesson_arcive_summary,
                 container, false);
         buttonClose = (Button) view.findViewById(R.id.buttonLessonSummaryClose);
         buttonClose.setOnClickListener(new View.OnClickListener() {

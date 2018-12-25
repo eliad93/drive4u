@@ -58,7 +58,7 @@ public class StudentLessonsArchiveActivity extends StudentBaseActivity
 
     private void initializeRecyclerView() {
         Log.d(TAG, "in initializeRecyclerView");
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewStudentPastLessons);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewStudentLessonsArchive);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -96,7 +96,7 @@ public class StudentLessonsArchiveActivity extends StudentBaseActivity
         Lesson lesson = lessons.get(position);
         Fragment lessonSummaryFragment = StudentArciveLessonSummaryFragment.newInstance(lesson);
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.frameLayoutStudentPastLessonsActivity, lessonSummaryFragment);
+        fragmentTransaction.add(R.id.frameLayoutStudentLessonsArchiveActivity, lessonSummaryFragment);
         fragmentTransaction.commit();
     }
 

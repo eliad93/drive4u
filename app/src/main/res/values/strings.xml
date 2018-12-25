@@ -85,4 +85,5 @@
     <string name="gear_type_title">Gear Type:</string>
     <string name="price_per_lesson_title">Price Per Lesson:</string>
     <string name="total_payed_title">Total Payed:</string>
+    <string name="lessons_archive_activity_header">Lessons archive</string>
 </resources>
