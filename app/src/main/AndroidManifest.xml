@@ -31,7 +31,6 @@
         <activity android:name=".activities.StudentHomeActivity" />
         <activity android:name=".activities.StudentSearchTeacherActivity" />
         <activity android:name=".activities.TeacherRegistrationActivity" />
-        <activity android:name=".activities.PresentLessonActivity" />
         <activity android:name=".activities.TeacherProfileActivity" />
         <activity android:name=".activities.StudentProfileActivity" />
         <activity android:name=".activities.TeacherMyStudentsActivity"></activity>

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.activities.PresentLessonActivity;
 import com.example.eliad.drive4u.models.Lesson;
 
 import java.util.List;
@@ -39,7 +38,7 @@ public class LessonsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             @Override
             public void onClick(View v) {
 //                Lesson lesson = lessonList.get(j);
-//                Intent intent = new Intent(v.getContext(), PresentLessonActivity.class);
+//                Intent intent = new Intent(v.getContext(), LessonActivity.class);
 //                intent.putExtra(LESSON_KEY, lesson);
 //                v.getContext().startActivity(intent);
             }

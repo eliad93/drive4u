@@ -66,7 +66,7 @@ public class TeacherHomeActivity extends TeacherBaseActivity {
 
         db.collection(getString(R.string.DB_Lessons))
                 .whereEqualTo("teacherUID", mTeacher.getID())
-//                .whereEqualTo("conformationStatus", Lesson.Status.S_CONFIRMED)
+//                .whereEqualTo("conformationStatus", Lesson.Status.T_CONFIRMED)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
