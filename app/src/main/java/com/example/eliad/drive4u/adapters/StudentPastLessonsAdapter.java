@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.models.Lesson;
@@ -23,6 +22,16 @@ public class StudentPastLessonsAdapter extends RecyclerView.Adapter<RecyclerView
     private Context mContext;
     // lessons
     private List<Lesson> lessons;
+    private StudentPastLessonsItemClickListener mListener;
+    // interface for callback to get position
+    public interface StudentPastLessonsItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(StudentPastLessonsItemClickListener listener){
+        Log.d(TAG, "in setOnItemClickListener");
+        mListener = listener;
+    }
 
     public StudentPastLessonsAdapter(List<Lesson> items, Context context){
         Log.d(TAG, "in StudentPastLessonsAdapter");
@@ -35,7 +44,7 @@ public class StudentPastLessonsAdapter extends RecyclerView.Adapter<RecyclerView
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         Log.d(TAG, "in onCreateViewHolder");
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        View view = inflater.inflate(R.layout.student_past_lesson_item, viewGroup, false);
+        View view = inflater.inflate(R.layout.student_lesson_archive_item, viewGroup, false);
         return new StudentPastLessonViewHolder(view);
     }
 
@@ -71,7 +80,12 @@ public class StudentPastLessonsAdapter extends RecyclerView.Adapter<RecyclerView
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext,"WORKS!!!", Toast.LENGTH_SHORT).show();
+                    if(mListener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            mListener.onItemClick(position);
+                        }
+                    }
                 }
             });
         }

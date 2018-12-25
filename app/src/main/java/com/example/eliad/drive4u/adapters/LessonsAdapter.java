@@ -52,7 +52,7 @@ public class LessonsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         LessonViewHolder holder = (LessonViewHolder) viewHolder;
         Lesson lesson = this.lessonList.get(i);
         holder.setIsRecyclable(false);
-        holder.textViewStatus.setText(lesson.getConformationStatus().getUserMessage());
+//        holder.textViewStatus.setText(lesson.getConformationStatus().getUserMessage());
         holder.textViewWhere.setText(lesson.getStartingLocation());
         String when = lesson.getDate() + lesson.getHour();
         holder.textViewWhen.setText(when);

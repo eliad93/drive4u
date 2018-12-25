@@ -25,7 +25,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/fab_icon" />
+        app:srcCompat="@drawable/fab_icon"
+        android:focusable="true" />
 
     <TextView
         android:id="@+id/textViewLessonsCompletedTitle"

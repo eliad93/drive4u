@@ -85,7 +85,7 @@ public class StudentHomeActivity extends StudentBaseActivity {
             myStartActivityForResult(StudentSearchTeacherActivity.class);
         }
         if(item.getItemId() == R.id.pastLessons){
-            myStartActivity(StudentPastLessonsActivity.class);
+            myStartActivity(StudentLessonsArchiveActivity.class);
         }
         if(item.getItemId() == R.id.profile){
             myStartActivity(StudentProfileActivity.class);
