@@ -51,6 +51,8 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
 
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        progressBar  = findViewById(R.id.TeacherRegistrationProgressBar);
+        progressBar.setVisibility(View.GONE);
 
         editTextFirstName = findViewById(R.id.editTextTeacherRegistrationFirstName);
         editTextLastName = findViewById(R.id.editTextTeacherRegistrationLastName);
@@ -71,6 +73,8 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
 
     public void signUp(View view) {
         Log.d(TAG, "in signUp");
+        progressBar.setVisibility(View.VISIBLE);
+        
         LinkedList<String> inputs = new LinkedList<>();
         final String firstName = getTextAndInsert(editTextFirstName, inputs);
         final String lastName = getTextAndInsert(editTextLastName, inputs);
@@ -82,6 +86,7 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
         final String priceString = getTextAndInsert(editTextPrice, inputs);
 
         if (!isValidInput(inputs)) {
+            progressBar.setVisibility(View.GONE);
             return;
         }
 
@@ -98,6 +103,7 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
                             createNewTeacher(newUser, firstName, lastName, phone, city, email,
                                     carModel, price, gearType);
                         } else {
+                            progressBar.setVisibility(View.GONE);
                             Log.d(TAG, "registration failed " + task.getException());
                         }
                     }
@@ -146,6 +152,7 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        progressBar.setVisibility(View.GONE);
                         Log.d(TAG, "firestore teacher creation failed");
                     }
                 });

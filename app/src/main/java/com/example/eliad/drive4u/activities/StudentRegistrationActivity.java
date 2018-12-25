@@ -49,10 +49,15 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity {
         editTextEmail = findViewById(R.id.editTextStudentRegistrationEmail);
         editTextPassword = findViewById(R.id.editTextStudentRegistrationPassword);
         editTextCity = findViewById(R.id.editTextStudentRegistrationCity);
+        progressBar  = findViewById(R.id.StudentRegistrationProgressBar);
+
+        progressBar.setVisibility(View.GONE);
     }
 
     public void signUp(View view) {
         Log.d(TAG, "in signUp");
+        progressBar.setVisibility(View.VISIBLE);
+
         LinkedList<String> inputs = new LinkedList<>();
         final String firstName = getTextAndInsert(editTextFirstName, inputs);
         final String lastName = getTextAndInsert(editTextLastName, inputs);
@@ -62,6 +67,7 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity {
         final String password = getTextAndInsert(editTextPassword, inputs);
 
         if (!isValidInput(inputs)) {
+            progressBar.setVisibility(View.GONE);
             return;
         }
 
@@ -75,6 +81,7 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity {
                             assert newUser != null;
                             createNewStudent(newUser, firstName, lastName, phone, city, email);
                         } else {
+                            progressBar.setVisibility(View.GONE);
                             Log.d(TAG, "registration failed" + task.getException());
                         }
                     }
@@ -117,6 +124,7 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        progressBar.setVisibility(View.GONE);
                         Log.d(TAG, "firestore student creation failed");
                     }
                 });

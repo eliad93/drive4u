@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.activities.StudentSearchTeacherActivity;
@@ -22,6 +23,7 @@ public class RegistrationBaseActivity extends AppCompatActivity {
     protected EditText editTextCity;
     protected EditText editTextEmail;
     protected EditText editTextPassword;
+    protected ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
