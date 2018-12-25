@@ -29,6 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Calendar;
 import java.util.LinkedList;
 
 public class TeacherHomeActivity extends TeacherBaseActivity {
@@ -63,13 +64,22 @@ public class TeacherHomeActivity extends TeacherBaseActivity {
 
         presentNextLessons();
     }
+    private String get2daysDate() {
+        Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH) +1;
+        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        return currentDay + "/" + currentMonth + "/" + currentYear;
+    }
 
     private void presentNextLessons() {
         Log.d(TAG, "in presentNextLessons");
+        String date = get2daysDate();
 
         db.collection(getString(R.string.DB_Lessons))
                 .whereEqualTo("teacherUID", mTeacher.getID())
-//                .whereEqualTo("conformationStatus", Lesson.Status.T_CONFIRMED)
+                .whereEqualTo("conformationStatus", Lesson.Status.T_CONFIRMED.toString())
+                .whereEqualTo("date", date)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
