@@ -48,6 +48,7 @@ public class StudentBaseActivity extends AppCompatActivity {
         initDbVariables();
         parcelablesIntent = getIntent();
         mStudent = parcelablesIntent.getParcelableExtra(ARG_STUDENT);
+
     }
 
     protected void initDbVariables() {
