@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.LessonsAdapter;
+import com.example.eliad.drive4u.adapters.TeacherHomeLessonsAdapter;
 import com.example.eliad.drive4u.base_activities.TeacherBaseActivity;
 import com.example.eliad.drive4u.models.Lesson;
 import com.example.eliad.drive4u.models.Teacher;
@@ -64,6 +65,7 @@ public class TeacherHomeActivity extends TeacherBaseActivity {
 
         db.collection(getString(R.string.DB_Lessons))
                 .whereEqualTo("teacherUID", mTeacher.getID())
+//                .whereEqualTo("conformationStatus", Lesson.Status.S_CONFIRMED)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -76,7 +78,7 @@ public class TeacherHomeActivity extends TeacherBaseActivity {
                                 lessons.addLast(lesson);
                             }
                             if (lessons.size() > 0 ) {
-                                mAdapter = new LessonsAdapter(lessons);
+                                mAdapter = new TeacherHomeLessonsAdapter(lessons);
                                 mRecyclerView.setAdapter(mAdapter);
                             } else {
                                 Log.d(TAG, "Teacher " + mTeacher.getEmail() + " has no lessons to present");
