@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "299689370433",
+    "firebase_url": "https://a-drive4u.firebaseio.com",
+    "project_id": "a-drive4u",
+    "storage_bucket": "a-drive4u.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:299689370433:android:122ac66cd9c805ed",
+        "android_client_info": {
+          "package_name": "com.example.eliad.drive4u"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "299689370433-3au4fr695mmmgmjltvj0505o04plaqj3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.eliad.drive4u",
+            "certificate_hash": "6d5afa5beedf4b793e4de3c71522dec19dafffb8"
+          }
+        },
+        {
+          "client_id": "299689370433-il510bu2hu8a7t7l1vq5lmti09vnbfn5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArSoNTBtboyXLSxGUVJf_fFKCwdd7fIjU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "299689370433-il510bu2hu8a7t7l1vq5lmti09vnbfn5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
