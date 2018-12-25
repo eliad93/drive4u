@@ -5,7 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.activities.LoginActivity;
+import com.example.eliad.drive4u.activities.TeacherMyStudentsActivity;
+import com.example.eliad.drive4u.activities.TeacherProfileActivity;
+import com.example.eliad.drive4u.activities.TeacherScheduleActivity;
 import com.example.eliad.drive4u.models.Teacher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -53,6 +60,7 @@ public class TeacherBaseActivity extends AppCompatActivity {
         setResult(RESULT_OK, intent);
         super.onBackPressed();
     }
+
     /*
         all teacher activities should update their teacher
      */
@@ -76,5 +84,43 @@ public class TeacherBaseActivity extends AppCompatActivity {
         Intent intent = new Intent(this, activity);
         intent.putExtra(ARG_TEACHER, mTeacher);
         startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.teacher_home_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.schedule){
+            Intent intent = new Intent(this, TeacherScheduleActivity.class);
+            intent.putExtra(TeacherBaseActivity.ARG_TEACHER, mTeacher);
+            startActivity(intent);
+        }
+        if(item.getItemId() == R.id.students_requests){
+            //students requests activity
+        }
+        if(item.getItemId() == R.id.profile){
+            //profile activity
+            myStartActivity(TeacherProfileActivity.class);
+        }
+        if(item.getItemId() == R.id.my_students){
+            //all students info activity
+            myStartActivity(TeacherMyStudentsActivity.class);
+        }
+        if(item.getItemId() == R.id.budget_management){
+            //budget management activity
+        }
+        if(item.getItemId() == R.id.logout){
+            logoutUser();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void logoutUser(){
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(getBaseContext(), LoginActivity.class));
     }
 }

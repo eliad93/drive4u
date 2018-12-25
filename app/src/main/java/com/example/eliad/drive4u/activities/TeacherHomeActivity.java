@@ -59,43 +59,6 @@ public class TeacherHomeActivity extends TeacherBaseActivity {
         presentNextLessons();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.teacher_home_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.schedule){
-            Intent intent = new Intent(this, TeacherScheduleActivity.class);
-            intent.putExtra(TeacherBaseActivity.ARG_TEACHER, mTeacher);
-            startActivity(intent);
-        }
-        if(item.getItemId() == R.id.students_requests){
-            //students requests activity
-        }
-        if(item.getItemId() == R.id.profile){
-            //profile activity
-            myStartActivity(TeacherProfileActivity.class);
-        }
-        if(item.getItemId() == R.id.my_students){
-            //all students info activity
-            myStartActivity(TeacherMyStudentsActivity.class);
-        }
-        if(item.getItemId() == R.id.budget_management){
-            //budget management activity
-        }
-        if(item.getItemId() == R.id.logout){
-            logoutUser();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-    public void logoutUser(){
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getBaseContext(), LoginActivity.class));
-    }
-
     private void presentNextLessons() {
         Log.d(TAG, "in presentNextLessons");
 
