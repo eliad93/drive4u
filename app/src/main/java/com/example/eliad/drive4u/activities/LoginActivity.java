@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         progressBar      = findViewById(R.id.loginProgressBar);
 
         // there is no need to see the progress bar as long as there is no blocking task.
-//        progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
 
         // set a callback for the login button
         buttonLogin.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "in onLoginClick");
 
         // let the user know there is progress
-//        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
 
         String userEmail     = editTextUserEmail.getText().toString();
         String userPassword = editTextPassword.getText().toString();
@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-//                            progressBar.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -124,6 +124,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
     public void login (){
+        progressBar.setVisibility(View.VISIBLE);
         FirebaseUser user = mAuth.getCurrentUser();
         assert user != null;
         tryStudentLogin(user);
