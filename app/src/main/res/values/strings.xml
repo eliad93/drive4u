@@ -69,8 +69,8 @@
     <string name="selected_date">Selected date: </string>
     <string name="number_of_lessons">number of lessons: </string>
     <string name="finish">finish</string>
-    <string name="alert_dialog_student_request_lesson_title">lesson confirmation</string>
-    <string name="alert_dialog_student_request_lesson_message">Confirm that lesson?</string>
+    <string name="alert_dialog_request_lesson_title">lesson confirmation</string>
+    <string name="alert_dialog_request_lesson_message">Confirm that lesson?</string>
     <string name="confirm_lesson">Confirm</string>
     <string name="reject_lesson">Reject</string>
     <string name="cant_approve_more_than_one_request">Can not approve more than one lesson for the same hour!</string>
@@ -97,8 +97,13 @@
     <string name="lessons_archive_activity_header">Lessons archive</string>
     <string name="wait_for_student_response">Wait for student response</string>
     <string name="wait_for_teacher_response">Wait for student response</string>
+    <string name="hour_is_taken">That hour is taken!</string>
     <string name="teacher_update_lesson_to_hour">Your teacher updated the lesson time to that hour, waiting for your response !</string>
-
     <string name="update_lesson_to_hour">You updated the lesson time to that hour</string>
+    <string name="remove_from_home_page_message">That lesson have been canceled by your teacher, remove it?</string>
+    <string name="remove_from_home_page">Remove Lesson</string>
+    <string name="lesson_deleted">The lesson deleted</string>
+    <string name="lesson_did_not_deleted">The lesson did not delete, you could delete it later</string>
+
 
 </resources>

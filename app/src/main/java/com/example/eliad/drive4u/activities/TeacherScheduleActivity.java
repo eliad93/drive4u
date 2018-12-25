@@ -203,8 +203,8 @@ public class TeacherScheduleActivity extends TeacherBaseActivity implements Teac
     public void onItemClickRequestsList(final int position, final int hour) {
         updateLesson = allLessons.get(hour).get(position);
         AlertDialog alertDialog = new AlertDialog.Builder(TeacherScheduleActivity.this).create();
-        alertDialog.setTitle(getString(R.string.alert_dialog_student_request_lesson_title));
-        alertDialog.setMessage(getString(R.string.alert_dialog_student_request_lesson_message));
+        alertDialog.setTitle(getString(R.string.alert_dialog_request_lesson_title));
+        alertDialog.setMessage(getString(R.string.alert_dialog_request_lesson_message));
         if(updateLesson.getConformationStatus() != Lesson.Status.T_CONFIRMED) {
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.confirm_lesson), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
@@ -240,9 +240,9 @@ public class TeacherScheduleActivity extends TeacherBaseActivity implements Teac
                     Toast.makeText(getApplicationContext(), "Lesson rejected", Toast.LENGTH_SHORT).show();
                 }
             });
-            alertDialog.show();
-        }
 
+        }
+        alertDialog.show();
 
     }
 
@@ -326,7 +326,7 @@ public class TeacherScheduleActivity extends TeacherBaseActivity implements Teac
                     Toast.makeText(TeacherScheduleActivity.this,R.string.select_hour, Toast.LENGTH_SHORT).show();
                 }else{
                     if(dateUpdateDialog.getText() == ""){
-                        Toast.makeText(TeacherScheduleActivity.this,R.string.select_hour, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TeacherScheduleActivity.this,R.string.select_date, Toast.LENGTH_SHORT).show();
                     }else{
                         newHour = hourUpdateDialog.getText().toString();
                         newDate =dateUpdateDialog.getText().toString();
@@ -453,7 +453,7 @@ public class TeacherScheduleActivity extends TeacherBaseActivity implements Teac
                             }
                             for(Lesson l : lessons){
                                 int i = getArrayindexFromHour(l.getHour());
-                                if(hoursStatus[i] != Lesson.Status.S_CONFIRMED && hoursStatus[i] != Lesson.Status.S_CONFIRMED){
+                                if(hoursStatus[i] != Lesson.Status.T_CONFIRMED){
                                     hoursStatus[i] = l.getConformationStatus();
                                 }
                                 allLessons.get(i).add(l);

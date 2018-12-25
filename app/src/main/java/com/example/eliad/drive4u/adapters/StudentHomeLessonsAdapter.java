@@ -66,6 +66,7 @@ public class StudentHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView
         if(lesson.getConformationStatus() == Lesson.Status.T_CONFIRMED){
             viewHolder.itemView.setBackgroundColor(Color.GREEN);
             viewHolder.itemView.setClickable(false);
+            ((LessonViewHolder) viewHolder).editButton.setVisibility(ImageButton.INVISIBLE);
         }else{
             if(lesson.getConformationStatus() == Lesson.Status.T_CANCELED){
                 viewHolder.itemView.setBackgroundColor(Color.RED);
@@ -103,6 +104,17 @@ public class StudentHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
                             mListener.onItemClick(position);
+                        }
+                    }
+                }
+            });
+
+            editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mListener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
                             mListener.onEditButtonClick(position);
                         }
                     }

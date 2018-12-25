@@ -210,6 +210,10 @@ public class StudentScheduleLessonActivity extends StudentBaseActivity
                     Toast.makeText(this,R.string.wait_for_teacher_response,Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if(l.getConformationStatus() == Lesson.Status.T_CONFIRMED){
+                    Toast.makeText(this,R.string.hour_is_taken,Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
         }
         mRecyclerView.findViewHolderForAdapterPosition(position).itemView.setBackgroundColor(Color.GREEN);
