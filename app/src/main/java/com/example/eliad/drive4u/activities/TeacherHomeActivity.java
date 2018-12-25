@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
@@ -54,6 +55,8 @@ public class TeacherHomeActivity extends TeacherBaseActivity {
         textViewLessonsRemainingToday = findViewById(R.id.textViewLessonsRemainingToday);
         textViewNoLessons = findViewById(R.id.TeacherHomeTextViewNoLessosns);
 
+        // till we determine there are no lessons the tv should not show.
+        textViewNoLessons.setVisibility(View.GONE);
         textViewLessonsRemainingToday.setText("0"); // TODO
 
         initLessonsRecyclerView();
@@ -83,6 +86,7 @@ public class TeacherHomeActivity extends TeacherBaseActivity {
                                 mRecyclerView.setAdapter(mAdapter);
                             } else {
                                 Log.d(TAG, "Teacher " + mTeacher.getEmail() + " has no lessons to present");
+                                textViewNoLessons.setVisibility(View.VISIBLE);
                                 textViewNoLessons.setText(R.string.you_have_no_lessons);
                             }
                         } else {

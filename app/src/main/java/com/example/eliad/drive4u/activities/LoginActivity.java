@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editTextPassword;
     private Button   buttonLogin;
     private TextView textViewNewUser;
+    private ProgressBar progressBar;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -60,6 +62,10 @@ public class LoginActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin      = findViewById(R.id.buttonLogin);
         textViewNewUser  = findViewById(R.id.textViewNewUserClick);
+        progressBar      = findViewById(R.id.loginProgressBar);
+
+        // there is no need to see the progress bar as long as there is no blocking task.
+        progressBar.setVisibility(View.GONE);
 
         // set a callback for the login button
         buttonLogin.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +78,9 @@ public class LoginActivity extends AppCompatActivity {
         textViewNewUser.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+//                progressBar.setVisibility(View.VISIBLE);
                 onNewUserClick();
+//                progressBar.setVisibility(View.GONE);
                 return false;
             }
         });
@@ -80,6 +88,10 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginClick(){
         Log.d(TAG, "in onLoginClick");
+
+        // let the user know there is progress
+        progressBar.setVisibility(View.VISIBLE);
+
         String userEmail     = editTextUserEmail.getText().toString();
         String userPassword = editTextPassword.getText().toString();
 
@@ -98,6 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 });
