@@ -54,7 +54,7 @@ public class StudentScheduleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         holder.lessonTime.setText(hour);
         if (lessonsHours[position] == Lesson.Status.T_CONFIRMED) {
             viewHolder.itemView.setClickable(false);
-            viewHolder.itemView.setBackgroundColor(Color.RED);
+            viewHolder.itemView.setBackgroundColor(Color.GRAY);
         }else {
             if (lessonsHours[position] == Lesson.Status.S_CONFIRMED || lessonsHours[position] == Lesson.Status.S_UPDATE || lessonsHours[position] == Lesson.Status.T_UPDATE || lessonsHours[position] == Lesson.Status.S_REQUEST) {
                 viewHolder.itemView.setBackgroundColor(Color.YELLOW);

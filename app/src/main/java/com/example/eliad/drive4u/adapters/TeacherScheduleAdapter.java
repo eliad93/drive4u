@@ -72,6 +72,7 @@ public class TeacherScheduleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             Resources res = viewHolder.itemView.getResources();
             final TeacherScheduleAdapter.TeacherScheduleViewHolder holder = (TeacherScheduleAdapter.TeacherScheduleViewHolder) viewHolder;
             String hour = this.hours[position];
+            viewHolder.itemView.setBackgroundColor(Color.TRANSPARENT);
             holder.setIsRecyclable(false);
             holder.lessonTime.setText(hour);
             if (lessonsHours[position] == Lesson.Status.S_CONFIRMED || lessonsHours[position] == Lesson.Status.T_CONFIRMED) {

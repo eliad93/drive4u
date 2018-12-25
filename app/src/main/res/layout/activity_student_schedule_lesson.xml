@@ -9,8 +9,16 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/select_date"
-        android:id="@+id/selected_date"
+        android:text="@string/select_date"
+        android:id="@+id/selecte_date"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/date_selected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:layout_centerHorizontal="true"
         android:textSize="30sp"/>
@@ -18,11 +26,12 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/hours_list"
         android:layout_width="match_parent"
-        android:layout_height="233dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="152dp"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/border_line"/>
 
 
 

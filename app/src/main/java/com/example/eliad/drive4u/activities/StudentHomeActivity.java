@@ -66,7 +66,7 @@ public class StudentHomeActivity extends StudentBaseActivity {
     private void presentNextLessons() {
         Log.d(TAG, "in presentNextLessons");
         db.collection(getString(R.string.DB_Lessons))
-                .whereEqualTo(getString(R.string.DB_Student), mStudent.getID())
+                .whereEqualTo("studentUID", mStudent.getID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

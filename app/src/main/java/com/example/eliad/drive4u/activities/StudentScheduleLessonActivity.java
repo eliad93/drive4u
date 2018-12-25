@@ -26,39 +26,38 @@ import java.util.LinkedList;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.StudentScheduleAdapter;
 import com.example.eliad.drive4u.adapters.TeacherSearchAdapter;
+import com.example.eliad.drive4u.base_activities.StudentBaseActivity;
+import com.example.eliad.drive4u.built_in_utils.BorderLineDividerItemDecoration;
 import com.example.eliad.drive4u.models.Lesson;
 import com.example.eliad.drive4u.models.Student;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class StudentScheduleLessonActivity extends AppCompatActivity
+public class StudentScheduleLessonActivity extends StudentBaseActivity
         implements StudentScheduleAdapter.OnItemClickListener{
 
     private String[] hours = new String[]{"07:00", "08:00","09:00","10:00","11:00","12:00","13:00","14:00",
             "15:00","16:00","17:00","18:00","19:00","20:00", "21:00"};
 
 
-    private TextView SelectedDate;
+    private TextView selecteDate;
+    private TextView dateSelected;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-
+    private Calendar cal;
     // Intent for Parcelables
     private Intent parcelablesIntent;
 
-    // Firebase
-    private FirebaseAuth mAuth;
-    private FirebaseUser mUser;
-    private FirebaseFirestore db;
     // RecyclerView items
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private Student mStudent;
     LinkedList<Lesson> lessons;
 
 
@@ -78,25 +77,19 @@ public class StudentScheduleLessonActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_schedule_lesson);
 
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-        assert mUser != null;
 
         submit = (Button) findViewById(R.id.add_lesson);
 
-        parcelablesIntent = getIntent();
-
-        mStudent = parcelablesIntent.getParcelableExtra("Student");
-
-        db = FirebaseFirestore.getInstance();
-
+        cal = Calendar.getInstance();
         initializeRecyclerView();
-        SelectedDate = (TextView) findViewById(R.id.selected_date);
+        dateSelected = (TextView) findViewById(R.id.date_selected);
+        selecteDate = (TextView) findViewById(R.id.selecte_date);
 
-        SelectedDate.setOnClickListener(new View.OnClickListener() {
+        setCurrentDay();
+
+        selecteDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar cal = Calendar.getInstance();
                 int year = cal.get(Calendar.YEAR);
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
@@ -116,7 +109,7 @@ public class StudentScheduleLessonActivity extends AppCompatActivity
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
                 date = day + "/" + month + "/" + year;
-                SelectedDate.setText(date);
+                dateSelected.setText(date);
                 updateDayView();
             }
         };
@@ -128,6 +121,7 @@ public class StudentScheduleLessonActivity extends AppCompatActivity
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.clearOnChildAttachStateChangeListeners();
+        mRecyclerView.addItemDecoration(new BorderLineDividerItemDecoration(this));
     }
 
 
@@ -135,7 +129,7 @@ public class StudentScheduleLessonActivity extends AppCompatActivity
     private void updateDayView(){
         hoursStatus = new Lesson.Status[14];
         lessons = new LinkedList<>();
-        db.collection(getString(R.string.DB_Lessons)).whereEqualTo("teacherUID", mStudent.getTeacherId()).whereEqualTo("date",date)
+        db.collection("lessons").whereEqualTo("teacherUID", mStudent.getTeacherId()).whereEqualTo("date",date)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -200,8 +194,22 @@ public class StudentScheduleLessonActivity extends AppCompatActivity
     public void onItemClick(final int position) {
         for(Lesson l: lessons){
             if(l.getHour().equals(hours[position]) && l.getStudentUID().equals(mStudent.getID())){
-                Toast.makeText(this,R.string.already_schedule_this_hour,Toast.LENGTH_SHORT).show();
-                return;
+                if(l.getConformationStatus() == Lesson.Status.S_REQUEST){
+                    Toast.makeText(this,R.string.already_schedule_this_hour,Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(l.getConformationStatus() == Lesson.Status.T_UPDATE){
+                    Toast.makeText(this,R.string.teacher_update_lesson_to_hour,Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(l.getConformationStatus() == Lesson.Status.S_UPDATE){
+                    Toast.makeText(this,R.string.wait_for_teacher_response,Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(l.getConformationStatus() == Lesson.Status.S_CONFIRMED){
+                    Toast.makeText(this,R.string.wait_for_teacher_response,Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
         }
         mRecyclerView.findViewHolderForAdapterPosition(position).itemView.setBackgroundColor(Color.GREEN);
@@ -238,12 +246,30 @@ public class StudentScheduleLessonActivity extends AppCompatActivity
     }
 
     public void addLesson(){
-        Lesson lesson = new Lesson( mStudent.getTeacherId(), mStudent.getID(), date,lessonStartingTime.getText().toString(),
+        Lesson lesson = new Lesson(mStudent.getTeacherId(), mStudent.getID(), date,lessonStartingTime.getText().toString(),
                 "1","1", Lesson.Status.S_REQUEST);
 
-        db.collection("lessons").add(lesson);
-        Toast.makeText(this, R.string.request_sent, Toast.LENGTH_SHORT).show();
-        lessonCreate.hide();
+       db.collection("lessons").add(lesson).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if(task.isSuccessful()){
+                    String id = task.getResult().getId();
+                    db.collection("lessons").document(id).update("lessonID",id);
+                    Toast.makeText(StudentScheduleLessonActivity.this, R.string.request_sent, Toast.LENGTH_SHORT).show();
+                    lessonCreate.hide();
+                }
+            }
+        });
+
+    }
+
+    private void setCurrentDay(){
+        int currentYear = cal.get(Calendar.YEAR);
+        int currentMonth = cal.get(Calendar.MONTH) + 1;
+        int currentDay = cal.get(Calendar.DAY_OF_MONTH);
+        date = currentDay + "/" + currentMonth + "/" + currentYear;
+        dateSelected.setText(date);
+        updateDayView();
 
     }
 }

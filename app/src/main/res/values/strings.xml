@@ -42,12 +42,13 @@
     <string name="my_students">My students</string>
     <string name="lessons_completed">Lessons completed:</string>
     <string name="balance">Balance:</string>
-    <string name="select_date">Select Date</string>
+    <string name="select_date">Select a Date</string>
     <string name="starting_location">Starting location: </string>
     <string name="ending_location">Ending location: </string>
     <string name="set_starting_location">Set starting location</string>
     <string name="set_ending_location">set ending location</string>
     <string name="submit">Submit</string>
+    <string name="update">Update</string>
     <string name="registration_last_name">Last name</string>
     <string name="registration_city">City</string>
     <string name="registration_car_model">Car model</string>
@@ -86,5 +87,18 @@
     <string name="gear_type_title">Gear Type:</string>
     <string name="price_per_lesson_title">Price Per Lesson:</string>
     <string name="total_payed_title">Total Payed:</string>
+    <string name="update_lesson_request">Update lesson request</string>
+    <string name="student_name">Student name</string>
+    <string name="time_picker">pick time</string>
+    <string name="date_picker">pick date</string>
+    <string name="full_hour">Select only full hours!</string>
+    <string name="illegal_hour">Select only hours between 07:00 to 20:00!</string>
+    <string name="select_hour">Select hour</string>
     <string name="lessons_archive_activity_header">Lessons archive</string>
+    <string name="wait_for_student_response">Wait for student response</string>
+    <string name="wait_for_teacher_response">Wait for student response</string>
+    <string name="teacher_update_lesson_to_hour">Your teacher updated the lesson time to that hour, waiting for your response !</string>
+
+    <string name="update_lesson_to_hour">You updated the lesson time to that hour</string>
+
 </resources>

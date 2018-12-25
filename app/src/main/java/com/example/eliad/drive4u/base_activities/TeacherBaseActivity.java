@@ -96,9 +96,7 @@ public class TeacherBaseActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.schedule){
-            Intent intent = new Intent(this, TeacherScheduleActivity.class);
-            intent.putExtra(TeacherBaseActivity.ARG_TEACHER, mTeacher);
-            startActivity(intent);
+            myStartActivity( TeacherScheduleActivity.class);
         }
         if(item.getItemId() == R.id.students_requests){
             //students requests activity
