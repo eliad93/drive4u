@@ -3,6 +3,8 @@ package com.example.eliad.drive4u.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,12 +22,12 @@ import com.google.firebase.firestore.DocumentReference;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link StudentArciveLessonSummaryFragment.StudentLessonSummaryFragmentListener} interface
+ * {@link StudentArchiveLessonSummaryFragment.StudentLessonSummaryFragmentListener} interface
  * to handle interaction events.
- * Use the {@link StudentArciveLessonSummaryFragment#newInstance} factory method to
+ * Use the {@link StudentArchiveLessonSummaryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StudentArciveLessonSummaryFragment extends Fragment {
+public class StudentArchiveLessonSummaryFragment extends Fragment {
 //    // TODO: Rename parameter arguments, choose names that match
 //    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 //    private static final String ARG_PARAM1 = "param1";
@@ -36,7 +38,7 @@ public class StudentArciveLessonSummaryFragment extends Fragment {
 //    private String mParam2;
 
     // Tag for the Log
-    private static final String TAG = StudentArciveLessonSummaryFragment.class.getName();
+    private static final String TAG = StudentArchiveLessonSummaryFragment.class.getName();
     // Firebase
     private DocumentReference lessonDoc;
     // widgets
@@ -46,7 +48,7 @@ public class StudentArciveLessonSummaryFragment extends Fragment {
 
     private StudentLessonSummaryFragmentListener mListener;
 
-    public StudentArciveLessonSummaryFragment() {
+    public StudentArchiveLessonSummaryFragment() {
         // Required empty public constructor
     }
 
@@ -55,11 +57,11 @@ public class StudentArciveLessonSummaryFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param lesson Parameter 1.
-     * @return A new instance of fragment StudentArciveLessonSummaryFragment.
+     * @return A new instance of fragment StudentArchiveLessonSummaryFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static StudentArciveLessonSummaryFragment newInstance(Lesson lesson) {
-        StudentArciveLessonSummaryFragment fragment = new StudentArciveLessonSummaryFragment();
+    public static StudentArchiveLessonSummaryFragment newInstance(Lesson lesson) {
+        StudentArchiveLessonSummaryFragment fragment = new StudentArchiveLessonSummaryFragment();
         fragment.lesson = lesson;
 //        Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
@@ -83,13 +85,13 @@ public class StudentArciveLessonSummaryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_student_lesson_arcive_summary,
                 container, false);
-        buttonClose = (Button) view.findViewById(R.id.buttonLessonSummaryClose);
+        buttonClose = (Button) view.findViewById(R.id.buttonArchiveLessonClose);
         buttonClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .remove(StudentArciveLessonSummaryFragment.this)
+                        .remove(StudentArchiveLessonSummaryFragment.this)
                         .commit();
             }
         });

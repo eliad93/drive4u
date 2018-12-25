@@ -2,19 +2,25 @@ package com.example.eliad.drive4u.activities;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.StudentPastLessonsAdapter;
 import com.example.eliad.drive4u.base_activities.StudentBaseActivity;
 import com.example.eliad.drive4u.built_in_utils.BorderLineDividerItemDecoration;
-import com.example.eliad.drive4u.fragments.StudentArciveLessonSummaryFragment;
+import com.example.eliad.drive4u.fragments.StudentArchiveLessonSummaryFragment;
 import com.example.eliad.drive4u.models.Lesson;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,10 +28,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class StudentLessonsArchiveActivity extends StudentBaseActivity
         implements StudentPastLessonsAdapter.StudentPastLessonsItemClickListener,
-        StudentArciveLessonSummaryFragment.StudentLessonSummaryFragmentListener {
+        StudentArchiveLessonSummaryFragment.StudentLessonSummaryFragmentListener {
     // Tag for the Log
     private static final String TAG = StudentSearchTeacherActivity.class.getName();
     // RecyclerView items
@@ -35,6 +42,7 @@ public class StudentLessonsArchiveActivity extends StudentBaseActivity
     // fragment related items
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
+    private Fragment fragment;
     // models
     private LinkedList<Lesson> lessons = new LinkedList<>();
 
@@ -94,10 +102,28 @@ public class StudentLessonsArchiveActivity extends StudentBaseActivity
     @Override
     public void onItemClick(int position) {
         Lesson lesson = lessons.get(position);
-        Fragment lessonSummaryFragment = StudentArciveLessonSummaryFragment.newInstance(lesson);
+        Fragment lessonSummaryFragment = StudentArchiveLessonSummaryFragment.newInstance(lesson);
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.frameLayoutStudentLessonsArchiveActivity, lessonSummaryFragment);
+        fragmentTransaction.add(R.id.frameLayoutStudentLessonsArchiveActivity,
+                lessonSummaryFragment, "Fragment");
+        fragmentTransaction.addToBackStack("Fragment");
         fragmentTransaction.commit();
+        fragmentManager.executePendingTransactions();
+        Fragment fragment = fragmentManager.findFragmentByTag("Fragment");
+        resizeFragment(fragment ,0.8, 0.8);
+    }
+
+    private void resizeFragment(Fragment fragment, double widthPercent, double heightPercent) {
+        if (fragment != null) {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int screenWidth = displayMetrics.widthPixels;
+            int screenHeight = displayMetrics.heightPixels;
+            int width = (int) (screenWidth * widthPercent);
+            int height = (int) (screenHeight * heightPercent);
+            fragment.getView().getLayoutParams().width = width;
+            fragment.getView().getLayoutParams().height = height;
+        }
     }
 
     @Override

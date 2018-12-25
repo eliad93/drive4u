@@ -17,6 +17,7 @@ import com.example.eliad.drive4u.activities.StudentProfileActivity;
 import com.example.eliad.drive4u.activities.StudentScheduleLessonActivity;
 import com.example.eliad.drive4u.activities.StudentSearchTeacherActivity;
 import com.example.eliad.drive4u.models.Student;
+import com.example.eliad.drive4u.models.Teacher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -26,8 +27,8 @@ public class StudentBaseActivity extends AppCompatActivity {
     // Tag for the Log
     private static final String TAG = StudentHomeActivity.class.getName();
 
-    // string for passing the student
-    public static String ARG_STUDENT = "com.android.eliad.base_activities.StudentBaseActivity.student_key";
+    // Bundle arguments
+    public static String ARG_STUDENT = Student.class.getName();
 
     // Intent for Parcelables
     protected Intent parcelablesIntent;
@@ -50,7 +51,7 @@ public class StudentBaseActivity extends AppCompatActivity {
     }
 
     protected void initDbVariables() {
-        Log.d(TAG, "get current firebase user");
+        Log.d(TAG, "in initDbVariables");
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         assert mUser != null;
@@ -62,6 +63,7 @@ public class StudentBaseActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed(){
+        Log.d(TAG, "in onBackPressed");
         Intent intent = new Intent();
         intent.putExtra(ARG_STUDENT, mStudent);
         setResult(RESULT_OK, intent);
@@ -73,6 +75,7 @@ public class StudentBaseActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "in onActivityResult");
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 mStudent = data.getParcelableExtra(ARG_STUDENT);
@@ -81,12 +84,14 @@ public class StudentBaseActivity extends AppCompatActivity {
     }
 
     protected void myStartActivity(Class<? extends  AppCompatActivity> activity) {
+        Log.d(TAG, "in myStartActivity");
         Intent intent = new Intent(this, activity);
         intent.putExtra(ARG_STUDENT, mStudent);
         startActivity(intent);
     }
 
     protected void myStartActivityForResult(Class<? extends  AppCompatActivity> activity) {
+        Log.d(TAG, "in myStartActivityForResult");
         Intent intent = new Intent(this, activity);
         intent.putExtra(ARG_STUDENT, mStudent);
         startActivityForResult(intent, 1);
