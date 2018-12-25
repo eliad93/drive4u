@@ -7,4 +7,5 @@
     <color name="colorRegistrationFormFieldBorder">#e4e4e4</color>
     <color name="colorButtonBackground">#f137a2f4</color>
     <color name="colorButtonText">#ffffff</color>
+    <color name="colorWhite">#ffffff</color>
 </resources>
