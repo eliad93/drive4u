@@ -57,6 +57,7 @@ public class StudentLessonsArchiveActivity extends StudentBaseActivity
         setContentView(R.layout.activity_student_lessons_archive);
 
         noLessonsMsg = findViewById(R.id.LessonArchiveNoLessons);
+        noLessonsMsg.setVisibility(View.GONE);
 
         initializeFragmentObjects();
 
@@ -64,10 +65,6 @@ public class StudentLessonsArchiveActivity extends StudentBaseActivity
 
         presentAllStudentPastLessons();
 
-        if (lessons.size() == 0) {
-            noLessonsMsg.setVisibility(View.VISIBLE);
-            noLessonsMsg.setText(R.string.you_have_no_lessons);
-        }
     }
 
     @SuppressLint("CommitTransaction")
@@ -98,11 +95,17 @@ public class StudentLessonsArchiveActivity extends StudentBaseActivity
                                 Lesson lesson = document.toObject(Lesson.class);
                                 lessons.addLast(lesson);
                             }
-                            mAdapter = new StudentPastLessonsAdapter(lessons,
-                                    StudentLessonsArchiveActivity.this);
-                            ((StudentPastLessonsAdapter) mAdapter)
-                                    .setOnItemClickListener(StudentLessonsArchiveActivity.this);
-                            mRecyclerView.setAdapter(mAdapter);
+
+                            if (lessons.size() == 0) {
+                                noLessonsMsg.setVisibility(View.VISIBLE);
+                                noLessonsMsg.setText(R.string.you_have_no_lessons);
+                            } else {
+                                mAdapter = new StudentPastLessonsAdapter(lessons,
+                                        StudentLessonsArchiveActivity.this);
+                                ((StudentPastLessonsAdapter) mAdapter)
+                                        .setOnItemClickListener(StudentLessonsArchiveActivity.this);
+                                mRecyclerView.setAdapter(mAdapter);
+                            }
                         } else {
                             Log.d(TAG, "student lessons query failed");
                         }
