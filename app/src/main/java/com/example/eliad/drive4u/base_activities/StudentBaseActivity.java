@@ -108,8 +108,9 @@ public class StudentBaseActivity extends AppCompatActivity {
         Log.d(TAG, "onOptionsItemSelected");
         if(item.getItemId() == R.id.scheduleLesson){
             if(mStudent.getTeacherId().equals("")){
-                Toast.makeText(this, "Choose teacher first!", Toast.LENGTH_SHORT).show();
-                myStartActivity(StudentSearchTeacherActivity.class);
+                Toast.makeText(this, "You have no teacher. Choose a teacher " +
+                                "to schedule a lesson.",
+                        Toast.LENGTH_LONG).show();
             }else {
                 myStartActivity(StudentScheduleLessonActivity.class);
             }

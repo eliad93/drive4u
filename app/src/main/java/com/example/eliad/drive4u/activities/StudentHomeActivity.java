@@ -40,7 +40,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.Calendar;
 import java.util.LinkedList;
 
-public class StudentHomeActivity extends StudentBaseActivity implements StudentHomeLessonsAdapter.OnItemClickListener, TimePickerDialog.OnTimeSetListener {
+public class StudentHomeActivity extends StudentBaseActivity
+        implements StudentHomeLessonsAdapter.OnItemClickListener,
+        TimePickerDialog.OnTimeSetListener {
     // Tag for the Log
     private static final String TAG = StudentHomeActivity.class.getName();
 

@@ -37,6 +37,9 @@ public class StudentLessonsArchiveActivity extends StudentBaseActivity
         StudentArchiveLessonSummaryFragment.StudentLessonSummaryFragmentListener {
     // Tag for the Log
     private static final String TAG = StudentSearchTeacherActivity.class.getName();
+    // arguments
+    private static final double FRAGMENT_WIDTH_PERCENT = 0.8;
+    private static final double FRAGMENT_HEIGHT_PERCENT = 0.8;
     // RecyclerView items
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -95,10 +98,9 @@ public class StudentLessonsArchiveActivity extends StudentBaseActivity
                                 Lesson lesson = document.toObject(Lesson.class);
                                 lessons.addLast(lesson);
                             }
-
                             if (lessons.size() == 0) {
+                                noLessonsMsg.setText(R.string.you_had_no_lessons_yet);
                                 noLessonsMsg.setVisibility(View.VISIBLE);
-                                noLessonsMsg.setText(R.string.you_have_no_lessons);
                             } else {
                                 mAdapter = new StudentPastLessonsAdapter(lessons,
                                         StudentLessonsArchiveActivity.this);
@@ -120,11 +122,12 @@ public class StudentLessonsArchiveActivity extends StudentBaseActivity
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.frameLayoutStudentLessonsArchiveActivity,
                 lessonSummaryFragment, "Fragment");
-        fragmentTransaction.addToBackStack("Fragment");
-        fragmentTransaction.commit();
+        fragmentTransaction.addToBackStack("Fragment")
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
         fragmentManager.executePendingTransactions();
         Fragment fragment = fragmentManager.findFragmentByTag("Fragment");
-        resizeFragment(fragment ,0.8, 0.8);
+        resizeFragment(fragment ,FRAGMENT_WIDTH_PERCENT, FRAGMENT_HEIGHT_PERCENT);
     }
 
     private void resizeFragment(Fragment fragment, double widthPercent, double heightPercent) {
@@ -135,8 +138,9 @@ public class StudentLessonsArchiveActivity extends StudentBaseActivity
             int screenHeight = displayMetrics.heightPixels;
             int width = (int) (screenWidth * widthPercent);
             int height = (int) (screenHeight * heightPercent);
-            fragment.getView().getLayoutParams().width = width;
-            fragment.getView().getLayoutParams().height = height;
+            ViewGroup.LayoutParams params = fragment.getView().getLayoutParams();
+            params.width = width;
+            params.height = height;
         }
     }
 

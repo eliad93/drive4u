@@ -6,6 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,34 +92,31 @@ public class StudentArchiveLessonSummaryFragment extends Fragment {
         buttonClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .remove(StudentArchiveLessonSummaryFragment.this)
-                        .commit();
+                getActivity().onBackPressed(); // TODO: how can we avoid it?
             }
         });
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onSubmit(View view) {
-        String paragraph = ""; // TODO: add edit texts and retrieve data
-        int grade = 0;
-        lesson.summarize(paragraph, grade);
-        lessonDoc.update("summary", lesson.getSummary())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            if (mListener != null) {
-                                mListener.onFragmentInteraction(lesson);
-                            }
-                        } else {
-                            Log.d(TAG, "lesson summary update failed");
-                        }
-                    }
-                });
-    }
+//    // TODO: Rename method, update argument and hook method into UI event
+//    public void onSubmit(View view) {
+//        String paragraph = ""; // TODO: add edit texts and retrieve data
+//        int grade = 0;
+//        lesson.summarize(paragraph, grade);
+//        lessonDoc.update("summary", lesson.getSummary())
+//                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        if(task.isSuccessful()){
+//                            if (mListener != null) {
+//                                mListener.onFragmentInteraction(lesson);
+//                            }
+//                        } else {
+//                            Log.d(TAG, "lesson summary update failed");
+//                        }
+//                    }
+//                });
+//    }
 
     @Override
     public void onAttach(Context context) {

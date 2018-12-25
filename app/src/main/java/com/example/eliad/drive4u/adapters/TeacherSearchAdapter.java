@@ -56,6 +56,7 @@ public class TeacherSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
         final Teacher teacher = this.teachers.get(position);
         holder.setIsRecyclable(false);
         holder.mName.setText(teacher.getFirstName() + " " + teacher.getLastName());
+        holder.mCity.setText("City: " + teacher.getCity());
         String numberOfStudentsText = res
                 .getString(R.string.number_of_students, teacher.numberOfStudents());
         holder.mNumStudents.setText(numberOfStudentsText);
@@ -68,15 +69,15 @@ public class TeacherSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     public class TeacherSearchViewHolder extends RecyclerView.ViewHolder{
-        public ImageView mImage;
         public TextView mName;
+        public TextView mCity;
         public TextView mNumStudents;
         public ImageButton mTeacherChoose;
 
         public TeacherSearchViewHolder(View v){
             super(v);
-            mImage = (ImageView)v.findViewById(R.id.imageViewTeacher);
             mName = (TextView)v.findViewById(R.id.textViewTeacherName);
+            mCity = (TextView)v.findViewById(R.id.textViewTeacherCity);
             mNumStudents = (TextView)v.findViewById(R.id.textViewNumberOfStudents);
             mTeacherChoose = (ImageButton)v.findViewById(R.id.imageButtonChooseTeacher);
             mTeacherChoose.setOnClickListener(new View.OnClickListener() {

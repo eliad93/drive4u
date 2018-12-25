@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.base_activities.StudentBaseActivity;
+import com.example.eliad.drive4u.built_in_utils.BorderLineDividerItemDecoration;
 import com.example.eliad.drive4u.fragments.ChooseTeacherFragment;
 import com.example.eliad.drive4u.models.Teacher;
 import com.example.eliad.drive4u.adapters.TeacherSearchAdapter;
@@ -39,11 +42,16 @@ public class StudentSearchTeacherActivity extends StudentBaseActivity
     // fragments
     private ChooseTeacherFragment chooseTeacherFragment;
 
+    private TextView textViewNoTeachers;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "in onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_search_teacher);
+
+        textViewNoTeachers = findViewById(R.id.textViewStudentSearchTeacherNoTeachers);
+        textViewNoTeachers.setVisibility(View.GONE);
 
         mStudentDoc = db.collection("Students").document(mStudent.getID());
         mTeachersDb = db.collection("Teachers");
@@ -74,11 +82,15 @@ public class StudentSearchTeacherActivity extends StudentBaseActivity
                                 Log.d(TAG, "presenting teacher by email: " + teacher.getEmail());
                                 teachers.addLast(teacher);
                             }
-                            mAdapter = new TeacherSearchAdapter(teachers,
-                                    StudentSearchTeacherActivity.this);
-                            ((TeacherSearchAdapter) mAdapter)
-                                    .setOnItemClickListener(StudentSearchTeacherActivity.this);
-                            mRecyclerView.setAdapter(mAdapter);
+                            if (teachers.size() == 0) {
+                                textViewNoTeachers.setVisibility(View.VISIBLE);
+                            } else {
+                                mAdapter = new TeacherSearchAdapter(teachers,
+                                        StudentSearchTeacherActivity.this);
+                                ((TeacherSearchAdapter) mAdapter)
+                                        .setOnItemClickListener(StudentSearchTeacherActivity.this);
+                                mRecyclerView.setAdapter(mAdapter);
+                            }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -92,6 +104,7 @@ public class StudentSearchTeacherActivity extends StudentBaseActivity
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addItemDecoration(new BorderLineDividerItemDecoration(this));
     }
 
     private Bundle createArgsForFragment() {
