@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "299689370433-b1dt5u60thoclpr4lkhlf0gh2jptmkba.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.eliad.drive4u",
+            "certificate_hash": "5631f3ad06b3fad65df093e4c360b9ec12477d18"
+          }
+        },
+        {
           "client_id": "299689370433-il510bu2hu8a7t7l1vq5lmti09vnbfn5.apps.googleusercontent.com",
           "client_type": 3
         }
