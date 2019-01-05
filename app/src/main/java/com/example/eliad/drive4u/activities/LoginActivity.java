@@ -53,9 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
-        if(mAuth.getCurrentUser() != null){
-            login();
-        }
+
         // set all the widgets
         editTextUserEmail = findViewById(R.id.editTextUserEmail);
         editTextUserEmail.requestFocus();
@@ -64,8 +62,11 @@ public class LoginActivity extends AppCompatActivity {
         textViewNewUser  = findViewById(R.id.textViewNewUserClick);
         progressBar      = findViewById(R.id.loginProgressBar);
 
+        if(mAuth.getCurrentUser() != null){
+            login();
+        }
         // there is no need to see the progress bar as long as there is no blocking task.
-//        progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
 
         // set a callback for the login button
         buttonLogin.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "in onLoginClick");
 
         // let the user know there is progress
-//        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
 
         String userEmail     = editTextUserEmail.getText().toString();
         String userPassword = editTextPassword.getText().toString();
@@ -110,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-//                            progressBar.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -120,11 +121,12 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "in onNewUserClick");
         // start a new activity for registration.
         Intent intent = new Intent(this, UserTypeChoiceActivity.class);
+        finish();
         startActivity(intent);
 
     }
     public void login (){
-//        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         FirebaseUser user = mAuth.getCurrentUser();
         assert user != null;
         tryStudentLogin(user);

@@ -7,13 +7,30 @@ public class Student extends User {
     private Integer numberOfLessons = 0;
     private String teacherId;
     private Integer totalExpense = 0;
+    private String gearType;
+    public enum GearType {
+        Manual(1, "manual"),
+        BOTH(3, "manual and automatic");
 
+        private Integer code;
+        private String userMessage;
+
+        GearType(Integer c, String userMessage){
+            this.code = c;
+            this.userMessage = userMessage;
+        }
+
+        public String getUserMessage(){
+            return userMessage;
+        }
+    }
     public Student(String mId, String mFirstName, String mLastName, String mPhoneNumber,
-                    String mCity, String mEmail, String teacherId,Integer totalExpense,Integer numberOfLessons ) {
+                    String mCity, String mEmail, String teacherId,Integer totalExpense,Integer numberOfLessons, String mGearType ) {
         super(mId, mFirstName, mLastName, mPhoneNumber, mCity, mEmail);
         this.teacherId = teacherId;
         this.totalExpense =totalExpense;
         this.numberOfLessons = numberOfLessons;
+        this.gearType = mGearType;
     }
 
     public Student(){
@@ -46,6 +63,15 @@ public class Student extends User {
         this.totalExpense = totalExpense;
     }
 
+    public String getGearType() {
+        return gearType;
+    }
+
+    public void setGearType(String gearType) {
+        this.gearType = gearType;
+    }
+
+
     public boolean hasTeacher(){
         if(teacherId != null){
             return (!teacherId.isEmpty());
@@ -69,6 +95,7 @@ public class Student extends User {
         numberOfLessons = in.readInt();
         teacherId = in.readString();
         totalExpense = in.readInt();
+        gearType = in.readString();
     }
 
     @Override
@@ -82,5 +109,6 @@ public class Student extends User {
         dest.writeInt(numberOfLessons);
         dest.writeString(teacherId);
         dest.writeInt(totalExpense);
+        dest.writeString(gearType);
     }
 }
