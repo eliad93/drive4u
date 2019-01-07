@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toolbar;
 
+import com.example.eliad.drive4u.adapters.TeacherHomeTabAdapter;
 import com.example.eliad.drive4u.models.Teacher;
 
 public class TeacherHomeFragment extends TeacherBaseFragment {
@@ -30,7 +31,7 @@ public class TeacherHomeFragment extends TeacherBaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setRetainInstance(true);
     }
     public static TeacherHomeFragment newInstance(Teacher t) {
         TeacherHomeFragment fragment = new TeacherHomeFragment();
@@ -53,6 +54,14 @@ public class TeacherHomeFragment extends TeacherBaseFragment {
             mTeacher = getArguments().getParcelable(ARG_TEACHER);
         }
 
+        ViewPager viewPager = rootView.findViewById(R.id.viewpager);
+        TeacherHomeTabAdapter adapter = new TeacherHomeTabAdapter(getChildFragmentManager(), mTeacher);
+        adapter.addFragment(TeacherDashboardFragment.newInstance(mTeacher), "Dashboard");
+        adapter.addFragment(TeacherHomeScheduleFragment.newInstance(mTeacher), "Schedule");
+        viewPager.setAdapter(adapter);
+
+        TabLayout tabs = rootView.findViewById(R.id.result_tabs);
+        tabs.setupWithViewPager(viewPager);
         // Inflate the layout for this fragment
         return rootView;
     }
