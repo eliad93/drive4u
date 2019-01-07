@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.TeacherMainActivity;
 import com.example.eliad.drive4u.base_activities.StudentBaseActivity;
 import com.example.eliad.drive4u.base_activities.TeacherBaseActivity;
 import com.example.eliad.drive4u.models.Student;
@@ -50,8 +51,10 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "in onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        db = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
+
+        progressBar      = findViewById(R.id.loginProgressBar);
+        db               = FirebaseFirestore.getInstance();
+        mAuth            = FirebaseAuth.getInstance();
 
         if(mAuth.getCurrentUser() != null){
             login();
@@ -62,10 +65,10 @@ public class LoginActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin      = findViewById(R.id.buttonLogin);
         textViewNewUser  = findViewById(R.id.textViewNewUserClick);
-        progressBar      = findViewById(R.id.loginProgressBar);
+
 
         // there is no need to see the progress bar as long as there is no blocking task.
-//        progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
 
         // set a callback for the login button
         buttonLogin.setOnClickListener(new View.OnClickListener() {
@@ -78,9 +81,9 @@ public class LoginActivity extends AppCompatActivity {
         textViewNewUser.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-//                progressBar.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
                 onNewUserClick();
-//                progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 return false;
             }
         });
@@ -90,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "in onLoginClick");
 
         // let the user know there is progress
-//        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
 
         String userEmail     = editTextUserEmail.getText().toString();
         String userPassword = editTextPassword.getText().toString();
@@ -110,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-//                            progressBar.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -124,10 +127,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
     public void login (){
-//        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         FirebaseUser user = mAuth.getCurrentUser();
         assert user != null;
         tryStudentLogin(user);
+        progressBar.setVisibility(View.GONE);
     }
 
     private void tryStudentLogin(final FirebaseUser user) {
@@ -168,9 +172,9 @@ public class LoginActivity extends AppCompatActivity {
                     assert document != null;
                     if(document.exists()){
                         Intent intent = new Intent(getApplicationContext(),
-                                TeacherHomeActivity.class);
+                                TeacherMainActivity.class);
                         Teacher teacher = document.toObject(Teacher.class);
-                        intent.putExtra(TeacherBaseActivity.ARG_TEACHER, teacher);
+                        intent.putExtra(TeacherMainActivity.ARG_TEACHER, teacher);
                         finish();
                         startActivity(intent);
                     } else {
