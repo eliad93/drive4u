@@ -10,13 +10,12 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.StudentUI.StudentMainActivity;
 import com.example.eliad.drive4u.base_activities.RegistrationBaseActivity;
-import com.example.eliad.drive4u.base_activities.StudentBaseActivity;
 import com.example.eliad.drive4u.models.Student;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -27,8 +26,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Collection;
-import java.util.LinkedList;
 
 public class StudentRegistrationActivity extends RegistrationBaseActivity
         implements AdapterView.OnItemSelectedListener {
@@ -171,7 +168,7 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity
                         Log.d(TAG, "firestore student created successfully");
                         Intent intent = new Intent(getApplicationContext(),
                                 StudentHomeActivity.class);
-                        intent.putExtra(StudentBaseActivity.ARG_STUDENT, newStudent);
+                        intent.putExtra(StudentMainActivity.ARG_STUDENT, newStudent);
 
                         startActivity(intent);
                     }

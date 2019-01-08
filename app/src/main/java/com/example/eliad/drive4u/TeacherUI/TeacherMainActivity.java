@@ -126,7 +126,7 @@ public class TeacherMainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.teacher_main, menu);
         return true;
     }
 
@@ -142,9 +142,7 @@ public class TeacherMainActivity extends AppCompatActivity
             Toast.makeText(this, "Settings butten was pressed, not functional yet", Toast.LENGTH_SHORT).show();
             // TODO: what do we want to do in the settings?!
             return true;
-        }
-
-        if (id == R.id.action_logout) {
+        } else if (id == R.id.action_logout) {
             logoutUser();
         }
 

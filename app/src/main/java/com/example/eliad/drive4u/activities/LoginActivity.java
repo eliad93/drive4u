@@ -15,9 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.StudentUI.StudentMainActivity;
 import com.example.eliad.drive4u.TeacherUI.TeacherMainActivity;
-import com.example.eliad.drive4u.base_activities.StudentBaseActivity;
-import com.example.eliad.drive4u.base_activities.TeacherBaseActivity;
 import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.Teacher;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -147,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(),
                                 StudentHomeActivity.class);
                         Student student = document.toObject(Student.class);
-                        intent.putExtra(StudentBaseActivity.ARG_STUDENT, student);
+                        intent.putExtra(StudentMainActivity.ARG_STUDENT, student);
                         finish();
                         startActivity(intent);
                     } else {
