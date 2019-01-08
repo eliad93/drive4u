@@ -176,8 +176,11 @@ public class TeacherMainActivity extends AppCompatActivity
         switch (viewId) {
             case R.id.nav_home:
                 fragment = TeacherHomeFragment.newInstance(mTeacher);
-                title = getString(R.string.title_home);
                 isAtHome = true;
+                break;
+            case R.id.nav_profile:
+                fragment = TeacherProfileFragment.newInstance(mTeacher);
+                isAtHome = false;
                 break;
             default:
                 // TODO: add to the following isAtHome = false for back pressed.

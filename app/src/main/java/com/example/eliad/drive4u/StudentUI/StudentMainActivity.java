@@ -78,7 +78,6 @@ public class StudentMainActivity extends AppCompatActivity
         switch (viewId) {
             case R.id.nav_home:
                 fragment = StudentHomeFragment.newInstance(mStudent);
-                title = getString(R.string.title_home);
                 isAtHome = true;
                 break;
             default:
