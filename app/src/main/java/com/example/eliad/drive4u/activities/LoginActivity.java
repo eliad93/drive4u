@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
                     assert document != null;
                     if(document.exists()){
                         Intent intent = new Intent(getApplicationContext(),
-                                StudentHomeActivity.class);
+                                StudentMainActivity.class);
                         Student student = document.toObject(Student.class);
                         intent.putExtra(StudentMainActivity.ARG_STUDENT, student);
                         finish();

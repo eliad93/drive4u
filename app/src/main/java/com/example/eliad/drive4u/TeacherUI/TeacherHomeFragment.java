@@ -60,12 +60,9 @@ public class TeacherHomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
-//        if (getArguments() != null) {
-//            Teacher t = savedInstanceState.getParcelable(ARG_TEACHER);
-//            if (t != null) {
-//                mTeacher = t;
-//            }
-//        }
+        if (getArguments() != null) {
+            mTeacher = getArguments().getParcelable(ARG_TEACHER);
+        }
     }
 
     @Override
