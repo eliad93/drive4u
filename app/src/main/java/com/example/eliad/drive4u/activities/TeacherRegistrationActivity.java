@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.TeacherUI.TeacherMainActivity;
 import com.example.eliad.drive4u.base_activities.RegistrationBaseActivity;
 import com.example.eliad.drive4u.base_activities.TeacherBaseActivity;
 import com.example.eliad.drive4u.models.Student;
@@ -196,8 +197,8 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "firestore teacher created successfully");
                         Intent intent = new Intent(getApplicationContext(),
-                                TeacherHomeActivity.class);
-                        intent.putExtra(TeacherBaseActivity.ARG_TEACHER, newTeacher);
+                                TeacherMainActivity.class);
+                        intent.putExtra(TeacherMainActivity.ARG_TEACHER, newTeacher);
                         finish();
                         startActivity(intent);
                     }
