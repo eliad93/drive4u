@@ -17,7 +17,8 @@ public class Lesson implements Parcelable {
         S_CANCELED(3, "student canceled the lesson"),
         S_CONFIRMED(4, "student confirmed the lesson"),
         S_REQUEST(5, "student request the lesson"),
-        S_UPDATE(6, "student update the lesson");
+        S_UPDATE(6, "student update the lesson"),
+        T_OPTION(6, "teacher offer the lesson");
 
         private Integer code;
         private String userMessage;

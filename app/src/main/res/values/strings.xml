@@ -7,18 +7,18 @@
     <string name="dont_have_an_account_yet">Don\'t have an account yet?</string>
     <string name="click_here_to_create_a_new_account">Click here to create a new account</string>
     <string name="wrong_user_name_or_password">Wrong user name or password</string>
-    <string name="registration_name">Name</string>
+    <string name="registration_name">Full name</string>
     <string name="registration_phone">Phone number</string>
     <string name="registration_Email">Email address</string>
     <string name="registration_password">Password</string>
+    <string name="registration_password_repeat">Password again</string>
     <string name="regFormButtonText">Sign up</string>
     <string name="user_type_choice_header">Registration type</string>
     <string name="user_type_choice_student">I am a student</string>
     <string name="user_type_choice_teacher">I am a teacher</string>
     <string name="user_email">User Email</string>
     <string name="search_a_student">Search a student</string>
-    <string name="student_registration_header">\    Student\nregistration</string>
-    <string name="teacher_registration_header">\    Teacher\nregistration</string>
+    <string name="registration">Registration</string>
     <string name="empty" />
     <string name="empty_email">Please enter email</string>
     <string name="empty_password">Please enter password</string>
@@ -57,7 +57,12 @@
     <string name="lesson_starting_time">Lesson starting time</string>
     <string name="lesson_date">Lesson date</string>
     <string name="lessons_remaining_today">Lessons remaining today:</string>
-    <string-array name="gear_types">
+    <string-array name="gear_types_teacher">
+        <item>manual</item>
+        <item>automatic</item>
+        <item>both</item>
+    </string-array>
+    <string-array name="gear_types_student">
         <item>manual</item>
         <item>automatic</item>
     </string-array>
@@ -110,6 +115,21 @@
     <string name="no_teachers_found">No teachers found.</string>
     <string name="search_a_teacher">Search a teacher</string>
     <string name="lesson_canceled_message">The lesson canceled</string>
+    <string name="switch_right_for_student"><![CDATA[<<< I am a student <<<]]></string>
+    <string name="switch_left_for_teacher"><![CDATA[>>> I am a teacher >>>]]></string>
+    <string name="signup_failed">SignUp Failed</string>
+    <string name="name_error">Please enter valid full name</string>
+    <string name="phone_error">Please enter valid phone number</string>
+    <string name="email_error">Please enter valid email</string>
+    <string name="passward_empty">please enter a password</string>
+    <string name="password_len_error">Password must contain at least 6 characters</string>
+    <string name="passwords_diff">passwords are different</string>
+    <string name="car_model_error">Please enter car model</string>
+    <string name="please_enter_price">Please enter price</string>
+    <string name="lesson_length">LessonLength</string>
+    <string name="price">Price</string>
+    <string name="lesson_len_error">Please enter valid lesson length</string>
+    <string name="city_error">Please enter valid city name</string>
     <string name="title_activity_main">TeacherMainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

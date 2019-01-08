@@ -115,6 +115,7 @@ public class TeacherBaseActivity extends AppCompatActivity {
             myStartActivity(TeacherHomeActivity.class);
         }
         if(item.getItemId() == R.id.logout){
+            finish();
             logoutUser();
         }
         return super.onOptionsItemSelected(item);

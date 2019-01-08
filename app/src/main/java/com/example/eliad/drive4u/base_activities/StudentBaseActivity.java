@@ -138,6 +138,7 @@ public class StudentBaseActivity extends AppCompatActivity {
 //        }
 
         if(item.getItemId() == R.id.logout){
+            finish();
             logoutUser();
         }
         return super.onOptionsItemSelected(item);

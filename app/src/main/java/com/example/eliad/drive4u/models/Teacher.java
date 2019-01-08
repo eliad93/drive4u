@@ -11,16 +11,34 @@ public class Teacher extends User {
     private String carModel;
     private Integer price;
     private String gearType;
+    private Integer lessonLength;
+    public enum GearType {
+        Manual(1, "manual"),
+        AUTOMATIC (2, "automatic"),
+        BOTH(3, "manual and automatic");
 
+        private Integer code;
+        private String userMessage;
+
+        GearType(Integer c, String userMessage){
+            this.code = c;
+            this.userMessage = userMessage;
+        }
+
+        public String getUserMessage(){
+            return userMessage;
+        }
+    }
     public Teacher(){
         super();
     }
 
     public Teacher(String mId, String mFirstName, String mLastName, String mPhoneNumber,
-                   String mCity, String mEmail, String mCarModel, Integer mPrice, String mGearType){
+                   String mCity, String mEmail, String mCarModel, Integer mPrice, String mGearType, Integer mlessonLength){
         super(mId, mFirstName, mLastName, mPhoneNumber, mEmail, mCity);
         carModel = mCarModel;
         price = mPrice;
+        lessonLength = mlessonLength;
         gearType = mGearType;
     }
 
@@ -71,6 +89,14 @@ public class Teacher extends User {
         this.carModel = carModel;
     }
 
+    public Integer getLessonLength() {
+        return lessonLength;
+    }
+
+    public void setLessonLength(Integer lessonLength) {
+        this.lessonLength = lessonLength;
+    }
+
     public String getGearType() {
         return gearType;
     }
@@ -98,6 +124,7 @@ public class Teacher extends User {
         totalPayed = in.readInt();
         carModel = in.readString();
         price = in.readInt();
+        lessonLength = in.readInt();
         gearType = in.readString();
     }
 
@@ -108,6 +135,7 @@ public class Teacher extends User {
         dest.writeInt(totalPayed);
         dest.writeString(carModel);
         dest.writeInt(price);
+        dest.writeInt(lessonLength);
         dest.writeString(gearType);
     }
 
