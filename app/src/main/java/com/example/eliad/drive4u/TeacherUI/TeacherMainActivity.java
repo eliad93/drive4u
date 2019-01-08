@@ -70,6 +70,7 @@ public class TeacherMainActivity extends AppCompatActivity
     }
 
     private void initToolbar() {
+        Log.d(TAG, "initToolbar");
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         String toolbarTitle = mTeacher.getFirstName() + " " + mTeacher.getLastName();
@@ -77,11 +78,13 @@ public class TeacherMainActivity extends AppCompatActivity
     }
 
     private void initTeacher() {
+        Log.d(TAG, "initTeacher");
         Intent parcelablesIntent = getIntent();
         mTeacher = parcelablesIntent.getParcelableExtra(ARG_TEACHER);
 
         if (mTeacher == null) {
             Log.d(TAG, " Got an intent with out a teacher. fetching him fom the dp. fix this!");
+            // TODO: fetch the teacher or search for the bug
         }
     }
 
@@ -168,6 +171,7 @@ public class TeacherMainActivity extends AppCompatActivity
     }
 
     public void displayView(int viewId) {
+        Log.d(TAG, "displayView");
         Fragment fragment =  null;
         String title = getString(R.string.app_name);
 
@@ -179,7 +183,7 @@ public class TeacherMainActivity extends AppCompatActivity
                 break;
             default:
                 // TODO: add to the following isAtHome = false for back pressed.
-                Toast.makeText(this, "this nabigation item was not implemented yet", Toast.LENGTH_LONG);
+                Toast.makeText(this, "this navigation item was not implemented yet", Toast.LENGTH_LONG).show();
                 break;
         }
 

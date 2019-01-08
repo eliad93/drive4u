@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.models.Teacher;
@@ -25,15 +26,20 @@ public class TeacherHomeFragment extends Fragment {
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            String msg = "BUG";
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    return true;
+                    msg = "Home selected";
+                    break;
                 case R.id.navigation_dashboard:
-                    return true;
+                    msg = "Dashboard selected";
+                    break;
                 case R.id.navigation_notifications:
-                    return true;
+                    msg = "notifications selected";
+                    break;
             }
-            return false;
+            Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+            return true;
         }
     };
 
@@ -53,6 +59,7 @@ public class TeacherHomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate");
 //        if (getArguments() != null) {
 //            Teacher t = savedInstanceState.getParcelable(ARG_TEACHER);
 //            if (t != null) {
@@ -64,6 +71,7 @@ public class TeacherHomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_teacher_home, container, false);
 
         if (mTeacher == null && getArguments() == null) {
@@ -73,8 +81,10 @@ public class TeacherHomeFragment extends Fragment {
             mTeacher = getArguments().getParcelable(ARG_TEACHER);
         }
 
+        BottomNavigationView navigation = (BottomNavigationView) view.findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_teacher_home, container, false);
+        return view;
     }
 
 }
