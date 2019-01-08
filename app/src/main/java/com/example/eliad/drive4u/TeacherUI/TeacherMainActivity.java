@@ -91,7 +91,7 @@ public class TeacherMainActivity extends AppCompatActivity
     private void initNavigationView() {
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        // a small and fun animation when opening and closing the navigation menu.
+        // a small and fun animation when opening and closing the teacher_home_navigation menu.
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -183,7 +183,7 @@ public class TeacherMainActivity extends AppCompatActivity
                 break;
             default:
                 // TODO: add to the following isAtHome = false for back pressed.
-                Toast.makeText(this, "this navigation item was not implemented yet", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "this teacher_home_navigation item was not implemented yet", Toast.LENGTH_LONG).show();
                 break;
         }
 
