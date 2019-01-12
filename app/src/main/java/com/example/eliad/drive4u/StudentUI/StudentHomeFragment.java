@@ -20,13 +20,9 @@ import com.example.eliad.drive4u.models.Student;
  * Use the {@link StudentHomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StudentHomeFragment extends Fragment {
+public class StudentHomeFragment extends StudentBaseFragment {
 
     private static final String TAG = StudentHomeFragment.class.getName();
-
-    public static final String ARG_STUDENT = TAG + ".arg_student";
-
-    private Student mStudent;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -55,8 +51,7 @@ public class StudentHomeFragment extends Fragment {
 
     public static StudentHomeFragment newInstance(Student student) {
         StudentHomeFragment fragment = new StudentHomeFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(ARG_STUDENT, student);
+        Bundle args = newInstanceBaseArgs(student);
         fragment.setArguments(args);
         return fragment;
     }

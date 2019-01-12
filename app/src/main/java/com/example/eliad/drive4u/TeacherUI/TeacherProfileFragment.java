@@ -11,12 +11,8 @@ import android.widget.TextView;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.models.Teacher;
 
-public class TeacherProfileFragment extends Fragment {
+public class TeacherProfileFragment extends TeacherBaseFragment {
     private static final String TAG = TeacherProfileFragment.class.getName();
-
-    public static final String ARG_TEACHER = TAG + ".arg_teacher";
-
-    private Teacher mTeacher;
 
     public TeacherProfileFragment() {
         // Required empty public constructor
@@ -24,19 +20,12 @@ public class TeacherProfileFragment extends Fragment {
 
     public static TeacherProfileFragment newInstance(Teacher teacher) {
         TeacherProfileFragment fragment = new TeacherProfileFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(ARG_TEACHER, teacher);
+        Bundle args = newInstanceBaseArgs(teacher);
         fragment.setArguments(args);
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mTeacher = getArguments().getParcelable(ARG_TEACHER);
-        }
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

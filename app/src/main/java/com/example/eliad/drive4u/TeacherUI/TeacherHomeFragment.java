@@ -14,13 +14,9 @@ import android.widget.Toast;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.models.Teacher;
 
-public class TeacherHomeFragment extends Fragment {
+public class TeacherHomeFragment extends TeacherBaseFragment {
 
     private static final String TAG = TeacherHomeFragment.class.getName();
-
-    public static final String ARG_TEACHER = TAG + ".arg_teacher";
-
-    private Teacher mTeacher;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -50,19 +46,9 @@ public class TeacherHomeFragment extends Fragment {
 
     public static TeacherHomeFragment newInstance(Teacher teacher) {
         TeacherHomeFragment fragment = new TeacherHomeFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(ARG_TEACHER, teacher);
+        Bundle args = newInstanceBaseArgs(teacher);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate");
-        if (getArguments() != null) {
-            mTeacher = getArguments().getParcelable(ARG_TEACHER);
-        }
     }
 
     @Override

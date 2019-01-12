@@ -13,20 +13,20 @@
         android:id="@+id/StudentPluralInfoItemFirstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
         android:text="@string/DB_FirstName"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewProfilePic"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/StudentPluralInfoItemLastName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
         android:text="@string/DB_LastName"
         android:textSize="24sp"
@@ -37,36 +37,50 @@
         android:id="@+id/imageView2"
         android:layout_width="26dp"
         android:layout_height="28dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/StudentPluralInfoItemFirstName"
+        app:layout_constraintStart_toEndOf="@+id/imageViewProfilePic"
         app:srcCompat="@drawable/google_location_icon_location" />
 
     <TextView
         android:id="@+id/StudentPluralInfoItemCity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:text="@string/DB_City"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/StudentPluralInfoItemFirstName" />
+        app:layout_constraintTop_toBottomOf="@+id/StudentPluralInfoItemFirstName"
+        app:layout_constraintVertical_bias="1.0" />
 
-    <TextView
-        android:id="@+id/StudentPluralInfoItemPhone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="TextView"
+    <ImageView
+        android:id="@+id/imageViewPhone"
+        android:layout_width="47dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/StudentPluralInfoItemCity" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icons8_phone_24" />
+
+    <ImageView
+        android:id="@+id/imageViewProfilePic"
+        android:layout_width="62dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icons8_user_24_profile" />
 </android.support.constraint.ConstraintLayout>
