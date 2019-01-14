@@ -1,35 +1,43 @@
-package com.example.eliad.drive4u.activities;
+package com.example.eliad.drive4u.StudentUI;
 
-import android.support.annotation.NonNull;
+
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.base_activities.StudentBaseActivity;
+import com.example.eliad.drive4u.adapters.TeacherSearchAdapter;
 import com.example.eliad.drive4u.built_in_utils.BorderLineDividerItemDecoration;
 import com.example.eliad.drive4u.fragments.ChooseTeacherFragment;
+import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.Teacher;
-import com.example.eliad.drive4u.adapters.TeacherSearchAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.LinkedList;
 
-public class StudentSearchTeacherActivity extends StudentBaseActivity
-        implements TeacherSearchAdapter.OnItemClickListener {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link StudentSearchTeacherFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class StudentSearchTeacherFragment extends StudentBaseFragment
+        implements TeacherSearchAdapter.OnItemClickListener{
+
     // Tag for the Log
-    private static final String TAG = StudentSearchTeacherActivity.class.getName();
+    private static final String TAG = StudentSearchTeacherFragment.class.getName();
     // Firebase
     private DocumentReference mStudentDoc;
     private CollectionReference mTeachersDb;
@@ -44,23 +52,50 @@ public class StudentSearchTeacherActivity extends StudentBaseActivity
 
     private TextView textViewNoTeachers;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "in onCreate");
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_search_teacher);
+    public StudentSearchTeacherFragment() {
+        // Required empty public constructor
+    }
 
-        textViewNoTeachers = findViewById(R.id.textViewStudentSearchTeacherNoTeachers);
+    public static StudentSearchTeacherFragment newInstance(Student student) {
+        StudentSearchTeacherFragment fragment = new StudentSearchTeacherFragment();
+        Bundle args = newInstanceBaseArgs(student);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view =  inflater.inflate(R.layout.fragment_student_search_teacher,
+                container, false);
+        textViewNoTeachers = view.findViewById(R.id.textViewStudentSearchTeacherNoTeachers);
         textViewNoTeachers.setVisibility(View.GONE);
 
+        // data handling
         mStudentDoc = db.collection("Students").document(mStudent.getID());
         mTeachersDb = db.collection("Teachers");
 
-        initializeRecyclerView();
+        initializeRecyclerView(view);
         // init fragments
         initChooseTeacherFragment();
         // populate recycler view
         presentAllTeachers();
+        return view;
+    }
+
+    private void initializeRecyclerView(View view) {
+        Log.d(TAG, "in initializeRecyclerView");
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewTeachers);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addItemDecoration(new BorderLineDividerItemDecoration(getContext()));
     }
 
     private void initChooseTeacherFragment() {
@@ -85,10 +120,9 @@ public class StudentSearchTeacherActivity extends StudentBaseActivity
                             if (teachers.size() == 0) {
                                 textViewNoTeachers.setVisibility(View.VISIBLE);
                             } else {
-                                mAdapter = new TeacherSearchAdapter(teachers,
-                                        StudentSearchTeacherActivity.this);
+                                mAdapter = new TeacherSearchAdapter(teachers, getContext());
                                 ((TeacherSearchAdapter) mAdapter)
-                                        .setOnItemClickListener(StudentSearchTeacherActivity.this);
+                                        .setOnItemClickListener(StudentSearchTeacherFragment.this);
                                 mRecyclerView.setAdapter(mAdapter);
                             }
                         } else {
@@ -96,26 +130,6 @@ public class StudentSearchTeacherActivity extends StudentBaseActivity
                         }
                     }
                 });
-    }
-
-    private void initializeRecyclerView() {
-        Log.d(TAG, "in initializeRecyclerView");
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewTeachers);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.addItemDecoration(new BorderLineDividerItemDecoration(this));
-    }
-
-    private Bundle createArgsForFragment() {
-        Log.d(TAG, "in createArgsForFragment");
-        Bundle args = new Bundle();
-        if(!mStudent.hasTeacher()){
-            args.putString("message", "connection request sent.");
-        } else {
-            args.putString("message", "Already has a teacher, disconnect first.");
-        }
-        return args;
     }
 
     private void studentUpdateConnected(final Teacher teacher) {
@@ -152,7 +166,7 @@ public class StudentSearchTeacherActivity extends StudentBaseActivity
     public void onItemClick(int position) {
         Log.d(TAG, "in onItemClick");
 
-        chooseTeacherFragment.show(getSupportFragmentManager(),"student choose teacher");
+        chooseTeacherFragment.show(getChildFragmentManager(),"student choose teacher");
         if(!mStudent.hasTeacher()){
             final Teacher teacher = teachers.get(position);
             mTeachersDb.document(teacher.getID())
@@ -177,4 +191,16 @@ public class StudentSearchTeacherActivity extends StudentBaseActivity
         teacher.addStudent(mStudent.getID());
         studentUpdateConnected(teacher);
     }
+
+    private Bundle createArgsForFragment() {
+        Log.d(TAG, "in createArgsForFragment");
+        Bundle args = new Bundle();
+        if(!mStudent.hasTeacher()){
+            args.putString("message", "connection request sent.");
+        } else {
+            args.putString("message", "Already has a teacher, disconnect first.");
+        }
+        return args;
+    }
+
 }

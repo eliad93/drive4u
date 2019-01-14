@@ -80,6 +80,10 @@ public class StudentMainActivity extends AppCompatActivity
                 fragment = StudentHomeFragment.newInstance(mStudent);
                 isAtHome = true;
                 break;
+            case R.id.nav_teachers:
+                fragment = StudentSearchTeacherFragment.newInstance(mStudent);
+                isAtHome = false;
+                break;
             default:
                 // TODO: add to the following isAtHome = false for back pressed.
                 Toast.makeText(this, "this teacher_home_navigation item was not implemented yet", Toast.LENGTH_LONG).show();

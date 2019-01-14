@@ -15,9 +15,7 @@ import com.example.eliad.drive4u.activities.StudentHomeActivity;
 import com.example.eliad.drive4u.activities.StudentLessonsArchiveActivity;
 import com.example.eliad.drive4u.activities.StudentProfileActivity;
 import com.example.eliad.drive4u.activities.StudentScheduleLessonActivity;
-import com.example.eliad.drive4u.activities.StudentSearchTeacherActivity;
 import com.example.eliad.drive4u.models.Student;
-import com.example.eliad.drive4u.models.Teacher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -116,9 +114,8 @@ public class StudentBaseActivity extends AppCompatActivity {
                 myStartActivity(StudentScheduleLessonActivity.class);
             }
         }
-        if(item.getItemId() == R.id.searchTeacher){
-            myStartActivityForResult(StudentSearchTeacherActivity.class);
-        }
+//        if(item.getItemId() == R.id.searchTeacher){
+//        }
         if(item.getItemId() == R.id.pastLessons){
             myStartActivity(StudentLessonsArchiveActivity.class);
         }
