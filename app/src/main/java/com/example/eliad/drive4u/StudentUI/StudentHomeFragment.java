@@ -77,7 +77,7 @@ public class StudentHomeFragment extends StudentBaseFragment {
             mStudent = getArguments().getParcelable(ARG_STUDENT);
         }
 
-        BottomNavigationView navigation = (BottomNavigationView) view.findViewById(R.id.navigation);
+        BottomNavigationView navigation = (BottomNavigationView) view.findViewById(R.id.student_home_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         return view;

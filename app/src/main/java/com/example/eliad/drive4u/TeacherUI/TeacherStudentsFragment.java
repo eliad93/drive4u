@@ -58,8 +58,9 @@ public class TeacherStudentsFragment extends TeacherBaseFragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         Log.d(TAG, "presentStudents.onComplete");
                         if (task.isSuccessful()) {
-                            LinkedList<Student> students = new LinkedList<>();
+                            LinkedList<Student> students = new LinkedList<>(); // task.getResult().toObjects(Student.class); -> List<Student>
                             Log.d(TAG, "presentStudents.onComplete with result size " + task.getResult().size());
+
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Student student = document.toObject(Student.class);
                                 Log.d(TAG, "current student by email: " + student.getEmail());
@@ -68,6 +69,8 @@ public class TeacherStudentsFragment extends TeacherBaseFragment {
                             if (students.size() > 0) {
                                 mAdapter = new StudentPluralInfoAdapter(students, mTeacher);
                                 mRecyclerView.setAdapter(mAdapter);
+                            } else {
+                                Log.d(TAG, "This Teacher has no students");
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -86,6 +89,7 @@ public class TeacherStudentsFragment extends TeacherBaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_teacher_students, container, false);
 

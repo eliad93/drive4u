@@ -64,7 +64,7 @@ public class TeacherHomeFragment extends TeacherBaseFragment {
             mTeacher = getArguments().getParcelable(ARG_TEACHER);
         }
 
-        BottomNavigationView navigation = (BottomNavigationView) view.findViewById(R.id.navigation);
+        BottomNavigationView navigation = (BottomNavigationView) view.findViewById(R.id.teacher_home_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         // Inflate the layout for this fragment
         return view;

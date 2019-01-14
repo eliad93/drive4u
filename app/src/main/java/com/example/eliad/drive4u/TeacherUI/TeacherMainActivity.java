@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.activities.LoginActivity;
+import com.example.eliad.drive4u.chat.ChatMainActivity;
 import com.example.eliad.drive4u.models.Teacher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -55,21 +56,12 @@ public class TeacherMainActivity extends AppCompatActivity
 
         initTeacher();
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
         initToolbar();
         initNavigationView();
         displayView(R.id.nav_home);
     }
 
-    private void initToolbar() {
+    protected void initToolbar() {
         Log.d(TAG, "initToolbar");
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -77,7 +69,7 @@ public class TeacherMainActivity extends AppCompatActivity
         mToolbar.setTitle(toolbarTitle);
     }
 
-    private void initTeacher() {
+    protected void initTeacher() {
         Log.d(TAG, "initTeacher");
         Intent parcelablesIntent = getIntent();
         mTeacher = parcelablesIntent.getParcelableExtra(ARG_TEACHER);
@@ -88,7 +80,7 @@ public class TeacherMainActivity extends AppCompatActivity
         }
     }
 
-    private void initNavigationView() {
+    protected void initNavigationView() {
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         // a small and fun animation when opening and closing the teacher_home_navigation menu.
@@ -126,7 +118,7 @@ public class TeacherMainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.teacher_main, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -171,6 +163,7 @@ public class TeacherMainActivity extends AppCompatActivity
     public void displayView(int viewId) {
         Log.d(TAG, "displayView");
         Fragment fragment =  null;
+        Intent intent = null;
         String title = getString(R.string.app_name);
 
         switch (viewId) {
@@ -188,6 +181,11 @@ public class TeacherMainActivity extends AppCompatActivity
                 isAtHome = false;
                 break;
 
+            case R.id.nav_send:
+                fragment = TeacherMainChatFragment.newInstance(mTeacher);
+                isAtHome = false;
+                break;
+
             default:
                 // TODO: add to the following isAtHome = false for back pressed.
                 Toast.makeText(this, "this teacher_home_navigation item was not implemented yet", Toast.LENGTH_LONG).show();
@@ -198,8 +196,10 @@ public class TeacherMainActivity extends AppCompatActivity
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
             ft.commit();
+        } else if (intent != null) {
+            finish();
+            startActivity(intent);
         }
-
         // set the toolbar title
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
@@ -207,5 +207,6 @@ public class TeacherMainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
     }
 }
