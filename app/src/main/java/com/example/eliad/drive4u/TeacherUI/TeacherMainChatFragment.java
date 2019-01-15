@@ -41,13 +41,7 @@ public class TeacherMainChatFragment extends TeacherBaseFragment {
         }
 
         Log.d(TAG, msg);
-        Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
 
-        if (fragment != null) {
-            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-            ft.replace(R.id.main_chat_frame, fragment);
-            ft.commit();
-        }
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
