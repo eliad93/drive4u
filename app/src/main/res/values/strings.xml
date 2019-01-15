@@ -151,6 +151,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_student_main">StudentMainActivity</string>
     <string name="nav_teachers">Teachers</string>
+    <string name="type_a_message">Type a message</string>
 
 
 </resources>
