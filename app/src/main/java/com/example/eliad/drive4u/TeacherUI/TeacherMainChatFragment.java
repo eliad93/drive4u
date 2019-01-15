@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,13 +15,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.chat.ChatsFragment;
-import com.example.eliad.drive4u.chat.UsersFragment;
+import com.example.eliad.drive4u.adapters.ViewPagerAdapter;
 import com.example.eliad.drive4u.models.Teacher;
 
 public class TeacherMainChatFragment extends TeacherBaseFragment {
 
     private static final String TAG = TeacherMainChatFragment.class.getName();
+
+    private ViewPager mViewPager;
 
     public void displayView(int viewId) {
         Log.d(TAG, "displayView");
@@ -30,11 +32,11 @@ public class TeacherMainChatFragment extends TeacherBaseFragment {
         switch (viewId) {
             case R.id.navigation_chats:
                 msg = "Chats selected";
-                fragment = ChatsFragment.newInstance();
+                mViewPager.setCurrentItem(0);
                 break;
             case R.id.navigation_users:
                 msg = "users selected";
-                fragment = UsersFragment.newInstance();
+                mViewPager.setCurrentItem(1);
                 break;
         }
 
@@ -85,7 +87,15 @@ public class TeacherMainChatFragment extends TeacherBaseFragment {
         Log.d(TAG, "onCreateView");
 
         BottomNavigationView navigation = (BottomNavigationView) view.findViewById(R.id.teacher_chat_navigation);
+        mViewPager = view.findViewById(R.id.main_chat_frame);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
+        viewPagerAdapter.addFragment(TeacherChatsFragment.newInstance(mTeacher));
+        viewPagerAdapter.addFragment(TeacherChatUsersFragment.newInstance(mTeacher));
+
+        mViewPager.setAdapter(viewPagerAdapter);
+
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+//        navigation.
         displayView(R.id.navigation_chats);
         return view;
     }

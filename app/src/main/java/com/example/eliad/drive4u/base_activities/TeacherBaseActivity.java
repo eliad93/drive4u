@@ -87,39 +87,6 @@ public class TeacherBaseActivity extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.teacher_home_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.schedule){
-            myStartActivity( TeacherScheduleActivity.class);
-        }
-//        if(item.getItemId() == R.id.students_requests){
-//            //students requests activity
-//        }
-        if(item.getItemId() == R.id.profile){
-            //profile activity
-            myStartActivity(TeacherProfileActivity.class);
-        }
-        if(item.getItemId() == R.id.my_students){
-            //all students info activity
-            myStartActivity(TeacherMyStudentsActivity.class);
-        }
-//        if(item.getItemId() == R.id.budget_management){
-//            //budget management activity
-        if (item.getItemId() == R.id.teacher_home) {
-            myStartActivity(TeacherHomeActivity.class);
-        }
-        if(item.getItemId() == R.id.logout){
-            finish();
-            logoutUser();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     public void logoutUser(){
         FirebaseAuth.getInstance().signOut();

@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.activities.LoginActivity;
-import com.example.eliad.drive4u.chat.ChatMainActivity;
 import com.example.eliad.drive4u.models.Teacher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

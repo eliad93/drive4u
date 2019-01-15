@@ -21,7 +21,7 @@ tools:context=".TeacherUI.TeacherMainChatFragment">
     app:menu="@menu/chat_navigation" />
 
 
-    <FrameLayout
+    <android.support.v4.view.ViewPager
         android:id="@+id/main_chat_frame"
         android:layout_width="0dp"
         android:layout_height="0dp"
