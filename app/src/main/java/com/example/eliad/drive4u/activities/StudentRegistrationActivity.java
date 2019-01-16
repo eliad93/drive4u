@@ -31,7 +31,7 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity
         implements AdapterView.OnItemSelectedListener {
 
     // Tag for the Log
-    private static final String TAG = StudentSearchTeacherActivity.class.getName();
+    private static final String TAG = StudentRegistrationActivity.class.getName();
 
     // Firebase
     private FirebaseAuth mAuth;
@@ -167,9 +167,8 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "firestore student created successfully");
                         Intent intent = new Intent(getApplicationContext(),
-                                StudentHomeActivity.class);
+                                StudentMainActivity.class);
                         intent.putExtra(StudentMainActivity.ARG_STUDENT, newStudent);
-
                         startActivity(intent);
                     }
                 })

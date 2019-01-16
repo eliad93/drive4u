@@ -36,7 +36,7 @@ public class StudentLessonsArchiveActivity extends StudentBaseActivity
         implements StudentPastLessonsAdapter.StudentPastLessonsItemClickListener,
         StudentArchiveLessonSummaryFragment.StudentLessonSummaryFragmentListener {
     // Tag for the Log
-    private static final String TAG = StudentSearchTeacherActivity.class.getName();
+    private static final String TAG = StudentLessonsArchiveActivity.class.getName();
     // arguments
     private static final double FRAGMENT_WIDTH_PERCENT = 0.8;
     private static final double FRAGMENT_HEIGHT_PERCENT = 0.8;

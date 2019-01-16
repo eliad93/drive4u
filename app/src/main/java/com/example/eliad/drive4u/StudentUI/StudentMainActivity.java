@@ -67,6 +67,10 @@ public class StudentMainActivity extends AppCompatActivity
                 fragment = StudentHomeFragment.newInstance(mStudent);
                 isAtHome = true;
                 break;
+            case R.id.nav_teachers:
+                fragment = StudentSearchTeacherFragment.newInstance(mStudent);
+                isAtHome = false;
+                break;
 
             case R.id.nav_send:
                 fragment = MainChatFragment.newInstance(mStudent);

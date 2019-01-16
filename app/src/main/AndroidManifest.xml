@@ -44,9 +44,6 @@
             android:name=".activities.StudentHomeActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activities.StudentSearchTeacherActivity"
-            android:launchMode="singleTask" />
-        <activity
             android:name=".activities.TeacherRegistrationActivity"
             android:launchMode="singleTask" />
         <activity

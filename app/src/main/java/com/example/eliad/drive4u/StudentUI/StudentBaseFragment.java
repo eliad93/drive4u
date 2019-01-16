@@ -30,8 +30,9 @@ public class StudentBaseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mStudent = getArguments().getParcelable(ARG_STUDENT);
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mStudent = arguments.getParcelable(ARG_STUDENT);
         } else {
             Log.d(TAG, "Created a TeacherBaseFragment with no teacher");
         }
