@@ -6,6 +6,13 @@ import android.os.Parcelable;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class User implements Parcelable{
+
+    // a key that signs no image was set yet
+    public static final String DEFAULT_IMAGE_KEY = "default_image_key";
+
+    // user images are located in this firebase storage reference
+    public static final String UPLOADS = "uploads";
+
     protected String id = null;
     protected String firstName = null;
     protected String lastName = null;
@@ -13,15 +20,17 @@ public abstract class User implements Parcelable{
     protected String city = null;
     protected String email = null;
     protected Integer balance = 0;
+    protected String imageUrl = null;
 
     protected User(String mId, String mFirstName,String mLastName, String mPhoneNumber,
-                   String mCity, String mEmail){
+                   String mCity, String mEmail, String mImageUrl){
         id = mId;
         firstName = mFirstName;
         lastName = mLastName;
         phoneNumber = mPhoneNumber;
         city = mCity;
         email = mEmail;
+        imageUrl = mImageUrl;
     }
 
     public User(){}  // empty constructor for firebase
@@ -88,6 +97,14 @@ public abstract class User implements Parcelable{
         this.email = email;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public abstract String getClassRoom();
 
     // Parcelling part
@@ -99,7 +116,9 @@ public abstract class User implements Parcelable{
         this.city = in.readString();
         this.email =  in.readString();
         this.balance =  in.readInt();
+        this.imageUrl = in.readString();
     }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
@@ -109,6 +128,7 @@ public abstract class User implements Parcelable{
         dest.writeString(city);
         dest.writeString(email);
         dest.writeInt(balance);
+        dest.writeString(imageUrl);
     }
 
     @Override
@@ -124,5 +144,9 @@ public abstract class User implements Parcelable{
         }
         User u = (User) obj;
         return this.getID().equals(u.getID());
+    }
+
+    public String getFullName() {
+        return getFirstName() + " " + getLastName();
     }
 }

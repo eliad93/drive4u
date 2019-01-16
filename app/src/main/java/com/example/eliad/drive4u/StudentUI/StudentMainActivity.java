@@ -14,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +24,8 @@ import com.example.eliad.drive4u.models.Student;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class StudentMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -187,7 +188,7 @@ public class StudentMainActivity extends AppCompatActivity
 
         // set the content of the menu.
         View headerView = navigationView.getHeaderView(0);
-        ImageView drawerImage = (ImageView) headerView.findViewById(R.id.imageView);
+        CircleImageView drawerImage = (CircleImageView) headerView.findViewById(R.id.nav_header_image);
         TextView drawerUsername = (TextView) headerView.findViewById(R.id.user_name);
         TextView drawerAccount = (TextView) headerView.findViewById(R.id.user_email);
         // TODO: Eliad: drawerImage.setImageDrawable(R.drawable.ic_user);

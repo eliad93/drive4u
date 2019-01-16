@@ -28,11 +28,11 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/LessonWhen" />
+        app:layout_constraintStart_toEndOf="@id/nav_header_image"
+        app:layout_constraintTop_toBottomOf="@id/LessonWhen" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/nav_header_image"
         android:layout_width="25dp"
         android:layout_height="22dp"
         android:layout_marginStart="16dp"
@@ -52,7 +52,7 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@id/nav_header_image" />
 
     <ImageButton
         android:id="@+id/editButton"

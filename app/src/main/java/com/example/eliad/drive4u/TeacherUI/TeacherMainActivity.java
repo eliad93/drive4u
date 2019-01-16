@@ -14,17 +14,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.activities.LoginActivity;
 import com.example.eliad.drive4u.chat.MainChatFragment;
 import com.example.eliad.drive4u.models.Teacher;
+import com.example.eliad.drive4u.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TeacherMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -94,10 +97,16 @@ public class TeacherMainActivity extends AppCompatActivity
 
         // set the content of the menu.
         View headerView = navigationView.getHeaderView(0);
-        ImageView drawerImage = (ImageView) headerView.findViewById(R.id.imageView);
+        CircleImageView drawerImage = (CircleImageView) headerView.findViewById(R.id.nav_header_image);
         TextView drawerUsername = (TextView) headerView.findViewById(R.id.user_name);
         TextView drawerAccount = (TextView) headerView.findViewById(R.id.user_email);
-        // TODO: Eliad: drawerImage.setImageDrawable(R.drawable.ic_user);
+
+        if (mTeacher.getImageUrl() == null || mTeacher.getImageUrl().equals(User.DEFAULT_IMAGE_KEY)) {
+            drawerImage.setImageResource(R.mipmap.ic_launcher);
+        } else {
+            Glide.with(this).load(mTeacher.getImageUrl()).into(drawerImage);
+        }
+
         String userName = mTeacher.getFirstName() + " " + mTeacher.getLastName();
         drawerUsername.setText(userName);
         drawerAccount.setText(mTeacher.getEmail());

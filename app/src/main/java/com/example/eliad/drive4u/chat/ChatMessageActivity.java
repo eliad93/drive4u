@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.ChatMessageAdapter;
 import com.example.eliad.drive4u.models.Chat;
@@ -92,7 +93,12 @@ public class ChatMessageActivity extends AppCompatActivity {
 
         final String secUserName = secUser.getFirstName() + " " + secUser.getLastName();
         username.setText(secUserName);
-        profile_image.setImageResource(R.mipmap.ic_launcher);
+
+        if (secUser.getImageUrl() == null || secUser.getImageUrl().equals(User.DEFAULT_IMAGE_KEY)) {
+            profile_image.setImageResource(R.mipmap.ic_launcher);
+        } else {
+            Glide.with(this).load(secUser.getImageUrl()).into(profile_image);
+        }
 
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,21 +112,7 @@ public class ChatMessageActivity extends AppCompatActivity {
                 text_send.setText("");
             }
         });
-        /*
-        TODO: Eliad add image URL here (better even if it is on a event listener for pic updates.
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChanged(DataSnapshot dataSnapshot) {
-                if (user.getImageURL().equals("default") {
-                     set ic launcher
-                } else {
-                    load image from url and set it to the profile_image
-                }
 
-                readMessage(currUser.getID(), secUser.getID(), secUser.getImageURL());
-            }
-        }
-         */
         readMessages(currUser.getID(), secUser.getID(), "");
     }
 

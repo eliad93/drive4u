@@ -16,9 +16,8 @@ import android.widget.Toast;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.TeacherUI.TeacherMainActivity;
 import com.example.eliad.drive4u.base_activities.RegistrationBaseActivity;
-import com.example.eliad.drive4u.base_activities.TeacherBaseActivity;
-import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.Teacher;
+import com.example.eliad.drive4u.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -190,7 +189,7 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
         imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
         String uId = newUser.getUid();
         final Teacher newTeacher = new Teacher(uId, firstName, lastName, phone, city, email,
-                carModel, price, gearType,lessonLen);
+                carModel, price, gearType,lessonLen, User.DEFAULT_IMAGE_KEY);
         db.collection(getResources().getString(R.string.DB_Teachers)).document(uId).set(newTeacher)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
