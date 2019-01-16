@@ -6,10 +6,10 @@ xmlns:tools="http://schemas.android.com/tools"
 android:id="@+id/container"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context=".TeacherUI.TeacherMainChatFragment">
+tools:context=".chat.MainChatFragment">
 
 <android.support.design.widget.BottomNavigationView
-    android:id="@+id/teacher_chat_navigation"
+    android:id="@+id/bottom_main_chat_navigation"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="0dp"
@@ -26,7 +26,7 @@ tools:context=".TeacherUI.TeacherMainChatFragment">
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintBottom_toTopOf="@id/teacher_chat_navigation"
+        app:layout_constraintBottom_toTopOf="@id/bottom_main_chat_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

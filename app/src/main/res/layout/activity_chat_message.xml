@@ -60,7 +60,10 @@
             android:id="@+id/chat_message_text_send"
             android:layout_centerVertical="true"
             android:background="@android:color/transparent"
-            android:hint="@string/type_a_message"/>
+            android:layout_toLeftOf="@id/chat_message_btn_send"
+            android:layout_marginRight="8dp"
+            android:hint="@string/type_a_message"
+            android:layout_toStartOf="@id/chat_message_btn_send" />
 
         <ImageButton
             android:layout_width="40dp"

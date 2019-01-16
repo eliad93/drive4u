@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.activities.LoginActivity;
+import com.example.eliad.drive4u.chat.MainChatFragment;
 import com.example.eliad.drive4u.models.Teacher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -181,7 +182,7 @@ public class TeacherMainActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_send:
-                fragment = TeacherMainChatFragment.newInstance(mTeacher);
+                fragment = MainChatFragment.newInstance(mTeacher);
                 isAtHome = false;
                 break;
 

@@ -9,4 +9,7 @@
     <color name="colorButtonText">#ffffff</color>
     <color name="activitiesBackground">#469bdc</color>
     <color name="colorWhite">#ffffff</color>
+
+    <color name="colorChatMessageRight">#00a6ff</color>
+    <color name="colorChatMessageLeft">#ffffff</color>
 </resources>

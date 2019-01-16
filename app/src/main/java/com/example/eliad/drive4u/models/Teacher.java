@@ -143,4 +143,9 @@ public class Teacher extends User {
     public int describeContents() {
         return 0;
     }
+
+    @Override
+    public String getClassRoom() {
+        return id;
+    }
 }

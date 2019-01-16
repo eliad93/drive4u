@@ -111,4 +111,9 @@ public class Student extends User {
         dest.writeInt(totalExpense);
         dest.writeString(gearType);
     }
+
+    @Override
+    public String getClassRoom() {
+        return teacherId;
+    }
 }

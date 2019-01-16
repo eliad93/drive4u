@@ -1,25 +1,22 @@
-package com.example.eliad.drive4u.TeacherUI;
-
+package com.example.eliad.drive4u.chat;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.models.Teacher;
+import com.example.eliad.drive4u.models.User;
 
-public class TeacherChatsFragment extends TeacherBaseFragment {
+public class ChatsFragment  extends UserBaseFragment {
 
-    public TeacherChatsFragment() {
+    public ChatsFragment() {
         // Required empty public constructor
     }
 
-    public static TeacherChatsFragment newInstance(Teacher teacher) {
-        TeacherChatsFragment fragment = new TeacherChatsFragment();
-        Bundle args = newInstanceBaseArgs(teacher);
+    public static ChatsFragment newInstance(User user) {
+        ChatsFragment fragment = new ChatsFragment();
+        Bundle args = newInstanceBaseArgs(user);
         fragment.setArguments(args);
         return fragment;
     }

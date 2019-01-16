@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.activities.LoginActivity;
+import com.example.eliad.drive4u.chat.MainChatFragment;
 import com.example.eliad.drive4u.models.Student;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -61,25 +62,17 @@ public class StudentMainActivity extends AppCompatActivity
         Fragment fragment =  null;
         String title = getString(R.string.app_name);
 
-//        if (id == R.id.nav_home) {
-//            // Handle the camera action
-//        } else if (id == R.id.nav_schedule) {
-//
-//        } else if (id == R.id.nav_teachers) {
-//
-//        } else if (id == R.id.nav_profile) {
-//
-//        } else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
-
         switch (viewId) {
             case R.id.nav_home:
                 fragment = StudentHomeFragment.newInstance(mStudent);
                 isAtHome = true;
                 break;
+
+            case R.id.nav_send:
+                fragment = MainChatFragment.newInstance(mStudent);
+                isAtHome = false;
+                break;
+
             default:
                 // TODO: add to the following isAtHome = false for back pressed.
                 Toast.makeText(this, "this teacher_home_navigation item was not implemented yet", Toast.LENGTH_LONG).show();

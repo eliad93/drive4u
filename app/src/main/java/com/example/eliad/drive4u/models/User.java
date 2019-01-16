@@ -86,6 +86,8 @@ public abstract class User implements Parcelable{
         this.email = email;
     }
 
+    public abstract String getClassRoom();
+
     // Parcelling part
     protected User(Parcel in){
         this.id = in.readString();
@@ -106,4 +108,6 @@ public abstract class User implements Parcelable{
         dest.writeString(email);
         dest.writeInt(balance);
     }
+
+
 }

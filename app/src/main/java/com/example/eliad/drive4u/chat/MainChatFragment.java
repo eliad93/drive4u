@@ -1,5 +1,4 @@
-package com.example.eliad.drive4u.TeacherUI;
-
+package com.example.eliad.drive4u.chat;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,11 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.TeacherUI.TeacherMainChatFragment;
 import com.example.eliad.drive4u.adapters.ViewPagerAdapter;
-import com.example.eliad.drive4u.chat.ChatsFragment;
 import com.example.eliad.drive4u.models.Teacher;
+import com.example.eliad.drive4u.models.User;
 
-public class TeacherMainChatFragment extends TeacherBaseFragment {
+public class MainChatFragment extends UserBaseFragment {
 
     private static final String TAG = TeacherMainChatFragment.class.getName();
 
@@ -53,13 +53,13 @@ public class TeacherMainChatFragment extends TeacherBaseFragment {
         }
     };
 
-    public TeacherMainChatFragment() {
+    public MainChatFragment() {
         // Required empty public constructor
     }
 
-    public static TeacherMainChatFragment newInstance(Teacher teacher) {
-        TeacherMainChatFragment fragment = new TeacherMainChatFragment();
-        Bundle args = newInstanceBaseArgs(teacher);
+    public static MainChatFragment newInstance(User user) {
+        MainChatFragment fragment = new MainChatFragment();
+        Bundle args = newInstanceBaseArgs(user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -82,8 +82,8 @@ public class TeacherMainChatFragment extends TeacherBaseFragment {
         BottomNavigationView navigation = (BottomNavigationView) view.findViewById(R.id.bottom_main_chat_navigation);
         mViewPager = view.findViewById(R.id.main_chat_frame);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-        viewPagerAdapter.addFragment(ChatsFragment.newInstance(mTeacher));
-        viewPagerAdapter.addFragment(TeacherChatUsersFragment.newInstance(mTeacher));
+        viewPagerAdapter.addFragment(ChatsFragment.newInstance(mUser));
+        viewPagerAdapter.addFragment(ChatUsersFragment.newInstance(mUser));
 
         mViewPager.setAdapter(viewPagerAdapter);
 
