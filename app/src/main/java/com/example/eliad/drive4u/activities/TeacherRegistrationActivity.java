@@ -189,7 +189,7 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
         imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
         String uId = newUser.getUid();
         final Teacher newTeacher = new Teacher(uId, firstName, lastName, phone, city, email,
-                carModel, price, gearType,lessonLen, User.DEFAULT_IMAGE_KEY);
+                carModel, price, gearType,lessonLen, User.DEFAULT_IMAGE_KEY, User.ONLINE);
         db.collection(getResources().getString(R.string.DB_Teachers)).document(uId).set(newTeacher)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

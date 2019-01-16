@@ -34,8 +34,8 @@ public class Teacher extends User {
     }
 
     public Teacher(String mId, String mFirstName, String mLastName, String mPhoneNumber,
-                   String mCity, String mEmail, String mCarModel, Integer mPrice, String mGearType, Integer mlessonLength, String imageUrl){
-        super(mId, mFirstName, mLastName, mPhoneNumber, mEmail, mCity, imageUrl);
+                   String mCity, String mEmail, String mCarModel, Integer mPrice, String mGearType, Integer mlessonLength, String imageUrl, String status){
+        super(mId, mFirstName, mLastName, mPhoneNumber, mEmail, mCity, imageUrl, status);
         carModel = mCarModel;
         price = mPrice;
         lessonLength = mlessonLength;

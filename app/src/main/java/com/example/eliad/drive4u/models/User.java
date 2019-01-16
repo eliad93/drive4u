@@ -13,6 +13,9 @@ public abstract class User implements Parcelable{
     // user images are located in this firebase storage reference
     public static final String UPLOADS = "uploads";
 
+    public static final String ONLINE = "online";
+    public static final String OFFLINE = "offline";
+
     protected String id = null;
     protected String firstName = null;
     protected String lastName = null;
@@ -22,8 +25,10 @@ public abstract class User implements Parcelable{
     protected Integer balance = 0;
     protected String imageUrl = null;
 
+    protected String status = null;
+
     protected User(String mId, String mFirstName,String mLastName, String mPhoneNumber,
-                   String mCity, String mEmail, String mImageUrl){
+                   String mCity, String mEmail, String mImageUrl, String mStatus){
         id = mId;
         firstName = mFirstName;
         lastName = mLastName;
@@ -31,6 +36,7 @@ public abstract class User implements Parcelable{
         city = mCity;
         email = mEmail;
         imageUrl = mImageUrl;
+        status = mStatus;
     }
 
     public User(){}  // empty constructor for firebase
@@ -107,6 +113,13 @@ public abstract class User implements Parcelable{
 
     public abstract String getClassRoom();
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
     // Parcelling part
     protected User(Parcel in){
         this.id = in.readString();
@@ -117,6 +130,7 @@ public abstract class User implements Parcelable{
         this.email =  in.readString();
         this.balance =  in.readInt();
         this.imageUrl = in.readString();
+        this.status = in.readString();
     }
 
     @Override
@@ -129,6 +143,7 @@ public abstract class User implements Parcelable{
         dest.writeString(email);
         dest.writeInt(balance);
         dest.writeString(imageUrl);
+        dest.writeString(status);
     }
 
     @Override
@@ -149,4 +164,5 @@ public abstract class User implements Parcelable{
     public String getFullName() {
         return getFirstName() + " " + getLastName();
     }
+
 }

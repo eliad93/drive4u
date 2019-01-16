@@ -137,7 +137,8 @@ public class StudentMainActivity extends AppCompatActivity
 
     public void logoutUser(){
         FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getBaseContext(), LoginActivity.class));
+        startActivity(new Intent(getBaseContext(), LoginActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

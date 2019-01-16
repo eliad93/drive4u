@@ -25,8 +25,9 @@ public class Student extends User {
         }
     }
     public Student(String mId, String mFirstName, String mLastName, String mPhoneNumber,
-                    String mCity, String mEmail, String teacherId,Integer totalExpense,Integer numberOfLessons, String mGearType, String imageUrl ) {
-        super(mId, mFirstName, mLastName, mPhoneNumber, mCity, mEmail, imageUrl);
+                    String mCity, String mEmail, String teacherId,Integer totalExpense,
+                   Integer numberOfLessons, String mGearType, String imageUrl, String status ) {
+        super(mId, mFirstName, mLastName, mPhoneNumber, mCity, mEmail, imageUrl, status);
         this.teacherId = teacherId;
         this.totalExpense =totalExpense;
         this.numberOfLessons = numberOfLessons;

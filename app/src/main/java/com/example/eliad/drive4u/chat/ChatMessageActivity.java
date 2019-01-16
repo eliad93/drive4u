@@ -18,11 +18,15 @@ import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.ChatMessageAdapter;
 import com.example.eliad.drive4u.models.Chat;
 import com.example.eliad.drive4u.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +57,7 @@ public class ChatMessageActivity extends AppCompatActivity {
     private ImageButton btn_send;
     private EditText text_send;
 
+    FirebaseFirestore db;
     DatabaseReference reference;
     ChatMessageAdapter messageAdapter;
     List<Chat> mChats;
@@ -62,6 +67,8 @@ public class ChatMessageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_message);
+
+        db = FirebaseFirestore.getInstance();
 
         mToolbar = findViewById(R.id.chat_message_toolbar);
         setSupportActionBar(mToolbar);
@@ -152,5 +159,42 @@ public class ChatMessageActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void status(final String status) {
+        currUser.setStatus(status);
+        db.collection(getString(R.string.DB_Teachers))
+                .document(currUser.getID())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document != null && document.exists()) {
+                                db.collection(getString(R.string.DB_Teachers))
+                                        .document(currUser.getID())
+                                        .update("status", status);
+                            } else {
+                                db.collection(getString(R.string.DB_Students))
+                                        .document(currUser.getID())
+                                        .update("status", status);
+                            }
+                        }
+                    }
+                });
+//
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status(User.ONLINE);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status(User.OFFLINE);
     }
 }

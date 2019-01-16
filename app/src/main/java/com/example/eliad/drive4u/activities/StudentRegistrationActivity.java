@@ -161,7 +161,8 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity
         imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
         String uId = newUser.getUid();
         final Student newStudent = new Student(uId, firstName, lastName, phone, city,
-                email, "", 0, 0, gearType, User.DEFAULT_IMAGE_KEY);
+                email, "", 0, 0, gearType,
+                User.DEFAULT_IMAGE_KEY, User.ONLINE);
         db.collection("Students").document(uId).set(newStudent)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

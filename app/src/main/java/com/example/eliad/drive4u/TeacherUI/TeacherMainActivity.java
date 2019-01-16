@@ -152,7 +152,8 @@ public class TeacherMainActivity extends AppCompatActivity
 
     public void logoutUser(){
         FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getBaseContext(), LoginActivity.class));
+        startActivity(new Intent(getBaseContext(), LoginActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     @Override
@@ -217,5 +218,23 @@ public class TeacherMainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
+    }
+
+    private void status(String status) {
+        db.collection(getString(R.string.DB_Teachers))
+                .document(mTeacher.getID())
+                .update("status", status);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status(User.ONLINE);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status(User.OFFLINE);
     }
 }
