@@ -1,4 +1,4 @@
-package com.example.eliad.drive4u.activities;
+package com.example.eliad.drive4u.chat;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +17,6 @@ import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.ChatMessageAdapter;
 import com.example.eliad.drive4u.models.Chat;
 import com.example.eliad.drive4u.models.User;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,10 +36,10 @@ public class ChatMessageActivity extends AppCompatActivity {
     public static final String ARG_CURRENT_USER = TAG + ".arg_current_user";
     public static final String ARG_SECOND_USER = TAG + ".arg_second_user";
 
-    private static final String SENDER = "sender";
-    private static final String RECEIVER = "receiver";
-    private static final String MESSAGE = "message";
-    private static final String CHATS = "chats";
+    public static final String SENDER = "sender";
+    public static final String RECEIVER = "receiver";
+    public static final String MESSAGE = "message";
+    public static final String CHATS = "chats";
 
     private CircleImageView profile_image;
     private TextView username;

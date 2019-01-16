@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.activities.ChatMessageActivity;
+import com.example.eliad.drive4u.chat.ChatMessageActivity;
 import com.example.eliad.drive4u.models.User;
 
 import java.util.List;

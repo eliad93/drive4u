@@ -3,6 +3,8 @@ package com.example.eliad.drive4u.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.jetbrains.annotations.Nullable;
+
 public abstract class User implements Parcelable{
     protected String id = null;
     protected String firstName = null;
@@ -109,5 +111,18 @@ public abstract class User implements Parcelable{
         dest.writeInt(balance);
     }
 
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (super.equals(obj)) {
+            // this == obj
+            return true;
+        }
 
+        if (!(obj instanceof User)) {
+            // not a subclass of a user.
+            return false;
+        }
+        User u = (User) obj;
+        return this.getID().equals(u.getID());
+    }
 }
