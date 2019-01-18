@@ -2,6 +2,7 @@ package com.example.eliad.drive4u.StudentUI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,8 +23,12 @@ import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.activities.LoginActivity;
 import com.example.eliad.drive4u.chat.MainChatFragment;
 import com.example.eliad.drive4u.models.Student;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class StudentMainActivity extends AppCompatActivity
@@ -46,14 +52,17 @@ public class StudentMainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_main);
-
         Log.d(TAG, "onCreate");
-
         initDbVariables();
         initStudent();
         initToolbar();
         initNavigationView();
         displayView(R.id.nav_home);
+    }
+
+    private void disableUserInteraction() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
     public void displayView(int viewId) {
@@ -102,8 +111,15 @@ public class StudentMainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        updateStudent();
+    }
+
+    @Override
     public void onBackPressed() {
         Log.d(TAG, "in onBackPressed");
+        updateStudent();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -171,9 +187,8 @@ public class StudentMainActivity extends AppCompatActivity
         Log.d(TAG, "initTeacher");
         Intent parcelablesIntent = getIntent();
         mStudent = parcelablesIntent.getParcelableExtra(ARG_STUDENT);
-
         if (mStudent == null) {
-            Log.d(TAG, " Got an intent without a student. fetching him fom the dp. fix this!");
+            Log.d(TAG, "Got an intent without a student. fetching him fom the dp. fix this!");
             // TODO: fetch the teacher or search for the bug
         }
     }
@@ -199,5 +214,31 @@ public class StudentMainActivity extends AppCompatActivity
         String userName = mStudent.getFirstName() + " " + mStudent.getLastName();
         drawerUsername.setText(userName);
         drawerAccount.setText(mStudent.getEmail());
+    }
+
+    private void updateStudent(){
+        Log.d(TAG, "updateStudent");
+        disableUserInteraction();
+        db.collection("Students").document(mUser.getUid()).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot document = task.getResult();
+                            assert document != null;
+                            if(document.exists()){
+                                mStudent = document.toObject(Student.class);
+                                Log.d(TAG, "updated student");
+                                enableUserInteraction();
+                            }
+                        } else {
+                            Log.d(TAG, "failed to update student");
+                        }
+                    }
+                });
+    }
+
+    private void enableUserInteraction() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 }

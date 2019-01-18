@@ -195,6 +195,7 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
     @Override
     public void performUserAction() {
         Log.d(TAG, "in performUserAction");
+
         if(!mStudent.hasTeacher()){
             mTeachersDb.document(currentTeacher.getID())
                     .update("students", FieldValue.arrayUnion(mStudent.getID()))
