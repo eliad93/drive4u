@@ -41,10 +41,12 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
-    private EditText editTextCarModel,editTextPrice, editTextLessonLen;
+    private EditText editTextCarModel, editTextPrice, editTextLessonLen;
     private Spinner spinnerGearType;
 
-    private String gearType,name,firstName="", lastName="", phone,city,email, password, passwordRepeat, carModel, priceString,lessonLenString;
+    private String gearType,name, firstName="", lastName="",
+            phone, city,email, password, passwordRepeat,
+            carModel, priceString, lessonLenString;
     Integer price, lessonLen;
 
     @Override
@@ -97,8 +99,7 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
                             Log.d(TAG, "registered successfully");
                             FirebaseUser newUser = mAuth.getCurrentUser();
                             assert newUser != null;
-                            createNewTeacher(newUser, firstName, lastName, phone, city, email,
-                                    carModel, price, gearType, lessonLen);
+                            createNewTeacher(newUser);
                         } else {
                             progressBar.setVisibility(View.GONE);
                             Log.d(TAG, "registration failed " + task.getException());
@@ -181,9 +182,7 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
     }
 
 
-    private void createNewTeacher(FirebaseUser newUser, String firstName, String lastName,
-                                  String phone, String city, String email,
-                                  String carModel, Integer price, String gearType, Integer lessonLen) {
+    private void createNewTeacher(FirebaseUser newUser) {
         Log.d(TAG, "in createNewTeacher");
         InputMethodManager imm = (InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);

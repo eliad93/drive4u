@@ -53,9 +53,6 @@
             android:name=".activities.TeacherProfileActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activities.StudentProfileActivity"
-            android:launchMode="singleTask" />
-        <activity
             android:name=".activities.TeacherMyStudentsActivity"
             android:launchMode="singleTask" />
         <activity

@@ -13,7 +13,6 @@ import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.activities.LoginActivity;
 import com.example.eliad.drive4u.activities.StudentHomeActivity;
 import com.example.eliad.drive4u.activities.StudentLessonsArchiveActivity;
-import com.example.eliad.drive4u.activities.StudentProfileActivity;
 import com.example.eliad.drive4u.activities.StudentScheduleLessonActivity;
 import com.example.eliad.drive4u.models.Student;
 import com.google.firebase.auth.FirebaseAuth;

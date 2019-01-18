@@ -13,6 +13,7 @@ public class StudentBaseFragment extends Fragment {
     private static final String TAG = StudentBaseFragment.class.getName();
 
     public static final String ARG_STUDENT = TAG + ".arg_student";
+    public static final String ARG_TEACHER = TAG + ".arg_teacher";
 
     protected Student mStudent;
 

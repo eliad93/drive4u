@@ -4,6 +4,7 @@ package com.example.eliad.drive4u.StudentUI;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,8 +15,7 @@ import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.TeacherSearchAdapter;
-import com.example.eliad.drive4u.built_in_utils.BorderLineDividerItemDecoration;
-import com.example.eliad.drive4u.fragments.ChooseTeacherFragment;
+import com.example.eliad.drive4u.fragments.StudentChooseTeacherFragment;
 import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.Teacher;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,13 +29,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.LinkedList;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple {@link StudentBaseFragment} subclass.
  * Use the {@link StudentSearchTeacherFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class StudentSearchTeacherFragment extends StudentBaseFragment
-        implements TeacherSearchAdapter.OnItemClickListener{
-
+        implements TeacherSearchAdapter.OnItemClickListener,
+        StudentChooseTeacherFragment.PerformUserAction {
     // Tag for the Log
     private static final String TAG = StudentSearchTeacherFragment.class.getName();
     // Firebase
@@ -47,8 +47,7 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
     private RecyclerView.LayoutManager mLayoutManager;
     // models
     private LinkedList<Teacher> teachers = new LinkedList<>();
-    // fragments
-    private ChooseTeacherFragment chooseTeacherFragment;
+    private Teacher currentTeacher;
 
     private TextView textViewNoTeachers;
 
@@ -82,8 +81,6 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
         mTeachersDb = db.collection("Teachers");
 
         initializeRecyclerView(view);
-        // init fragments
-        initChooseTeacherFragment();
         // populate recycler view
         presentAllTeachers();
         return view;
@@ -95,12 +92,7 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.addItemDecoration(new BorderLineDividerItemDecoration(getContext()));
-    }
-
-    private void initChooseTeacherFragment() {
-        chooseTeacherFragment = new ChooseTeacherFragment();
-        chooseTeacherFragment.setArguments(createArgsForFragment());
+       // mRecyclerView.addItemDecoration(new BorderLineDividerItemDecoration(getContext()));
     }
 
     private void presentAllTeachers() {
@@ -132,17 +124,15 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
                 });
     }
 
-    private void studentUpdateConnected(final Teacher teacher) {
+    private void studentUpdateConnected() {
         Log.d(TAG, "in studentUpdateConnected");
-        mStudentDoc.update("teacherId", teacher.getID())
+        mStudentDoc.update("teacherId", currentTeacher.getID())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             Log.d(TAG, "update teacher id in student success");
-                            mStudent.setTeacherId(teacher.getID());
-                            // must call it here because it is asynchronous
-                            initChooseTeacherFragment();
+                            mStudent.setTeacherId(currentTeacher.getID());
                         } else {
                             Log.d(TAG, "update teacher id in student failed");
                         }
@@ -166,30 +156,29 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
     public void onItemClick(int position) {
         Log.d(TAG, "in onItemClick");
 
-        chooseTeacherFragment.show(getChildFragmentManager(),"student choose teacher");
-        if(!mStudent.hasTeacher()){
-            final Teacher teacher = teachers.get(position);
-            mTeachersDb.document(teacher.getID())
-                    .update("students", FieldValue.arrayUnion(mStudent.getID()))
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                Log.d(TAG, "update students in teacher success");
-                                updateDataAfterTeacherChosen(teacher);
-                            } else {
-                                Log.d(TAG, "update students in teacher failed");
-                            }
-                        }
-                    });
-        } else {
-            Log.d(TAG, "already has teacher");
-        }
+        currentTeacher = teachers.get(position);
+        Fragment teacherFragment = StudentChooseTeacherFragment.newInstance(mStudent, currentTeacher);
+        startFragmentForResult(teacherFragment);
+//        getChildFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.frameStudentChooseTeacher, teacherFragment)
+//                .commit();
     }
 
-    private void updateDataAfterTeacherChosen(Teacher teacher) {
-        teacher.addStudent(mStudent.getID());
-        studentUpdateConnected(teacher);
+    private void startFragmentForResult(Fragment fragment) {
+        Log.d(TAG, "in startFragmentForResult");
+        FragmentManager fm = getFragmentManager();
+        assert fm != null;
+        fragment.setTargetFragment(this, 0);
+        fm.beginTransaction()
+                .replace(R.id.frameStudentChooseTeacher, fragment)
+                .commit();
+    }
+
+    private void updateDataAfterTeacherChosen() {
+        Log.d(TAG, "in updateDataAfterTeacherChosen");
+        currentTeacher.addStudent(mStudent.getID());
+        studentUpdateConnected();
     }
 
     private Bundle createArgsForFragment() {
@@ -203,4 +192,25 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
         return args;
     }
 
+    @Override
+    public void performUserAction() {
+        Log.d(TAG, "in performUserAction");
+        if(!mStudent.hasTeacher()){
+            mTeachersDb.document(currentTeacher.getID())
+                    .update("students", FieldValue.arrayUnion(mStudent.getID()))
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                Log.d(TAG, "update students in teacher success");
+                                updateDataAfterTeacherChosen();
+                            } else {
+                                Log.d(TAG, "update students in teacher failed");
+                            }
+                        }
+                    });
+        } else {
+            Log.d(TAG, "already has teacher");
+        }
+    }
 }

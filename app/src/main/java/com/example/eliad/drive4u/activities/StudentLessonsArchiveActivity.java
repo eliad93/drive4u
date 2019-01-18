@@ -70,7 +70,6 @@ public class StudentLessonsArchiveActivity extends StudentBaseActivity
 
     }
 
-    @SuppressLint("CommitTransaction")
     private void initializeFragmentObjects() {
         fragmentManager = getSupportFragmentManager();
     }

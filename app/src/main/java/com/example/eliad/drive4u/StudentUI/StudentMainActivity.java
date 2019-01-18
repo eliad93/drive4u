@@ -25,8 +25,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class StudentMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -72,6 +70,10 @@ public class StudentMainActivity extends AppCompatActivity
                 fragment = StudentSearchTeacherFragment.newInstance(mStudent);
                 isAtHome = false;
                 break;
+            case R.id.nav_profile:
+                fragment = StudentProfileFragment.newInstance(mStudent);
+                isAtHome = false;
+                break;
 
             case R.id.nav_send:
                 fragment = MainChatFragment.newInstance(mStudent);
@@ -86,7 +88,7 @@ public class StudentMainActivity extends AppCompatActivity
 
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, fragment);
+            ft.replace(R.id.student_content_frame, fragment);
             ft.commit();
         }
 
@@ -101,6 +103,7 @@ public class StudentMainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        Log.d(TAG, "in onBackPressed");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -189,7 +192,7 @@ public class StudentMainActivity extends AppCompatActivity
 
         // set the content of the menu.
         View headerView = navigationView.getHeaderView(0);
-        CircleImageView drawerImage = (CircleImageView) headerView.findViewById(R.id.nav_header_image);
+      //  CircleImageView drawerImage = (CircleImageView) headerView.findViewById(R.id.nav_header_image);
         TextView drawerUsername = (TextView) headerView.findViewById(R.id.user_name);
         TextView drawerAccount = (TextView) headerView.findViewById(R.id.user_email);
         // TODO: Eliad: drawerImage.setImageDrawable(R.drawable.ic_user);
