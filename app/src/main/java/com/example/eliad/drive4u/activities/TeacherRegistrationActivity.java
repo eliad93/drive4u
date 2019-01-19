@@ -16,9 +16,8 @@ import android.widget.Toast;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.TeacherUI.TeacherMainActivity;
 import com.example.eliad.drive4u.base_activities.RegistrationBaseActivity;
-import com.example.eliad.drive4u.base_activities.TeacherBaseActivity;
-import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.Teacher;
+import com.example.eliad.drive4u.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,10 +26,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.regex.Pattern;
 
 public class TeacherRegistrationActivity extends RegistrationBaseActivity
         implements AdapterView.OnItemSelectedListener {
@@ -42,10 +37,12 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
-    private EditText editTextCarModel,editTextPrice, editTextLessonLen;
+    private EditText editTextCarModel, editTextPrice, editTextLessonLen;
     private Spinner spinnerGearType;
 
-    private String gearType,name,firstName="", lastName="", phone,city,email, password, passwordRepeat, carModel, priceString,lessonLenString;
+    private String gearType,name, firstName="", lastName="",
+            phone, city,email, password, passwordRepeat,
+            carModel, priceString, lessonLenString;
     Integer price, lessonLen;
 
     @Override
@@ -98,8 +95,7 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
                             Log.d(TAG, "registered successfully");
                             FirebaseUser newUser = mAuth.getCurrentUser();
                             assert newUser != null;
-                            createNewTeacher(newUser, firstName, lastName, phone, city, email,
-                                    carModel, price, gearType, lessonLen);
+                            createNewTeacher(newUser);
                         } else {
                             progressBar.setVisibility(View.GONE);
                             Log.d(TAG, "registration failed " + task.getException());
@@ -174,6 +170,10 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
         if(lessonLenString.isEmpty()) {
             editTextLessonLen.setError(getString(R.string.lesson_len_error));
             isValid = false;
+        } else if(Integer.valueOf(lessonLenString) > 60
+                || Integer.valueOf(lessonLenString) < 30){
+            editTextLessonLen.setError(getString(R.string.lesson_len_range_error));
+            isValid = false;
         }
         if(gearType == null) {
             isValid = false;
@@ -182,15 +182,17 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
     }
 
 
-    private void createNewTeacher(FirebaseUser newUser, String firstName, String lastName,
-                                  String phone, String city, String email,
-                                  String carModel, Integer price, String gearType, Integer lessonLen) {
+    private void createNewTeacher(FirebaseUser newUser) {
         Log.d(TAG, "in createNewTeacher");
-        InputMethodManager imm = (InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        try{
+            imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+        } catch (NullPointerException ignored){
+            Log.d(TAG, "unsafe user input state");
+        }
         String uId = newUser.getUid();
         final Teacher newTeacher = new Teacher(uId, firstName, lastName, phone, city, email,
-                carModel, price, gearType,lessonLen);
+                carModel, price, gearType,lessonLen, User.DEFAULT_IMAGE_KEY, User.ONLINE);
         db.collection(getResources().getString(R.string.DB_Teachers)).document(uId).set(newTeacher)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

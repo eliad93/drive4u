@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.chat.ChatMessageActivity;
 import com.example.eliad.drive4u.models.User;
@@ -22,12 +23,15 @@ public class ChatUsersAdapter extends RecyclerView.Adapter {
     private User mUser;
     private Context mContext;
     private List<User> mUsers;
+    private boolean ischat;
 
-    public ChatUsersAdapter(Context context, List<User> users, User user) {
+    public ChatUsersAdapter(Context context, List<User> users, User user, boolean ischat) {
         this.mUser = user;
         this.mContext = context;
         this.mUsers = users;
+        this.ischat = ischat;
     }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -44,9 +48,24 @@ public class ChatUsersAdapter extends RecyclerView.Adapter {
 
         holder.username.setText(username);
 
-        // TODO: Eliad set the users image!
-        holder.profile_image.setImageResource(R.mipmap.ic_launcher);
-//        Glide.with(mContext).load(userImageURL()).into(viewHolder.profile_image);
+        if (user.getImageUrl() == null || user.getImageUrl().equals(User.DEFAULT_IMAGE_KEY)) {
+            holder.profile_image.setImageResource(R.mipmap.ic_launcher);
+        } else {
+            Glide.with(mContext).load(user.getImageUrl()).into(holder.profile_image);
+        }
+
+        if (ischat && user.getStatus() != null) {
+            if (user.getStatus().equals(User.ONLINE)) {
+                holder.img_on.setVisibility(View.VISIBLE);
+                holder.img_off.setVisibility(View.GONE);
+            } else {
+                holder.img_on.setVisibility(View.GONE);
+                holder.img_off.setVisibility(View.VISIBLE);
+            }
+        } else {
+            holder.img_on.setVisibility(View.GONE);
+            holder.img_off.setVisibility(View.GONE);
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
 
@@ -70,12 +89,16 @@ public class ChatUsersAdapter extends RecyclerView.Adapter {
 
         public TextView username;
         public ImageView profile_image;
+        private ImageView img_on;
+        private ImageView img_off;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             username = itemView.findViewById(R.id.chat_user_item_username);
             profile_image = itemView.findViewById(R.id.chat_user_item_profile_image);
+            img_on = itemView.findViewById(R.id.img_on);
+            img_off = itemView.findViewById(R.id.img_off);
         }
     }
 }

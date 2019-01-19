@@ -116,7 +116,7 @@ public class ChatUsersFragment extends UserBaseFragment {
                                 }
                             }
                             if (mUsersList.size() > 0) {
-                                usersAdapter = new ChatUsersAdapter(getContext(), mUsersList, mUser);
+                                usersAdapter = new ChatUsersAdapter(getContext(), mUsersList, mUser, false);
                                 recyclerView.setAdapter(usersAdapter);
                             } else {
                                 Log.d(TAG, "This Teacher has no students");

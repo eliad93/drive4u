@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.models.Teacher;
@@ -72,15 +72,13 @@ public class TeacherSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
         public TextView mName;
         public TextView mCity;
         public TextView mNumStudents;
-        public ImageButton mTeacherChoose;
 
         public TeacherSearchViewHolder(View v){
             super(v);
             mName = (TextView)v.findViewById(R.id.textViewTeacherName);
             mCity = (TextView)v.findViewById(R.id.textViewTeacherCity);
             mNumStudents = (TextView)v.findViewById(R.id.textViewNumberOfStudents);
-            mTeacherChoose = (ImageButton)v.findViewById(R.id.imageButtonChooseTeacher);
-            mTeacherChoose.setOnClickListener(new View.OnClickListener() {
+            v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(mListener != null){

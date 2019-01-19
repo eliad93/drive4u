@@ -12,6 +12,7 @@ public class Teacher extends User {
     private Integer price;
     private String gearType;
     private Integer lessonLength;
+    private ArrayList<String> connectionRequests = new ArrayList<>();
     public enum GearType {
         Manual(1, "manual"),
         AUTOMATIC (2, "automatic"),
@@ -34,8 +35,9 @@ public class Teacher extends User {
     }
 
     public Teacher(String mId, String mFirstName, String mLastName, String mPhoneNumber,
-                   String mCity, String mEmail, String mCarModel, Integer mPrice, String mGearType, Integer mlessonLength){
-        super(mId, mFirstName, mLastName, mPhoneNumber, mEmail, mCity);
+                   String mCity, String mEmail, String mCarModel, Integer mPrice,
+                   String mGearType, Integer mlessonLength, String imageUrl, String status){
+        super(mId, mFirstName, mLastName, mPhoneNumber, mCity, mEmail, imageUrl, status);
         carModel = mCarModel;
         price = mPrice;
         lessonLength = mlessonLength;
@@ -47,6 +49,10 @@ public class Teacher extends User {
         if(!students.contains(student)){
             students.add(student);
         }
+    }
+
+    public void addConnectionRequest(String studentId){
+        connectionRequests.add(studentId);
     }
 
     public Boolean isConnected(String student){
@@ -105,6 +111,14 @@ public class Teacher extends User {
         this.gearType = gearType;
     }
 
+    public ArrayList<String> getConnectionRequests() {
+        return connectionRequests;
+    }
+
+    public void setConnectionRequests(ArrayList<String> connectionRequests) {
+        this.connectionRequests = connectionRequests;
+    }
+
     public static final Parcelable.Creator<Teacher> CREATOR = new Parcelable.Creator<Teacher>() {
         public Teacher createFromParcel(Parcel in) {
             return new Teacher(in);
@@ -126,6 +140,7 @@ public class Teacher extends User {
         price = in.readInt();
         lessonLength = in.readInt();
         gearType = in.readString();
+        connectionRequests = in.readArrayList(String.class.getClassLoader());
     }
 
     @Override
@@ -137,6 +152,7 @@ public class Teacher extends User {
         dest.writeInt(price);
         dest.writeInt(lessonLength);
         dest.writeString(gearType);
+        dest.writeList(connectionRequests);
     }
 
     @Override

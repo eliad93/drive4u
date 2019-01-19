@@ -1,60 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/recycler_view_row_height"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/list_item_padding"
+    android:background="@color/colorRegistrationFormFieldBorder">
 
-    <TextView
-        android:id="@+id/textViewTeacherName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="16dp"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <android.support.v7.widget.CardView
+        android:id="@+id/teacherItemCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/textViewTeacherCity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTeacherName" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/list_item_padding">
 
-    <TextView
-        android:id="@+id/textViewNumberOfStudents"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toEndOf="@+id/textViewTeacherName"
-        app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/imageViewTeacher"
+                android:layout_width="@dimen/list_item_image_size"
+                android:layout_height="@dimen/list_item_image_size"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/icons8_user_24_profile" />
 
-    <ImageButton
-        android:id="@+id/imageButtonChooseTeacher"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:scaleType="fitXY"
-        android:layout_gravity="center"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="8dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:contentDescription="@string/student_choose_teacher" />
+            <TextView
+                android:id="@+id/textViewTeacherName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="@dimen/list_item_margin_small_02"
+                android:layout_marginLeft="@dimen/list_item_margin_small_02"
+                android:layout_toRightOf="@+id/imageViewTeacher"
+                android:fontFamily="@font/amaranth_bold_italic"
+                android:text="textViewTeacherName"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/list_item_text_size_big" />
+
+            <TextView
+                android:id="@+id/textViewTeacherCity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewTeacherName"
+                android:layout_marginStart="@dimen/list_item_margin_small_03"
+                android:layout_marginLeft="@dimen/list_item_margin_small_03"
+                android:layout_marginTop="@dimen/list_item_margin_small_05"
+                android:layout_toRightOf="@+id/imageViewTeacher"
+                android:fontFamily="@font/amaranth_italic"
+                android:text="textViewTeacherCity"
+                android:textSize="@dimen/list_item_text_size_medium" />
+
+            <TextView
+                android:id="@+id/textViewNumberOfStudents"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="@dimen/list_item_margin_medium_33"
+                android:layout_marginLeft="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_toRightOf="@+id/textViewTeacherName"
+                android:fontFamily="@font/amaranth_italic"
+                android:text="textViewNumbe"
+                android:textSize="@dimen/list_item_text_size_medium" />
 
 
-</android.support.constraint.ConstraintLayout>
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
