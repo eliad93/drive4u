@@ -65,7 +65,7 @@ public class TeacherMainActivity extends AppCompatActivity
 
     protected void initToolbar() {
         Log.d(TAG, "initToolbar");
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbarTeacher);
         setSupportActionBar(mToolbar);
         String toolbarTitle = mTeacher.getFirstName() + " " + mTeacher.getLastName();
         mToolbar.setTitle(toolbarTitle);
@@ -84,14 +84,14 @@ public class TeacherMainActivity extends AppCompatActivity
 
     protected void initNavigationView() {
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         // a small and fun animation when opening and closing the teacher_home_navigation menu.
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.teacher_nav_view);
+        NavigationView navigationView = findViewById(R.id.teacher_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         // set the content of the menu.

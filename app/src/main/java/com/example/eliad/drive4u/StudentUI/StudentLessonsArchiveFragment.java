@@ -53,7 +53,6 @@ public class StudentLessonsArchiveFragment extends StudentBaseFragment
     // widgets
     private TextView noLessonsMsg;
 
-
     public StudentLessonsArchiveFragment() {
         // Required empty public constructor
     }
