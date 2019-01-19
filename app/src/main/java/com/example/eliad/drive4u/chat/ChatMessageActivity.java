@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,6 +31,8 @@ import com.example.eliad.drive4u.models.Teacher;
 import com.example.eliad.drive4u.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +41,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,6 +79,7 @@ public class ChatMessageActivity extends AppCompatActivity {
     private EditText text_send;
 
     FirebaseFirestore db;
+    FirebaseUser fuser;
     DatabaseReference reference;
     ChatMessageAdapter messageAdapter;
     List<Chat> mChats;
@@ -90,6 +95,7 @@ public class ChatMessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_message);
 
+        fuser = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
 
         mToolbar = findViewById(R.id.chat_message_toolbar);
@@ -121,10 +127,7 @@ public class ChatMessageActivity extends AppCompatActivity {
         btn_send = findViewById(R.id.chat_message_btn_send);
         text_send = findViewById(R.id.chat_message_text_send);
 
-        intent = getIntent();
-
-        currUser = intent.getParcelableExtra(ARG_CURRENT_USER);
-        secUser  = intent.getParcelableExtra(ARG_SECOND_USER);
+        initUsers();
 
         final String secUserName = secUser.getFirstName() + " " + secUser.getLastName();
         username.setText(secUserName);
@@ -154,7 +157,85 @@ public class ChatMessageActivity extends AppCompatActivity {
         seenMessage(secUser.getID());
     }
 
+    private void initUsers() {
+        Log.d(TAG, "initUsers");
+        intent = getIntent();
+        currUser = intent.getParcelableExtra(ARG_CURRENT_USER);
+        secUser  = intent.getParcelableExtra(ARG_SECOND_USER);
+        final String currUserId = fuser.getUid();
+        final String secUserId = intent.getStringExtra(ARG_SECOND_USER_ID);
+
+        if (currUser == null) {
+            Log.d(TAG,"currUser is null");
+            db.collection("Teachers")
+                    .document(currUserId)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                final DocumentSnapshot snapshot = task.getResult();
+                                if (snapshot != null && snapshot.exists()) {
+                                    currUser = (User) snapshot.toObject(Teacher.class);
+                                    Log.d(TAG,"Found a Teacher for CurrUser");
+                                }
+                            }
+                        }
+                    });
+            db.collection("Students")
+                    .document(currUserId)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot snapshot = task.getResult();
+                                if (snapshot != null && snapshot.exists()) {
+                                    currUser = snapshot.toObject(Student.class);
+                                    Log.d(TAG,"Found a student for currUser");
+                                }
+                            }
+                        }
+                    });
+        }
+
+        if (secUser == null ) {
+            Log.d(TAG,"SecUser is null");
+            db.collection("Teachers")
+                    .document(secUserId)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                final DocumentSnapshot snapshot = task.getResult();
+                                if (snapshot != null && snapshot.exists()) {
+                                    Log.d(TAG,"found a teacher for secUser");
+                                    secUser = (User) snapshot.toObject(Teacher.class);
+                                }
+                            }
+                        }
+                    });
+            db.collection("Students")
+                    .document(secUserId)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot snapshot = task.getResult();
+                                if (snapshot != null && snapshot.exists()) {
+                                    Log.d(TAG,"found a student for secUser");
+                                    currUser = snapshot.toObject(Student.class);
+                                }
+                            }
+                        }
+                    });
+        }
+    }
+
     private void seenMessage(String userid) {
+        Log.d(TAG, "seenMessage");
         reference = FirebaseDatabase.getInstance().getReference(CHATS);
         seenListener = reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -176,8 +257,9 @@ public class ChatMessageActivity extends AppCompatActivity {
             }
         });
     }
-    private void sendMessage(String sender, String receiver, String message) {
-       DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    private void sendMessage(String sender, final String receiver, String message) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        Log.d(TAG, "sendMessage");
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put(SENDER, sender);
@@ -187,14 +269,34 @@ public class ChatMessageActivity extends AppCompatActivity {
 
         reference.child(CHATS).push().setValue(hashMap);
 
-        if (notify) {
-            final String msg = message;
-            sendNotification(sender, currUser.getFullName(), msg);
-        }
-        notify = false;
+        String userCollectionPath = currUser instanceof Student ? "Students" : "Teachers";
+        final Class userClass = currUser instanceof Student ? Student.class : Teacher.class;
+        final String msg = message;
+
+        db.collection(userCollectionPath)
+                .document(currUser.getID())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot snapshot = task.getResult();
+                            if (snapshot != null && snapshot.exists()) {
+                                User user = (User) snapshot.toObject(userClass);
+                                if (notify) {
+                                    Log.d(TAG,"SENDING A NOTIFICATION!");
+                                    sendNotification(receiver, user.getFullName(), msg);
+                                }
+                                notify = false;
+                            }
+                        }
+                    }
+                });
     }
 
     private void sendNotification(String receiver, final String username, final String message) {
+        Log.d(TAG,"sendNotification");
+
         DatabaseReference tokens = FirebaseDatabase.getInstance().getReference(Token.TOKEN_PATH);
         Query query = tokens.orderByKey().equalTo(receiver);
         query.addValueEventListener(new ValueEventListener() {
@@ -211,8 +313,10 @@ public class ChatMessageActivity extends AppCompatActivity {
                             .enqueue(new Callback<MyResponse>() {
                                 @Override
                                 public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                                    if (response.code() == 200 && response.body().success != 1) {
-                                        Toast.makeText(ChatMessageActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+                                    if (response.code() == 200) {
+                                        if (response.body().success != 1) {
+                                            Toast.makeText(ChatMessageActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 }
 
@@ -232,6 +336,7 @@ public class ChatMessageActivity extends AppCompatActivity {
     }
 
     private void readMessages(final String myid, final String userid, final String imageURL) {
+        Log.d(TAG,"readMessages");
         mChats = new ArrayList<>();
         reference = FirebaseDatabase.getInstance().getReference(CHATS);
         reference.addValueEventListener(new ValueEventListener() {
