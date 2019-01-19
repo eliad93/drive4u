@@ -162,6 +162,7 @@
     <string name="unexpected_error">Unexpected error</string>
     <string name="lesson_len_range_error">length range is 30-60</string>
     <string name="lessons_archive">Lessons archive</string>
+    <string name="connection_requests">Connection requests</string>
 
 
 </resources>

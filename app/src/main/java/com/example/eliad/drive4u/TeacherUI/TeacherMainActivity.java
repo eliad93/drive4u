@@ -31,7 +31,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TeacherMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
     // Tag for the Log
     private static final String TAG = TeacherMainActivity.class.getName();
 
@@ -188,6 +187,11 @@ public class TeacherMainActivity extends AppCompatActivity
 
             case R.id.teacher_nav_students:
                 fragment =  TeacherStudentsFragment.newInstance(mTeacher);
+                isAtHome = false;
+                break;
+
+            case R.id.teacher_nav_connection_requests:
+                fragment =  TeacherConnectionRequestsFragment.newInstance(mTeacher);
                 isAtHome = false;
                 break;
 

@@ -13,6 +13,10 @@
             android:icon="@drawable/icons_contacts"
             android:title="@string/nav_students" />
         <item
+            android:id="@+id/teacher_nav_connection_requests"
+            android:icon="@drawable/icons_contacts"
+            android:title="@string/connection_requests" />
+        <item
             android:id="@+id/teacher_nav_schedule"
             android:icon="@drawable/icons8_calendar_filled_24"
             android:title="@string/schedule" />
