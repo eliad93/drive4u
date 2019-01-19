@@ -60,7 +60,7 @@ public class ChatMessageActivity extends AppCompatActivity {
     public static final String SENDER = "sender";
     public static final String RECEIVER = "receiver";
     public static final String MESSAGE = "message";
-    public static final String IS_SEEN = "isSeen";
+    public static final String IS_SEEN = "seen";
     public static final String CHATS = "chats";
 
     private CircleImageView profile_image;
