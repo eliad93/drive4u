@@ -1,86 +1,105 @@
-package com.example.eliad.drive4u.activities;
+package com.example.eliad.drive4u.StudentUI;
 
-import android.annotation.SuppressLint;
+
+import android.app.Activity;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.StudentPastLessonsAdapter;
-import com.example.eliad.drive4u.base_activities.StudentBaseActivity;
 import com.example.eliad.drive4u.built_in_utils.BorderLineDividerItemDecoration;
 import com.example.eliad.drive4u.fragments.StudentArchiveLessonSummaryFragment;
 import com.example.eliad.drive4u.models.Lesson;
+import com.example.eliad.drive4u.models.Student;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.LinkedList;
-import java.util.List;
 
-public class StudentLessonsArchiveActivity extends StudentBaseActivity
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link StudentLessonsArchiveFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class StudentLessonsArchiveFragment extends StudentBaseFragment
         implements StudentPastLessonsAdapter.StudentPastLessonsItemClickListener,
         StudentArchiveLessonSummaryFragment.StudentLessonSummaryFragmentListener {
     // Tag for the Log
-    private static final String TAG = StudentLessonsArchiveActivity.class.getName();
+    private static final String TAG = StudentLessonsArchiveFragment.class.getName();
     // arguments
     private static final double LESSON_FRAGMENT_WIDTH_PERCENT = 0.8;
     private static final double LESSON_FRAGMENT_HEIGHT_PERCENT = 0.8;
     // RecyclerView items
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     // fragment related items
     private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
-    private Fragment fragment;
     // models
     private LinkedList<Lesson> lessons = new LinkedList<>();
-
+    // widgets
     private TextView noLessonsMsg;
 
+
+    public StudentLessonsArchiveFragment() {
+        // Required empty public constructor
+    }
+    public static StudentLessonsArchiveFragment newInstance(Student student) {
+        StudentLessonsArchiveFragment fragment = new StudentLessonsArchiveFragment();
+        Bundle args = newInstanceBaseArgs(student);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "in onCreate");
-        setContentView(R.layout.activity_student_lessons_archive);
+    }
 
-        noLessonsMsg = findViewById(R.id.LessonArchiveNoLessons);
-        noLessonsMsg.setVisibility(View.GONE);
-
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_student_lessons_archive,
+                container, false);
+        initWidgets(view);
         initializeFragmentObjects();
 
-        initializeRecyclerView();
+        initializeRecyclerView(view);
 
         presentAllStudentPastLessons();
+        return view;
+    }
 
+    private void initWidgets(View view) {
+        noLessonsMsg = view.findViewById(R.id.LessonArchiveNoLessons);
+        noLessonsMsg.setVisibility(View.GONE);
     }
 
     private void initializeFragmentObjects() {
-        fragmentManager = getSupportFragmentManager();
+        fragmentManager = getFragmentManager();
     }
 
-    private void initializeRecyclerView() {
+    private void initializeRecyclerView(View view) {
         Log.d(TAG, "in initializeRecyclerView");
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewStudentLessonsArchive);
+        mRecyclerView = view.findViewById(R.id.recyclerViewStudentLessonsArchive);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.addItemDecoration(new BorderLineDividerItemDecoration(this));
+        mRecyclerView.addItemDecoration(new BorderLineDividerItemDecoration(getContext()));
     }
 
     private void presentAllStudentPastLessons() {
@@ -93,18 +112,20 @@ public class StudentLessonsArchiveActivity extends StudentBaseActivity
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
                             Log.d(TAG, "student lessons query succeeded");
-                            for (QueryDocumentSnapshot document : task.getResult()){
-                                Lesson lesson = document.toObject(Lesson.class);
-                                lessons.addLast(lesson);
+                            QuerySnapshot snapshots = task.getResult();
+                            if(snapshots != null){
+                                for (QueryDocumentSnapshot document : snapshots){
+                                    Lesson lesson = document.toObject(Lesson.class);
+                                    lessons.addLast(lesson);
+                                }
                             }
                             if (lessons.size() == 0) {
                                 noLessonsMsg.setText(R.string.you_had_no_lessons_yet);
                                 noLessonsMsg.setVisibility(View.VISIBLE);
                             } else {
-                                mAdapter = new StudentPastLessonsAdapter(lessons,
-                                        StudentLessonsArchiveActivity.this);
+                                mAdapter = new StudentPastLessonsAdapter(lessons, getContext());
                                 ((StudentPastLessonsAdapter) mAdapter)
-                                        .setOnItemClickListener(StudentLessonsArchiveActivity.this);
+                                        .setOnItemClickListener(StudentLessonsArchiveFragment.this);
                                 mRecyclerView.setAdapter(mAdapter);
                             }
                         } else {
@@ -118,7 +139,7 @@ public class StudentLessonsArchiveActivity extends StudentBaseActivity
     public void onItemClick(int position) {
         Lesson lesson = lessons.get(position);
         Fragment lessonSummaryFragment = StudentArchiveLessonSummaryFragment.newInstance(lesson);
-        fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.frameLayoutStudentLessonsArchiveActivity,
                 lessonSummaryFragment, "Fragment");
         fragmentTransaction.addToBackStack("Fragment")
@@ -126,23 +147,31 @@ public class StudentLessonsArchiveActivity extends StudentBaseActivity
                 .commit();
         fragmentManager.executePendingTransactions();
         Fragment fragment = fragmentManager.findFragmentByTag("Fragment");
-        resizeFragment(fragment ,LESSON_FRAGMENT_WIDTH_PERCENT, LESSON_FRAGMENT_HEIGHT_PERCENT);
+        resizeFragment(fragment);
     }
 
-    private void resizeFragment(Fragment fragment, double widthPercent, double heightPercent) {
+    private void resizeFragment(Fragment fragment) {
         if (fragment != null) {
             DisplayMetrics displayMetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            Activity activity = getActivity();
+            View view = fragment.getView();
+            if(activity == null || view == null){
+                return;
+            }
+            WindowManager windowManager = activity.getWindowManager();
+            if(windowManager == null){
+                return;
+            }
+            windowManager.getDefaultDisplay().getMetrics(displayMetrics);
             int screenWidth = displayMetrics.widthPixels;
             int screenHeight = displayMetrics.heightPixels;
-            int width = (int) (screenWidth * widthPercent);
-            int height = (int) (screenHeight * heightPercent);
-            ViewGroup.LayoutParams params = fragment.getView().getLayoutParams();
+            int width = (int) (screenWidth * StudentLessonsArchiveFragment.LESSON_FRAGMENT_WIDTH_PERCENT);
+            int height = (int) (screenHeight * StudentLessonsArchiveFragment.LESSON_FRAGMENT_HEIGHT_PERCENT);
+            ViewGroup.LayoutParams params = view.getLayoutParams();
             params.width = width;
             params.height = height;
         }
     }
-
     @Override
     public void onFragmentInteraction(Lesson lesson) {
     }

@@ -27,7 +27,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -57,7 +56,7 @@ public class StudentMainActivity extends AppCompatActivity
         initStudent();
         initToolbar();
         initNavigationView();
-        displayView(R.id.nav_home);
+        displayView(R.id.student_nav_home);
     }
 
     public void displayView(int viewId) {
@@ -66,20 +65,25 @@ public class StudentMainActivity extends AppCompatActivity
         String title = getString(R.string.app_name);
 
         switch (viewId) {
-            case R.id.nav_home:
+            case R.id.student_nav_home:
                 fragment = StudentHomeFragment.newInstance(mStudent);
                 isAtHome = true;
                 break;
-            case R.id.nav_teachers:
+            case R.id.student_nav_teachers:
                 fragment = StudentSearchTeacherFragment.newInstance(mStudent);
                 isAtHome = false;
                 break;
-            case R.id.nav_profile:
+            case R.id.student_nav_lessons_archive:
+                // TODO: change small icon
+                fragment = StudentLessonsArchiveFragment.newInstance(mStudent);
+                isAtHome = false;
+                break;
+            case R.id.student_nav_profile:
                 fragment = StudentProfileFragment.newInstance(mStudent);
                 isAtHome = false;
                 break;
 
-            case R.id.nav_send:
+            case R.id.student_nav_send:
                 fragment = MainChatFragment.newInstance(mStudent);
                 isAtHome = false;
                 break;
@@ -101,7 +105,7 @@ public class StudentMainActivity extends AppCompatActivity
             getSupportActionBar().setTitle(title);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.student_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
     }
 
@@ -115,11 +119,11 @@ public class StudentMainActivity extends AppCompatActivity
     public void onBackPressed() {
         Log.d(TAG, "in onBackPressed");
         updateData();
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.student_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (!isAtHome) {
-            displayView(R.id.nav_home);
+            displayView(R.id.student_nav_home);
         } else {
             super.onBackPressed();
         }
@@ -157,7 +161,7 @@ public class StudentMainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         displayView(item.getItemId());
         return true;
     }
@@ -190,7 +194,7 @@ public class StudentMainActivity extends AppCompatActivity
 
     private void initNavigationView() {
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.student_drawer_layout);
         // a small and fun animation when opening and closing the teacher_home_navigation menu.
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -203,8 +207,8 @@ public class StudentMainActivity extends AppCompatActivity
         // set the content of the menu.
         View headerView = navigationView.getHeaderView(0);
       //  CircleImageView drawerImage = (CircleImageView) headerView.findViewById(R.id.nav_header_image);
-        TextView drawerUsername = (TextView) headerView.findViewById(R.id.user_name);
-        TextView drawerAccount = (TextView) headerView.findViewById(R.id.user_email);
+        TextView drawerUsername = headerView.findViewById(R.id.user_name);
+        TextView drawerAccount = headerView.findViewById(R.id.user_email);
         // TODO: Eliad: drawerImage.setImageDrawable(R.drawable.ic_user);
         String userName = mStudent.getFirstName() + " " + mStudent.getLastName();
         drawerUsername.setText(userName);

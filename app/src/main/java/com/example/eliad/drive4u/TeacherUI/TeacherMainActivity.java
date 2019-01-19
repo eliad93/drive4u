@@ -61,7 +61,7 @@ public class TeacherMainActivity extends AppCompatActivity
 
         initToolbar();
         initNavigationView();
-        displayView(R.id.nav_home);
+        displayView(R.id.teacher_nav_home);
     }
 
     protected void initToolbar() {
@@ -92,7 +92,7 @@ public class TeacherMainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.teacher_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         // set the content of the menu.
@@ -118,7 +118,7 @@ public class TeacherMainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (!isAtHome) {
-            displayView(R.id.nav_home);
+            displayView(R.id.teacher_nav_home);
         } else {
             super.onBackPressed();
         }
@@ -177,21 +177,21 @@ public class TeacherMainActivity extends AppCompatActivity
         String title = getString(R.string.app_name);
 
         switch (viewId) {
-            case R.id.nav_home:
+            case R.id.teacher_nav_home:
                 fragment = TeacherHomeFragment.newInstance(mTeacher);
                 isAtHome = true;
                 break;
-            case R.id.nav_profile:
+            case R.id.teacher_nav_profile:
                 fragment = TeacherProfileFragment.newInstance(mTeacher);
                 isAtHome = false;
                 break;
 
-            case R.id.nav_students:
+            case R.id.teacher_nav_students:
                 fragment =  TeacherStudentsFragment.newInstance(mTeacher);
                 isAtHome = false;
                 break;
 
-            case R.id.nav_send:
+            case R.id.teacher_nav_send:
                 fragment = MainChatFragment.newInstance(mTeacher);
                 isAtHome = false;
                 break;

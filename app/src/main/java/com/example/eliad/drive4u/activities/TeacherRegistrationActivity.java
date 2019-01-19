@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.TeacherUI.TeacherMainActivity;
 import com.example.eliad.drive4u.base_activities.RegistrationBaseActivity;
-import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.Teacher;
 import com.example.eliad.drive4u.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,10 +26,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.regex.Pattern;
 
 public class TeacherRegistrationActivity extends RegistrationBaseActivity
         implements AdapterView.OnItemSelectedListener {
@@ -189,8 +184,12 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
 
     private void createNewTeacher(FirebaseUser newUser) {
         Log.d(TAG, "in createNewTeacher");
-        InputMethodManager imm = (InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        try{
+            imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+        } catch (NullPointerException ignored){
+            Log.d(TAG, "unsafe user input state");
+        }
         String uId = newUser.getUid();
         final Teacher newTeacher = new Teacher(uId, firstName, lastName, phone, city, email,
                 carModel, price, gearType,lessonLen, User.DEFAULT_IMAGE_KEY, User.ONLINE);
