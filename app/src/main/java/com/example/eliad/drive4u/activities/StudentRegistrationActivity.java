@@ -162,7 +162,7 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity
         String uId = newUser.getUid();
         final Student newStudent = new Student(uId, firstName, lastName, phone, city,
                 email, "", 0, 0, gearType,
-                User.DEFAULT_IMAGE_KEY, User.ONLINE);
+                User.DEFAULT_IMAGE_KEY, User.OFFLINE);
         db.collection("Students").document(uId).set(newStudent)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

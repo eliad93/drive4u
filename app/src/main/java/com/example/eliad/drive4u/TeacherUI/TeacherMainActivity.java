@@ -2,6 +2,7 @@ package com.example.eliad.drive4u.TeacherUI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -20,11 +21,15 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.activities.LoginActivity;
+import com.example.eliad.drive4u.chat.MainChatActivity;
 import com.example.eliad.drive4u.chat.MainChatFragment;
 import com.example.eliad.drive4u.models.Teacher;
 import com.example.eliad.drive4u.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -36,6 +41,7 @@ public class TeacherMainActivity extends AppCompatActivity
 
     // key for passing the teacher between activities
     public static final String ARG_TEACHER = TAG + ".arg_teacher";
+    public static final String ARG_NAV = TAG + ".arg_nav";
 
     // the user
     protected Teacher mTeacher;
@@ -60,7 +66,8 @@ public class TeacherMainActivity extends AppCompatActivity
 
         initToolbar();
         initNavigationView();
-        displayView(R.id.teacher_nav_home);
+        displayView(getIntent().getIntExtra(ARG_NAV, R.id.teacher_nav_home));
+        status(User.ONLINE);
     }
 
     protected void initToolbar() {
@@ -77,8 +84,25 @@ public class TeacherMainActivity extends AppCompatActivity
         mTeacher = parcelablesIntent.getParcelableExtra(ARG_TEACHER);
 
         if (mTeacher == null) {
-            Log.d(TAG, " Got an intent with out a teacher. fetching him fom the dp. fix this!");
-            // TODO: fetch the teacher or search for the bug
+            Log.d(TAG, " Got an intent with out a teacher. fetching him fom the dp.");
+            db.collection(getString(R.string.DB_Teachers))
+                    .document(mUser.getUid())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot snapshot = task.getResult();
+                                if (snapshot != null && snapshot.exists()) {
+                                    mTeacher = snapshot.toObject(Teacher.class);
+                                } else {
+                                    Log.d(TAG, "Query returned without a teacher");
+                                }
+                            } else {
+                                Log.d(TAG, "Query failed!");
+                            }
+                        }
+                    });
         }
     }
 
@@ -103,7 +127,7 @@ public class TeacherMainActivity extends AppCompatActivity
         if (mTeacher.getImageUrl() == null || mTeacher.getImageUrl().equals(User.DEFAULT_IMAGE_KEY)) {
             drawerImage.setImageResource(R.mipmap.ic_launcher);
         } else {
-            Glide.with(this).load(mTeacher.getImageUrl()).into(drawerImage);
+            Glide.with(getApplicationContext()).load(mTeacher.getImageUrl()).into(drawerImage);
         }
 
         String userName = mTeacher.getFirstName() + " " + mTeacher.getLastName();
@@ -196,7 +220,8 @@ public class TeacherMainActivity extends AppCompatActivity
                 break;
 
             case R.id.teacher_nav_send:
-                fragment = MainChatFragment.newInstance(mTeacher);
+                intent = new Intent(this, MainChatActivity.class);
+                intent.putExtra(MainChatActivity.ARG_USER, mTeacher);
                 isAtHome = false;
                 break;
 
@@ -211,7 +236,7 @@ public class TeacherMainActivity extends AppCompatActivity
             ft.replace(R.id.content_frame, fragment);
             ft.commit();
         } else if (intent != null) {
-            finish();
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
         // set the toolbar title

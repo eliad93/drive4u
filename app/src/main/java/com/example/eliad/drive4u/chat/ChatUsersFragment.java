@@ -1,5 +1,6 @@
 package com.example.eliad.drive4u.chat;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -67,6 +68,13 @@ public class ChatUsersFragment extends UserBaseFragment {
 
     private void readUsers() {
         Log.d(TAG, "readUsers");
+
+        Activity activity = getActivity();
+        if (activity == null || !isAdded()) {
+            Log.d(TAG, "!!!!!!!!!!!!!!Fragment not attached to a activity!!!!!!!!");
+            return;
+        }
+
         mUsersList = new ArrayList<>();
 
         final String classRoom = mUser.getClassRoom();

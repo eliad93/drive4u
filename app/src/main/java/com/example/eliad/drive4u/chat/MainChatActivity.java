@@ -145,4 +145,41 @@ public class MainChatActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    private void status(final String status) {
+        mUser.setStatus(status);
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection(getString(R.string.DB_Teachers))
+                .document(mUser.getID())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document != null && document.exists()) {
+                                db.collection(getString(R.string.DB_Teachers))
+                                        .document(mUser.getID())
+                                        .update("status", status);
+                            } else {
+                                db.collection(getString(R.string.DB_Students))
+                                        .document(mUser.getID())
+                                        .update("status", status);
+                            }
+                        }
+                    }
+                });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status(User.ONLINE);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status(User.OFFLINE);
+    }
 }

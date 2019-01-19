@@ -1,5 +1,6 @@
 package com.example.eliad.drive4u.chat;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.RecoverySystem;
 import android.support.annotation.NonNull;
@@ -122,17 +123,28 @@ public class ChatsFragment  extends UserBaseFragment {
 
         final String classRoom = mUser.getClassRoom();
 
+        Activity activity = getActivity();
+        if (activity == null || !isAdded()) {
+            Log.d(TAG, "!!!!!!!!!!!!!!Fragment not attached to a activity!!!!!!!!");
+            return;
+        }
 
         if (!classRoom.equals(mUser.getID()) && usersList.contains(classRoom)) {
             // this is a student (the class room is the teachers id), and the teacher is in the usersList.
-            DocumentSnapshot document = db.collection(getString(R.string.DB_Teachers))
+            db.collection(getResources().getString(R.string.DB_Teachers))
                     .document(classRoom)
                     .get()
-                    .getResult();
-            if (document != null && document.exists()) {
-                Teacher t = document.toObject(Teacher.class);
-                mUsersList.add(t);
-            }
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                if (task.getResult() != null && task.getResult().exists()) {
+                                    Teacher t = task.getResult().toObject(Teacher.class);
+                                    mUsersList.add(t);
+                                }
+                            }
+                        }
+                    });
         }
         db.collection(getString(R.string.DB_Students))
 //                .whereEqualTo("teacherId", classRoom) //TODO: for debugging Ill show all students

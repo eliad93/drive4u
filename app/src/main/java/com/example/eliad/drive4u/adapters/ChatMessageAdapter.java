@@ -59,6 +59,16 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
         } else {
             Glide.with(mContext).load(mImageURL).into(holder.profile_image);
         }
+
+        if (i == mChats.size() - 1) {
+            if(chat.isSeen()) {
+                holder.text_seen.setText(R.string.seen);
+            } else {
+                holder.text_seen.setText(R.string.delivered);
+            }
+        } else {
+            holder.text_seen.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -70,12 +80,14 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
 
         public TextView show_message;
         public ImageView profile_image;
+        public TextView text_seen;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             show_message = itemView.findViewById(R.id.show_message);
             profile_image = itemView.findViewById(R.id.chat_message_item_profile_image);
+            text_seen = itemView.findViewById(R.id.text_seen);
         }
     }
 

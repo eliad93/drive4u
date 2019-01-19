@@ -19,10 +19,15 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.activities.LoginActivity;
+import com.example.eliad.drive4u.chat.MainChatActivity;
 import com.example.eliad.drive4u.chat.MainChatFragment;
 import com.example.eliad.drive4u.models.Student;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.example.eliad.drive4u.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,12 +35,15 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class StudentMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = StudentMainActivity.class.getName();
 
     public static final String ARG_STUDENT = TAG + ".arg_student";
+    public static final String ARG_NAV = TAG + ".arg_nav";
 
     // the user
     protected Student mStudent;
@@ -51,17 +59,21 @@ public class StudentMainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_main);
+
         Log.d(TAG, "onCreate");
+
         initDbVariables();
         initStudent();
         initToolbar();
         initNavigationView();
-        displayView(R.id.student_nav_home);
+        displayView(getIntent().getIntExtra(ARG_NAV, R.id.student_nav_home));
+        status(User.ONLINE);
     }
 
     public void displayView(int viewId) {
         Log.d(TAG, "displayView");
-        Fragment fragment =  null;
+        Fragment fragment = null;
+        Intent intent = null;
         String title = getString(R.string.app_name);
 
         switch (viewId) {
@@ -84,7 +96,8 @@ public class StudentMainActivity extends AppCompatActivity
                 break;
 
             case R.id.student_nav_send:
-                fragment = MainChatFragment.newInstance(mStudent);
+                intent = new Intent(this, MainChatActivity.class);
+                intent.putExtra(MainChatActivity.ARG_USER, mStudent);
                 isAtHome = false;
                 break;
 
@@ -98,6 +111,9 @@ public class StudentMainActivity extends AppCompatActivity
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.student_content_frame, fragment);
             ft.commit();
+        } else if (intent != null) {
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
 
         // set the toolbar title
@@ -107,12 +123,6 @@ public class StudentMainActivity extends AppCompatActivity
 
         DrawerLayout drawer = findViewById(R.id.student_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateData();
     }
 
     @Override
@@ -153,7 +163,7 @@ public class StudentMainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void logoutUser(){
+    public void logoutUser() {
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(getBaseContext(), LoginActivity.class)
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
@@ -186,9 +196,27 @@ public class StudentMainActivity extends AppCompatActivity
         Log.d(TAG, "initTeacher");
         Intent parcelablesIntent = getIntent();
         mStudent = parcelablesIntent.getParcelableExtra(ARG_STUDENT);
+
         if (mStudent == null) {
-            Log.d(TAG, "Got an intent without a student. fetching him fom the dp. fix this!");
-            // TODO: fetch the teacher or search for the bug
+            Log.d(TAG, " Got an intent without a student. fetching him fom the dp.");
+            db.collection(getString(R.string.DB_Students))
+                    .document(mUser.getUid())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot snapshot = task.getResult();
+                                if (snapshot != null && snapshot.exists()) {
+                                    mStudent = snapshot.toObject(Student.class);
+                                } else {
+                                    Log.d(TAG, "Task returned empty!");
+                                }
+                            } else {
+                                Log.d(TAG, "Task failed to get a student");
+                            }
+                        }
+                    });
         }
     }
 
@@ -206,13 +234,38 @@ public class StudentMainActivity extends AppCompatActivity
 
         // set the content of the menu.
         View headerView = navigationView.getHeaderView(0);
-      //  CircleImageView drawerImage = (CircleImageView) headerView.findViewById(R.id.nav_header_image);
-        TextView drawerUsername = headerView.findViewById(R.id.user_name);
-        TextView drawerAccount = headerView.findViewById(R.id.user_email);
-        // TODO: Eliad: drawerImage.setImageDrawable(R.drawable.ic_user);
+        CircleImageView drawerImage = (CircleImageView) headerView.findViewById(R.id.nav_header_image);
+        TextView drawerUsername = (TextView) headerView.findViewById(R.id.user_name);
+        TextView drawerAccount = (TextView) headerView.findViewById(R.id.user_email);
         String userName = mStudent.getFirstName() + " " + mStudent.getLastName();
         drawerUsername.setText(userName);
         drawerAccount.setText(mStudent.getEmail());
+
+        if (mStudent.getImageUrl() == null || mStudent.getImageUrl().equals(User.DEFAULT_IMAGE_KEY)) {
+            drawerImage.setImageResource(R.mipmap.ic_launcher);
+        } else {
+            Glide.with(getApplicationContext()).load(mStudent.getImageUrl()).into(drawerImage);
+        }
+    }
+
+    protected void status(final String status) {
+        mStudent.setStatus(status);
+        db.collection(getString(R.string.DB_Students))
+                .document(mStudent.getID())
+                .update("status", status);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateData();
+        status(User.ONLINE);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status(User.OFFLINE);
     }
 
     private void updateData(){
