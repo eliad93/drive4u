@@ -19,12 +19,15 @@ import com.example.eliad.drive4u.fragments.StudentChooseTeacherFragment;
 import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.Teacher;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.LinkedList;
 
@@ -159,10 +162,6 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
         currentTeacher = teachers.get(position);
         Fragment teacherFragment = StudentChooseTeacherFragment.newInstance(mStudent, currentTeacher);
         startFragmentForResult(teacherFragment);
-//        getChildFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.frameStudentChooseTeacher, teacherFragment)
-//                .commit();
     }
 
     private void startFragmentForResult(Fragment fragment) {
@@ -175,10 +174,19 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
                 .commit();
     }
 
-    private void updateDataAfterTeacherChosen() {
-        Log.d(TAG, "in updateDataAfterTeacherChosen");
-        currentTeacher.addStudent(mStudent.getID());
-        studentUpdateConnected();
+    private void updateDataAfterRequest() {
+        Log.d(TAG, "in updateDataAfterRequest");
+        mStudent.setTeacherId(currentTeacher.getID());
+        mStudent.setRequest(Student.ConnectionRequestStatus.SENT.getUserMessage());
+        currentTeacher.addConnectionRequest(mStudent.getID());
+        FragmentManager fm = getFragmentManager();
+        if(fm != null){
+            for(Fragment f: fm.getFragments()){
+                if(f instanceof StudentChooseTeacherFragment){
+                    fm.beginTransaction().remove(f).commit();
+                }
+            }
+        }
     }
 
     private Bundle createArgsForFragment() {
@@ -195,23 +203,45 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
     @Override
     public void performUserAction() {
         Log.d(TAG, "in performUserAction");
+        // batch writes together
+        WriteBatch batch = db.batch();
+        // update student
+        batch.update(mStudentDoc, "request",
+                Student.ConnectionRequestStatus.SENT.getUserMessage());
+        batch.update(mStudentDoc, "teacherId", currentTeacher.getID());
+        // update teacher
+        DocumentReference studentsRequests = mTeachersDb.document(currentTeacher.getID());
+        batch.update(studentsRequests, "connectionRequests",
+                FieldValue.arrayUnion(mStudent.getID()));
+        batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "connection request to teacher sent");
+                updateDataAfterRequest();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "connection request to teacher failed");
+            }
+        });
 
-        if(!mStudent.hasTeacher()){
-            mTeachersDb.document(currentTeacher.getID())
-                    .update("students", FieldValue.arrayUnion(mStudent.getID()))
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                Log.d(TAG, "update students in teacher success");
-                                updateDataAfterTeacherChosen();
-                            } else {
-                                Log.d(TAG, "update students in teacher failed");
-                            }
-                        }
-                    });
-        } else {
-            Log.d(TAG, "already has teacher");
-        }
+//        if(!mStudent.hasTeacher()){
+//            mTeachersDb.document(currentTeacher.getID())
+//                    .update("students", FieldValue.arrayUnion(mStudent.getID()))
+//                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//                            if(task.isSuccessful()){
+//                                Log.d(TAG, "update students in teacher success");
+//                                updateDataAfterTeacherChosen();
+//                            } else {
+//                                Log.d(TAG, "update students in teacher failed");
+//                            }
+//                        }
+//                    });
+//        } else {
+//            Log.d(TAG, "already has teacher");
+//        }
     }
 }

@@ -60,11 +60,6 @@ public class StudentMainActivity extends AppCompatActivity
         displayView(R.id.nav_home);
     }
 
-    private void disableUserInteraction() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-    }
-
     public void displayView(int viewId) {
         Log.d(TAG, "displayView");
         Fragment fragment =  null;
@@ -113,13 +108,13 @@ public class StudentMainActivity extends AppCompatActivity
     @Override
     public void onResume() {
         super.onResume();
-        updateStudent();
+        updateData();
     }
 
     @Override
     public void onBackPressed() {
         Log.d(TAG, "in onBackPressed");
-        updateStudent();
+        updateData();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -216,8 +211,8 @@ public class StudentMainActivity extends AppCompatActivity
         drawerAccount.setText(mStudent.getEmail());
     }
 
-    private void updateStudent(){
-        Log.d(TAG, "updateStudent");
+    private void updateData(){
+        Log.d(TAG, "updateData");
         disableUserInteraction();
         db.collection("Students").document(mUser.getUid()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -229,13 +224,21 @@ public class StudentMainActivity extends AppCompatActivity
                             if(document.exists()){
                                 mStudent = document.toObject(Student.class);
                                 Log.d(TAG, "updated student");
-                                enableUserInteraction();
+                                if(!mStudent.hasTeacher()){
+
+                                }
                             }
                         } else {
                             Log.d(TAG, "failed to update student");
                         }
+                        enableUserInteraction();
                     }
                 });
+    }
+
+    private void disableUserInteraction() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
     private void enableUserInteraction() {
