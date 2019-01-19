@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.eliad.drive4u.Notifications.Token;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.ChatUsersAdapter;
 import com.example.eliad.drive4u.models.Chat;
@@ -18,6 +19,7 @@ import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.Teacher;
 import com.example.eliad.drive4u.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +105,16 @@ public class ChatsFragment  extends UserBaseFragment {
 
             }
         });
+
+        updateToken(FirebaseInstanceId.getInstance().getToken());
+
         return view;
+    }
+
+    private void updateToken(String token) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Token.TOKEN_PATH);
+        Token token1 = new Token(token);
+        reference.child(fuser.getUid()).setValue(token1);
     }
 
     private void readChats() {

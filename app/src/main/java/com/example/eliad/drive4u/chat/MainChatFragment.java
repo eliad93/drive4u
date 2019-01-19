@@ -12,21 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.TeacherUI.TeacherMainChatFragment;
 import com.example.eliad.drive4u.adapters.ViewPagerAdapter;
-import com.example.eliad.drive4u.models.Teacher;
 import com.example.eliad.drive4u.models.User;
 
 public class MainChatFragment extends UserBaseFragment {
 
-    private static final String TAG = TeacherMainChatFragment.class.getName();
+    private static final String TAG = MainChatFragment.class.getName();
 
     private ViewPager mViewPager;
 
     public void displayView(int viewId) {
         Log.d(TAG, "displayView");
 
-        Fragment fragment = null;
         String msg = "BUG";
         switch (viewId) {
             case R.id.navigation_chats:
@@ -38,9 +35,7 @@ public class MainChatFragment extends UserBaseFragment {
                 mViewPager.setCurrentItem(1);
                 break;
         }
-
         Log.d(TAG, msg);
-
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

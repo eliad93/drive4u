@@ -70,13 +70,32 @@
             android:name=".TeacherUI.TeacherMainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".StudentUI.StudentMainActivity"
             android:label="@string/title_activity_student_main"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".chat.ChatMessageActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".chat.ChatMessageActivity"
+        <service
+            android:name=".Notifications.MyFirebaseIdService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".Notifications.MyFirebaseMessaging"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".chat.MainChatActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 

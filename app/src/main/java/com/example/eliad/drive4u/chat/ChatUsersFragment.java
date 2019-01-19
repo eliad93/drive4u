@@ -78,14 +78,23 @@ public class ChatUsersFragment extends UserBaseFragment {
 //            return; TODO: block students with no teachers
         } else if (!classRoom.equals(mUser.getID())) {
             // this is a student, add his teacher to the list.
-            DocumentSnapshot document = db.collection(getString(R.string.DB_Teachers))
+            db.collection(getString(R.string.DB_Teachers))
                     .document(classRoom)
                     .get()
-                    .getResult();
-            if (document != null && document.exists()) {
-                Teacher t = document.toObject(Teacher.class);
-                mUsersList.add(t);
-            }
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document != null && document.exists()) {
+                                    Teacher t = document.toObject(Teacher.class);
+                                    mUsersList.add(t);
+                                }
+                            } else {
+                                Log.d(TAG, "Failed to get the teacher (task is not success)");
+                            }
+                        }
+                    });
         }
         db.collection(getString(R.string.DB_Students))
 //                .whereEqualTo("teacherId", classRoom) //TODO: for debugging Ill show all students
