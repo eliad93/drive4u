@@ -160,6 +160,7 @@
     <string name="dialog_ok">Ok</string>
     <string name="user_message_unexpected_error">Sorry for the inconvenience, an unexpected error occurred</string>
     <string name="unexpected_error">Unexpected error</string>
+    <string name="lesson_len_range_error">length range is 30-60</string>
 
 
 </resources>

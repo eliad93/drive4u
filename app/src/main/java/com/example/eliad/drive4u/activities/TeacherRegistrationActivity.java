@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.TeacherUI.TeacherMainActivity;
 import com.example.eliad.drive4u.base_activities.RegistrationBaseActivity;
+import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.Teacher;
 import com.example.eliad.drive4u.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -173,6 +174,10 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
         }
         if(lessonLenString.isEmpty()) {
             editTextLessonLen.setError(getString(R.string.lesson_len_error));
+            isValid = false;
+        } else if(Integer.valueOf(lessonLenString) > 60
+                || Integer.valueOf(lessonLenString) < 30){
+            editTextLessonLen.setError(getString(R.string.lesson_len_range_error));
             isValid = false;
         }
         if(gearType == null) {
