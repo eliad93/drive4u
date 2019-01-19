@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.models.Chat;
+import com.example.eliad.drive4u.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -25,7 +27,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
     private List<Chat> mChats;
     private String mImageURL;
 
-    FirebaseUser fuser;
+    private FirebaseUser fuser;
 
     public ChatMessageAdapter(Context context, List<Chat> chats, String imageURL) {
         this.mContext = context;
@@ -51,7 +53,22 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
         Chat chat = mChats.get(i);
 
         holder.show_message.setText(chat.getMessage());
-        holder.profile_image.setImageResource(R.mipmap.ic_launcher);
+
+        if (mImageURL == null || mImageURL.equals(User.DEFAULT_IMAGE_KEY)) {
+            holder.profile_image.setImageResource(R.mipmap.ic_launcher);
+        } else {
+            Glide.with(mContext).load(mImageURL).into(holder.profile_image);
+        }
+
+        if (i == mChats.size() - 1) {
+            if(chat.isSeen()) {
+                holder.text_seen.setText(R.string.seen);
+            } else {
+                holder.text_seen.setText(R.string.delivered);
+            }
+        } else {
+            holder.text_seen.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -63,12 +80,14 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
 
         public TextView show_message;
         public ImageView profile_image;
+        public TextView text_seen;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             show_message = itemView.findViewById(R.id.show_message);
             profile_image = itemView.findViewById(R.id.chat_message_item_profile_image);
+            text_seen = itemView.findViewById(R.id.text_seen);
         }
     }
 

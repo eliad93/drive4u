@@ -17,6 +17,7 @@ import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.StudentUI.StudentMainActivity;
 import com.example.eliad.drive4u.base_activities.RegistrationBaseActivity;
 import com.example.eliad.drive4u.models.Student;
+import com.example.eliad.drive4u.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,7 +32,7 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity
         implements AdapterView.OnItemSelectedListener {
 
     // Tag for the Log
-    private static final String TAG = StudentSearchTeacherActivity.class.getName();
+    private static final String TAG = StudentRegistrationActivity.class.getName();
 
     // Firebase
     private FirebaseAuth mAuth;
@@ -160,16 +161,16 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity
         imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
         String uId = newUser.getUid();
         final Student newStudent = new Student(uId, firstName, lastName, phone, city,
-                email, "", 0, 0, gearType);
+                email, "", 0, 0, gearType,
+                User.DEFAULT_IMAGE_KEY, User.OFFLINE);
         db.collection("Students").document(uId).set(newStudent)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "firestore student created successfully");
                         Intent intent = new Intent(getApplicationContext(),
-                                StudentHomeActivity.class);
+                                StudentMainActivity.class);
                         intent.putExtra(StudentMainActivity.ARG_STUDENT, newStudent);
-
                         startActivity(intent);
                     }
                 })

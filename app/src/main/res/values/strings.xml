@@ -152,6 +152,19 @@
     <string name="title_activity_student_main">StudentMainActivity</string>
     <string name="nav_teachers">Teachers</string>
     <string name="type_a_message">Type a message</string>
+    <string name="choose_teacher_dialog_title">connection request</string>
+    <string name="dialog_positive_button">Yes</string>
+    <string name="dialog_negative_button">Cancel</string>
+    <string name="choose_teacher_dialog_message_no_teacher">Are you sure you want to send a connection request?</string>
+    <string name="choose_teacher_dialog_message_has_teacher">Already has a teacher, disconnect first.</string>
+    <string name="dialog_ok">Ok</string>
+    <string name="user_message_unexpected_error">Sorry for the inconvenience, an unexpected error occurred</string>
+    <string name="unexpected_error">Unexpected error</string>
+    <string name="lesson_len_range_error">length range is 30-60</string>
+    <string name="lessons_archive">Lessons archive</string>
+    <string name="seen">Seen</string>
+    <string name="delivered">Delivered</string>
+    <string name="connection_requests">Connection requests</string>
 
 
 </resources>

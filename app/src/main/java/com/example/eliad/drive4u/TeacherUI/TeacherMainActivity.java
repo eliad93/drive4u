@@ -2,6 +2,7 @@ package com.example.eliad.drive4u.TeacherUI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -14,26 +15,33 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.activities.LoginActivity;
+import com.example.eliad.drive4u.chat.MainChatActivity;
 import com.example.eliad.drive4u.chat.MainChatFragment;
 import com.example.eliad.drive4u.models.Teacher;
+import com.example.eliad.drive4u.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TeacherMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
     // Tag for the Log
     private static final String TAG = TeacherMainActivity.class.getName();
 
     // key for passing the teacher between activities
     public static final String ARG_TEACHER = TAG + ".arg_teacher";
+    public static final String ARG_NAV = TAG + ".arg_nav";
 
     // the user
     protected Teacher mTeacher;
@@ -58,7 +66,8 @@ public class TeacherMainActivity extends AppCompatActivity
 
         initToolbar();
         initNavigationView();
-        displayView(R.id.nav_home);
+        displayView(getIntent().getIntExtra(ARG_NAV, R.id.teacher_nav_home));
+        status(User.ONLINE);
     }
 
     protected void initToolbar() {
@@ -75,8 +84,25 @@ public class TeacherMainActivity extends AppCompatActivity
         mTeacher = parcelablesIntent.getParcelableExtra(ARG_TEACHER);
 
         if (mTeacher == null) {
-            Log.d(TAG, " Got an intent with out a teacher. fetching him fom the dp. fix this!");
-            // TODO: fetch the teacher or search for the bug
+            Log.d(TAG, " Got an intent with out a teacher. fetching him fom the dp.");
+            db.collection(getString(R.string.DB_Teachers))
+                    .document(mUser.getUid())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot snapshot = task.getResult();
+                                if (snapshot != null && snapshot.exists()) {
+                                    mTeacher = snapshot.toObject(Teacher.class);
+                                } else {
+                                    Log.d(TAG, "Query returned without a teacher");
+                                }
+                            } else {
+                                Log.d(TAG, "Query failed!");
+                            }
+                        }
+                    });
         }
     }
 
@@ -89,15 +115,21 @@ public class TeacherMainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.teacher_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         // set the content of the menu.
         View headerView = navigationView.getHeaderView(0);
-        ImageView drawerImage = (ImageView) headerView.findViewById(R.id.imageView);
+        CircleImageView drawerImage = (CircleImageView) headerView.findViewById(R.id.nav_header_image);
         TextView drawerUsername = (TextView) headerView.findViewById(R.id.user_name);
         TextView drawerAccount = (TextView) headerView.findViewById(R.id.user_email);
-        // TODO: Eliad: drawerImage.setImageDrawable(R.drawable.ic_user);
+
+        if (mTeacher.getImageUrl() == null || mTeacher.getImageUrl().equals(User.DEFAULT_IMAGE_KEY)) {
+            drawerImage.setImageResource(R.mipmap.ic_launcher);
+        } else {
+            Glide.with(getApplicationContext()).load(mTeacher.getImageUrl()).into(drawerImage);
+        }
+
         String userName = mTeacher.getFirstName() + " " + mTeacher.getLastName();
         drawerUsername.setText(userName);
         drawerAccount.setText(mTeacher.getEmail());
@@ -109,7 +141,7 @@ public class TeacherMainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (!isAtHome) {
-            displayView(R.id.nav_home);
+            displayView(R.id.teacher_nav_home);
         } else {
             super.onBackPressed();
         }
@@ -143,7 +175,8 @@ public class TeacherMainActivity extends AppCompatActivity
 
     public void logoutUser(){
         FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getBaseContext(), LoginActivity.class));
+        startActivity(new Intent(getBaseContext(), LoginActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     @Override
@@ -167,22 +200,28 @@ public class TeacherMainActivity extends AppCompatActivity
         String title = getString(R.string.app_name);
 
         switch (viewId) {
-            case R.id.nav_home:
+            case R.id.teacher_nav_home:
                 fragment = TeacherHomeFragment.newInstance(mTeacher);
                 isAtHome = true;
                 break;
-            case R.id.nav_profile:
+            case R.id.teacher_nav_profile:
                 fragment = TeacherProfileFragment.newInstance(mTeacher);
                 isAtHome = false;
                 break;
 
-            case R.id.nav_students:
+            case R.id.teacher_nav_students:
                 fragment =  TeacherStudentsFragment.newInstance(mTeacher);
                 isAtHome = false;
                 break;
 
-            case R.id.nav_send:
-                fragment = MainChatFragment.newInstance(mTeacher);
+            case R.id.teacher_nav_connection_requests:
+                fragment =  TeacherConnectionRequestsFragment.newInstance(mTeacher);
+                isAtHome = false;
+                break;
+
+            case R.id.teacher_nav_send:
+                intent = new Intent(this, MainChatActivity.class);
+                intent.putExtra(MainChatActivity.ARG_USER, mTeacher);
                 isAtHome = false;
                 break;
 
@@ -197,7 +236,7 @@ public class TeacherMainActivity extends AppCompatActivity
             ft.replace(R.id.content_frame, fragment);
             ft.commit();
         } else if (intent != null) {
-            finish();
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
         // set the toolbar title
@@ -208,5 +247,23 @@ public class TeacherMainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
+    }
+
+    private void status(String status) {
+        db.collection(getString(R.string.DB_Teachers))
+                .document(mTeacher.getID())
+                .update("status", status);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status(User.ONLINE);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status(User.OFFLINE);
     }
 }
