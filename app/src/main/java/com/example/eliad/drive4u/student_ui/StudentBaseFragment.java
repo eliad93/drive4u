@@ -72,7 +72,8 @@ public class StudentBaseFragment extends Fragment {
         updateStudent();
     }
 
-    private void updateStudent(){
+
+    protected void updateStudent(){
         Log.d(TAG, "updateStudent");
         db.collection("Students").document(mUser.getUid()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

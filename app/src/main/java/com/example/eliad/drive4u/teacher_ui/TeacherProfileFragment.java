@@ -1,6 +1,7 @@
 package com.example.eliad.drive4u.teacher_ui;
 
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -28,10 +29,15 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+
+import javax.annotation.Nullable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -115,9 +121,24 @@ public class TeacherProfileFragment extends TeacherBaseFragment
         });
 
         updateProfile();
+        db.collection("Teachers")
+                .document(mTeacher.getID())
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.d(TAG, "Listen failed: " + e);
+                        }
+                        if (documentSnapshot != null && documentSnapshot.exists()) {
+                            mTeacher = documentSnapshot.toObject(Teacher.class);
+                            updateProfile();
+                        }
+                    }
+                });
 
         return view;
     }
+
     private boolean isValidInput(){
         Log.d(TAG, "isValidInput");
         boolean isValid = true;
@@ -160,6 +181,7 @@ public class TeacherProfileFragment extends TeacherBaseFragment
         }
         return isValid;
     }
+
     private void endEditMode() {
         updateTeacher();
         updateProfile();
@@ -227,6 +249,9 @@ public class TeacherProfileFragment extends TeacherBaseFragment
         if (mTeacher.getImageUrl() == null || mTeacher.getImageUrl().equals(User.DEFAULT_IMAGE_KEY)) {
             image_profile.setImageResource(R.mipmap.ic_user_foreground );
         } else {
+            if (getContext() == null) {
+                return;
+            }
             Glide.with(getContext()).load(mTeacher.getImageUrl()).into(image_profile);
         }
     }

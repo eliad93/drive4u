@@ -12,6 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,13 +46,19 @@ public class StudentProfileFragment extends StudentBaseFragment {
 
     CircleImageView image_profile;
     TextView username;
+    private ImageButton editBtn;
+    private TextView textViewPhoneNumber, textViewEmail, textViewCity;
+
+    private EditText editTextName, editTextPhone, editTextCity;
+
+    private String name, firstName="", lastName="", phone, city;
+
+    private boolean isEditMode;
+
     StorageReference storageReference;
     private static final int IMAGE_REQUEST = 1;
     private Uri imageUri;
     private StorageTask uploadTask;
-
-    // widgets
-    private TextView textViewPhoneNumber, textViewEmail, textViewCity;
 
     public StudentProfileFragment() {
         // Required empty public constructor
@@ -77,13 +86,42 @@ public class StudentProfileFragment extends StudentBaseFragment {
         // init text views
         image_profile           = view.findViewById(R.id.profile_image);
         username                = view.findViewById(R.id.profile_username);
-
+        isEditMode = false;
+        editBtn = view.findViewById(R.id.student_imageButtonEdit);
         textViewPhoneNumber     = view.findViewById(R.id.StudentProfilePhone);
         textViewEmail           = view.findViewById(R.id.StudentProfileEmail);
         textViewCity            = view.findViewById(R.id.StudentProfileCity);
 
         // get ready for loading pictures
         storageReference        = FirebaseStorage.getInstance().getReference(User.UPLOADS);
+
+        initEditProfile(view);
+
+        // set the content
+        updateInfo();
+
+
+        image_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openImage();
+            }
+        });
+
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isEditMode) {
+                    prepForProfileEdit();
+                    isEditMode = true;
+                } else if (isValidInput()){
+                    endEditMode();
+                    isEditMode = false;
+                } else {
+                    Toast.makeText(getContext(), "in valid input!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         db.collection("Students")
                 .document(mUser.getUid())
@@ -99,31 +137,110 @@ public class StudentProfileFragment extends StudentBaseFragment {
                         }
                     }
                 });
-        // set the content
-        updateInfo();
 
         return view;
+    }
+
+    private void endEditMode() {
+        writeStudent();
+        updateInfo();
+        swapVisibility(View.VISIBLE, View.GONE);
+    }
+
+    private void writeStudent() {
+        Log.d(TAG, "writeStudent");
+
+        mStudent.setFirstName(firstName);
+        mStudent.setLastName(lastName);
+        mStudent.setPhoneNumber(phone);
+        mStudent.setCity(city);
+
+        db.collection("Students")
+                .document(mStudent.getID())
+                .set(mStudent)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Failed to update the Teacher! " + e);
+                    }
+                });
+    }
+
+
+    private boolean isValidInput(){
+        Log.d(TAG, "isValidInput");
+        boolean isValid = true;
+
+        name = editTextName.getText().toString().trim();
+        phone = editTextPhone.getText().toString().trim();
+        city = editTextCity.getText().toString().trim();
+
+        if(name.isEmpty() || !name.contains(" ")) {
+            editTextName.setError(getString(R.string.name_error));
+            isValid = false;
+        }else{
+            firstName = name.split(" ", 2)[0];
+            lastName = name.split(" ", 2)[1];
+            if(firstName.isEmpty() || lastName.isEmpty()){
+                editTextName.setError(getString(R.string.name_error));
+                isValid = false;
+            }
+        }
+        if(phone.isEmpty() || phone.length() != 10) {
+            editTextPhone.setError(getString(R.string.phone_error));
+            isValid = false;
+        }
+        if(city.isEmpty()) {
+            editTextCity.setError(getString(R.string.city_error));
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    private void prepForProfileEdit() {
+        swapVisibility(View.GONE, View.VISIBLE);
+    }
+
+    private void initEditProfile (View v) {
+        Log.d(TAG, "initEditProfile");
+        editTextName = v.findViewById(R.id.ProfileEditTextName);
+        editTextPhone = v.findViewById(R.id.editTextStudentProfilePhone);
+        editTextCity = v.findViewById(R.id.editTextStudentProfileCity);
+        swapVisibility(View.VISIBLE, View.GONE);
+    }
+
+    private void swapVisibility(int tvCode, int etCode) {
+        Log.d(TAG, "swap visibility textViewCode[" + tvCode + "] editTextCode[" + etCode +"]");
+
+        username.setVisibility(tvCode);
+        editTextName.setVisibility(etCode);
+
+        textViewPhoneNumber.setVisibility(tvCode);
+        editTextPhone.setVisibility(etCode);
+
+        textViewCity.setVisibility(tvCode);
+        editTextCity.setVisibility(etCode);
     }
 
     private void updateInfo() {
         Log.d(TAG, "updateInfo");
         textViewPhoneNumber.setText(mStudent.getPhoneNumber());
+        editTextPhone.setText(mStudent.getPhoneNumber());
+
         textViewEmail.setText(mStudent.getEmail());
+
         textViewCity.setText(mStudent.getCity());
+        editTextCity.setText(mStudent.getCity());
+
         username.setText(mStudent.getFullName());
+        editTextName.setText(mStudent.getFullName());
 
         if (mStudent.getImageUrl() == null || mStudent.getImageUrl().equals(User.DEFAULT_IMAGE_KEY)) {
             image_profile.setImageResource(R.mipmap.ic_user_round);
-        } else {
+        } else if (getContext() != null) {
             Glide.with(getContext()).load(mStudent.getImageUrl()).into(image_profile);
         }
-
-        image_profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openImage();
-            }
-        });
     }
 
     private void openImage() {
