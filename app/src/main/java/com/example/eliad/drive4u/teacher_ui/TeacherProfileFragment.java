@@ -67,7 +67,7 @@ public class TeacherProfileFragment extends TeacherBaseFragment {
         storageReference = FirebaseStorage.getInstance().getReference(User.UPLOADS);
 
         if (mTeacher.getImageUrl() == null || mTeacher.getImageUrl().equals(User.DEFAULT_IMAGE_KEY)) {
-            image_profile.setImageResource(R.mipmap.ic_launcher);
+            image_profile.setImageResource(R.mipmap.ic_user_foreground );
         } else {
             Glide.with(getContext()).load(mTeacher.getImageUrl()).into(image_profile);
         }
@@ -78,32 +78,23 @@ public class TeacherProfileFragment extends TeacherBaseFragment {
                 openImage();
             }
         });
-//        String text;
-//        // init text views
-//        TextView textViewFirstName = view.findViewById(R.id.TeacherProfileFirstName);
-//        TextView textViewLastName = view.findViewById(R.id.TeacherProfileLastName);
-//        TextView textViewPhoneNumber = view.findViewById(R.id.TeacherProfilePhone);
-//        TextView textViewEmail = view.findViewById(R.id.TeacherProfileEmail);
-//        TextView textViewCity = view.findViewById(R.id.TeacherProfileCity);
-//        TextView textViewBalance = view.findViewById(R.id.TeacherProfileBalance);
-//        TextView textViewCarModel = view.findViewById(R.id.TeacherProfileCarModel);
-//        TextView textViewGearType = view.findViewById(R.id.TeacherProfileGearType);
-//        TextView textViewPrice = view.findViewById(R.id.TeacherProfilePrice);
-//        TextView textViewTotalPayed = view.findViewById(R.id.TeacherProfileTotalPayed);
-//
-//        textViewFirstName.setText(mTeacher.getFirstName());
-//        textViewLastName.setText(mTeacher.getLastName());
-//        textViewPhoneNumber.setText(mTeacher.getPhoneNumber());
-//        textViewEmail.setText(mTeacher.getEmail());
-//        textViewCity.setText(mTeacher.getCity());
-//        text = Integer.toString(mTeacher.getBalance());
-//        textViewBalance.setText(text);
-//        textViewCarModel.setText(mTeacher.getCarModel());
-//        textViewGearType.setText(mTeacher.getGearType());
-//        text = Integer.toString(mTeacher.getPrice());
-//        textViewPrice.setText(text);
-//        text = Integer.toString(mTeacher.getTotalPayed());
-//        textViewTotalPayed.setText(text);
+        String text;
+        // init text views
+        TextView textViewPhoneNumber = view.findViewById(R.id.TeacherProfilePhone);
+        TextView textViewEmail = view.findViewById(R.id.TeacherProfileEmail);
+        TextView textViewCity = view.findViewById(R.id.TeacherProfileCity);
+        TextView textViewCarModel = view.findViewById(R.id.TeacherProfileCarModel);
+        TextView textViewGearType = view.findViewById(R.id.TeacherProfileGearType);
+        TextView textViewPrice = view.findViewById(R.id.TeacherProfilePrice);
+
+        username.setText(mTeacher.getFullName());
+        textViewPhoneNumber.setText(mTeacher.getPhoneNumber());
+        textViewEmail.setText(mTeacher.getEmail());
+        textViewCity.setText(mTeacher.getCity());
+        textViewCarModel.setText(mTeacher.getCarModel());
+        textViewGearType.setText(mTeacher.getGearType());
+        text = Integer.toString(mTeacher.getPrice());
+        textViewPrice.setText(text);
 
         return view;
     }
