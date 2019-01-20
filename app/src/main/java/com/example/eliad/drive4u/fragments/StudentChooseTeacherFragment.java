@@ -105,11 +105,11 @@ public class StudentChooseTeacherFragment extends StudentBaseFragment
             // TODO: this doesn't work
             teacherImage.setBackgroundResource(R.mipmap.ic_launcher_round);
         }
-        textViewTeacherName.setText("Name: " + mTeacher.getFullName());
-        textViewTeacherCity.setText("City: " +mTeacher.getCity());
-        textViewTeacherNumStudents.setText("Number of students: " + mTeacher.getCity());
-        textViewTeacherGear.setText("Gear type: " + mTeacher.getGearType());
-        textViewTeacherCar.setText("Car: " + mTeacher.getCarModel());
+        textViewTeacherName.setText(String.format("Name: %s", mTeacher.getFullName()));
+        textViewTeacherCity.setText(String.format("City: %s", mTeacher.getCity()));
+        textViewTeacherNumStudents.setText(String.format("Number of students: %s", mTeacher.getCity()));
+        textViewTeacherGear.setText(String.format("Gear type: %s", mTeacher.getGearType()));
+        textViewTeacherCar.setText(String.format("Car: %s", mTeacher.getCarModel()));
 
         buttonChooseTeacher.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,8 +125,7 @@ public class StudentChooseTeacherFragment extends StudentBaseFragment
             dialogFragment.setTargetFragment(this, 0);
             fm.beginTransaction().add(dialogFragment, "dialog").commit();
         } else {
-            InformUserDialog dialog = new InformUserDialog();
-            dialog.show(getChildFragmentManager(), "dialog");
+            unexpectedError();
         }
     }
 

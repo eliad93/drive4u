@@ -55,6 +55,38 @@ public class Teacher extends User {
         connectionRequests.add(studentId);
     }
 
+    public Double worth(){
+        return Double.valueOf(this.lessonLength)
+                / Double.valueOf(this.price);
+    }
+
+    public Integer compareByNumStudents(Teacher teacher){
+        return this.numberOfStudents().compareTo(teacher.numberOfStudents());
+    }
+
+    public Integer compareByCity(Teacher teacher){
+        return this.city.compareTo(teacher.getCity());
+    }
+
+    public Integer compareByPrice(Teacher teacher){
+        return this.price.compareTo(teacher.getPrice());
+    }
+
+    public Integer compareByLessonLength(Teacher teacher){
+        return this.lessonLength.compareTo(teacher.getLessonLength());
+    }
+
+    public Integer compareByWorth(Teacher teacher){
+        double diff = this.worth() - teacher.worth();
+        if(diff > 0){
+            return 1;
+        } else if(diff < 0){
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
     public Boolean isConnected(String student){
         return students.contains(student);
     }

@@ -1,12 +1,11 @@
 package com.example.eliad.drive4u.StudentUI;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.WindowManager;
 
+import com.example.eliad.drive4u.fragments.UnexpectedErrorDialog;
 import com.example.eliad.drive4u.models.Student;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -78,5 +77,10 @@ public class StudentBaseFragment extends Fragment {
         mUser = mAuth.getCurrentUser();
         assert mUser != null;
         db = FirebaseFirestore.getInstance();
+    }
+
+    protected void unexpectedError(){
+        UnexpectedErrorDialog dialog = new UnexpectedErrorDialog();
+        dialog.show(getChildFragmentManager(), "dialog");
     }
 }

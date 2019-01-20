@@ -58,6 +58,19 @@
     <string name="lesson_starting_time">Lesson starting time</string>
     <string name="lesson_date">Lesson date</string>
     <string name="lessons_remaining_today">Lessons remaining today:</string>
+    <string name="student_search_teacher_sort_ascending">Ascending</string>
+    <string name="student_search_teacher_sort_descending">Descending</string>
+    <string name="student_search_teacher_sort">Sort By:</string>
+    <string name="student_search_teacher_filter">Filter By:</string>
+    <string name="student_search_tacher_filter_sort_empty_error">no filter or sort values were inserted</string>
+    <string name="student_search_teacher_apply">apply</string>
+    <string name="student_search_teacher_all">all</string>
+    <string name="student_search_teacher_students_number">number of students</string>
+    <string name="student_search_teacher_city">city</string>
+    <string name="student_search_teacher_lesson_length">lesson length</string>
+    <string name="student_search_teacher_price">price</string>
+    <string name="student_search_teacher_worth">worth</string>
+   <string name="student_search_teacher_gear_type">gear type</string>
     <string-array name="gear_types_teacher">
         <item>manual</item>
         <item>automatic</item>
@@ -67,6 +80,25 @@
         <item>manual</item>
         <item>automatic</item>
     </string-array>
+
+    <string-array name="student_search_teacher_filter_categories">
+        <item>@string/student_search_teacher_all</item>
+        <item>@string/student_search_teacher_gear_type</item>
+        <item>@string/student_search_teacher_students_number</item>
+        <item>@string/student_search_teacher_city</item>
+    </string-array>
+
+    <string-array name="student_search_teacher_sort_categories">
+        <item>@string/student_search_teacher_all</item>
+        <item>@string/student_search_teacher_students_number</item>
+        <item>@string/student_search_teacher_city</item>
+        <item>@string/student_search_teacher_lesson_length</item>
+        <item>@string/student_search_teacher_price</item>
+        <item>@string/student_search_teacher_worth</item>
+    </string-array>
+
+
+
     <string name="you_have_no_lessons">You have no lessons.</string>
     <string name="you_had_no_lessons_yet">You had no lessons yet.</string>
     <string name="optional_lessons">Optional lessons</string>
@@ -148,6 +180,9 @@
     <string name="title_chats">Chats</string>
     <string name="title_users">users</string>
 
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_student_main">StudentMainActivity</string>
     <string name="nav_teachers">Teachers</string>
     <string name="type_a_message">Type a message</string>

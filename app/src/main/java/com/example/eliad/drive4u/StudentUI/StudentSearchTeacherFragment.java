@@ -1,6 +1,7 @@
 package com.example.eliad.drive4u.StudentUI;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.TeacherSearchAdapter;
@@ -29,6 +37,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 
 /**
@@ -38,7 +48,9 @@ import java.util.LinkedList;
  */
 public class StudentSearchTeacherFragment extends StudentBaseFragment
         implements TeacherSearchAdapter.OnItemClickListener,
-        StudentChooseTeacherFragment.PerformUserAction {
+        StudentChooseTeacherFragment.PerformUserAction,
+        AdapterView.OnItemSelectedListener, View.OnClickListener {
+
     // Tag for the Log
     private static final String TAG = StudentSearchTeacherFragment.class.getName();
     // Firebase
@@ -48,8 +60,29 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private Spinner mSortSpinner;
+    private Spinner mFilterSpinner;
+
+    private Switch mSortSwitch;
+
+    private EditText mFilterSelectedEditText;
+    private TextView mSortSelectedTextView;
+    private TextView mFilterSelectedTextView;
+    private Button mApplayButton;
+
+    private String mSortSelectedStr;
+    private String mFilterSelectdStr;
+    private String mFilterSelectedValueStr;
+
+
+
+
     // models
     private LinkedList<Teacher> teachers = new LinkedList<>();
+
+    private LinkedList<Teacher> presentedTeachers = new LinkedList<>();
+
     private Teacher currentTeacher;
 
     private TextView textViewNoTeachers;
@@ -71,7 +104,7 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_student_search_teacher,
@@ -83,19 +116,180 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
         mStudentDoc = db.collection("Students").document(mStudent.getID());
         mTeachersDb = db.collection("Teachers");
 
+        initializeSpinners(view);
         initializeRecyclerView(view);
         // populate recycler view
         presentAllTeachers();
         return view;
     }
 
+    private void initializeSpinners(View view) {
+
+        mSortSelectedTextView =   view.findViewById(R.id.textViewStudentSearchTeacherSort);
+        mFilterSelectedTextView = view.findViewById(R.id.textViewStudentSearchTeacherFilter);
+        mFilterSelectedEditText = view.findViewById(R.id.editTextStudentSearchTeacherFilter);
+        mFilterSpinner =          view.findViewById(R.id.spinnerStudentSearchTeacherFilter);
+        mSortSpinner =            view.findViewById(R.id.spinnerStudentSearchTeacherSort);
+        mApplayButton =           view.findViewById(R.id.buttonStudentSearchTeacherApply);
+        mSortSwitch =             view.findViewById(R.id.switchStudentSearchTeacherSortOrder);
+        //sort spinner
+        Context context = getContext();
+        if(context != null){
+            ArrayAdapter sortAdapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.student_search_teacher_sort_categories,
+                    android.R.layout.simple_spinner_item);
+            sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSortSpinner.setAdapter(sortAdapter);
+            mSortSpinner.setOnItemSelectedListener(this);
+            //filter spinner
+            ArrayAdapter filterAdapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.student_search_teacher_filter_categories,
+                    android.R.layout.simple_spinner_item);
+            filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mFilterSpinner.setAdapter(filterAdapter);
+            mFilterSpinner.setOnItemSelectedListener(this);
+
+            mApplayButton.setOnClickListener(this);
+        } else {
+            unexpectedError();
+        }
+     }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.buttonStudentSearchTeacherApply:
+                mSortSelectedStr = mSortSelectedTextView.getText().toString();
+                mFilterSelectdStr = mFilterSelectedTextView.getText().toString();
+                mFilterSelectedValueStr = mFilterSelectedEditText.getText().toString();
+
+                if(mSortSelectedStr.isEmpty() && mFilterSelectdStr.isEmpty()
+                        && mFilterSelectedValueStr.isEmpty()) {
+                    Toast.makeText(getContext(),
+                            R.string.student_search_tacher_filter_sort_empty_error ,
+                            Toast.LENGTH_SHORT ).show();
+                }
+                else {
+                    if((!mFilterSelectedValueStr.isEmpty()) && (!mFilterSelectdStr.isEmpty())){
+                        TeachersFilter(mFilterSelectdStr,mFilterSelectedValueStr);
+                    }
+                    if(mSortSelectedStr.compareTo
+                            (getString(R.string.student_search_teacher_all)) != 0){
+                       if(mSortSwitch.isChecked()) {
+                           Collections.sort(presentedTeachers,
+                                   new TeachersCompareDescending(mSortSelectedStr));
+                       }
+                       else {
+                           Collections.sort(presentedTeachers,
+                                   new TeachersCompareAscending(mSortSelectedStr));
+                       }
+                    mAdapter.notifyDataSetChanged();
+                }
+                }
+                break;
+        }
+    }
+
+    public void TeachersFilter(String key , String value){
+        presentedTeachers.clear();
+        for(Teacher t:teachers){
+            switch (key){
+                case "city":
+                    if(t.getCity().equals(value)){
+                        presentedTeachers.add(t);
+                    }
+                    break;
+                case "number of students":
+                    if(t.numberOfStudents() >= Integer.parseInt(value)){
+                        presentedTeachers.add(t);
+                    }
+                    break;
+                case "gear type":
+                    if(t.getGearType().equals(value)){
+                        presentedTeachers.add(t);
+                    }
+                    break;
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    public class TeachersCompareDescending implements Comparator<Teacher> {
+        private String type;
+        TeachersCompareDescending(String type){
+            this.type = type;
+        }
+        @Override
+        public int compare(Teacher t1, Teacher t2) {
+            switch(type){
+                case "city":
+                    return t2.compareByCity(t1);
+                case "number of students":
+                    return t2.compareByNumStudents(t1);
+                case "lesson length":
+                    return t2.compareByLessonLength(t1);
+                case "price":
+                    return t2.compareByPrice(t1);
+                case "worth":
+                    return t2.compareByWorth(t1);
+                default: return t2.compareByNumStudents(t1);
+            }
+        }
+    }
+
+    public class TeachersCompareAscending implements Comparator<Teacher> {
+        private String type;
+        TeachersCompareAscending(String type){
+            this.type = type;
+        }
+        @Override
+        public int compare(Teacher t1, Teacher t2) {
+            switch(type){
+                case "city":
+                    return t1.compareByCity(t2);
+                case "number of students":
+                    return t1.compareByNumStudents(t2);
+                case "lesson length":
+                    return t1.compareByLessonLength(t2);
+                case "price":
+                    return t1.compareByPrice(t2);
+                case "worth":
+                    return t1.compareByWorth(t2);
+                default: return t1.compareByNumStudents(t2);
+            }
+        }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            switch(parent.getId()) {
+                case R.id.spinnerStudentSearchTeacherFilter:
+                    if(position == 0) {
+                        mFilterSelectedTextView.setText("");
+                        break;
+                    }
+                    mFilterSelectedTextView.setText(parent.getItemAtPosition(position).toString());
+                    break;
+                case R.id.spinnerStudentSearchTeacherSort:
+                    if(position == 0) {
+                        mSortSelectedTextView.setText("");
+                        break;
+                    }
+                    mSortSelectedTextView.setText(parent.getItemAtPosition(position).toString());
+                    break;
+            }
+        }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+    }
+
     private void initializeRecyclerView(View view) {
         Log.d(TAG, "in initializeRecyclerView");
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewTeachers);
+        mRecyclerView = view.findViewById(R.id.recyclerViewTeachers);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-       // mRecyclerView.addItemDecoration(new BorderLineDividerItemDecoration(getContext()));
     }
 
     private void presentAllTeachers() {
@@ -106,21 +300,26 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                Teacher teacher = document.toObject(Teacher.class);
-                                Log.d(TAG, "presenting teacher by email: " + teacher.getEmail());
-                                teachers.addLast(teacher);
+                            QuerySnapshot snapshots = task.getResult();
+                            if(snapshots != null){
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d(TAG, document.getId() + " => " + document.getData());
+                                    Teacher teacher = document.toObject(Teacher.class);
+                                    Log.d(TAG, "presenting teacher by email: " + teacher.getEmail());
+                                    teachers.addLast(teacher);
+                                }
+                                if (teachers.size() == 0) {
+                                    textViewNoTeachers.setVisibility(View.VISIBLE);
+                                } else {
+                                    presentedTeachers.addAll(teachers);
+                                    mAdapter = new TeacherSearchAdapter(presentedTeachers, getContext());
+                                    ((TeacherSearchAdapter) mAdapter)
+                                            .setOnItemClickListener(StudentSearchTeacherFragment.this);
+                                    mRecyclerView.setAdapter(mAdapter);
+                                }
                             }
-                            if (teachers.size() == 0) {
-                                textViewNoTeachers.setVisibility(View.VISIBLE);
-                            } else {
-                                mAdapter = new TeacherSearchAdapter(teachers, getContext());
-                                ((TeacherSearchAdapter) mAdapter)
-                                        .setOnItemClickListener(StudentSearchTeacherFragment.this);
-                                mRecyclerView.setAdapter(mAdapter);
                             }
-                        } else {
+                             else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
@@ -158,8 +357,7 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
     @Override
     public void onItemClick(int position) {
         Log.d(TAG, "in onItemClick");
-
-        currentTeacher = teachers.get(position);
+        currentTeacher = presentedTeachers.get(position);
         Fragment teacherFragment = StudentChooseTeacherFragment.newInstance(mStudent, currentTeacher);
         startFragmentForResult(teacherFragment);
     }
@@ -187,17 +385,6 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
                 }
             }
         }
-    }
-
-    private Bundle createArgsForFragment() {
-        Log.d(TAG, "in createArgsForFragment");
-        Bundle args = new Bundle();
-        if(!mStudent.hasTeacher()){
-            args.putString("message", "connection request sent.");
-        } else {
-            args.putString("message", "Already has a teacher, disconnect first.");
-        }
-        return args;
     }
 
     @Override

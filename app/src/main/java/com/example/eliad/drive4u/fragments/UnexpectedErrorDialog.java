@@ -3,18 +3,17 @@ package com.example.eliad.drive4u.fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
 import com.example.eliad.drive4u.R;
 
-public class InformUserDialog extends DialogFragment {
+public class UnexpectedErrorDialog extends DialogFragment {
     // Tag for the Log
-    private static final String TAG = InformUserDialog.class.getName();
+    private static final String TAG = UnexpectedErrorDialog.class.getName();
 
-    public InformUserDialog(){
+    public UnexpectedErrorDialog(){
         // Empty constructor required for DialogFragment
     }
     @NonNull

@@ -74,9 +74,9 @@ public class StudentPastLessonsAdapter extends RecyclerView.Adapter<RecyclerView
         public ConstraintLayout layout;
         public StudentPastLessonViewHolder(View v){
             super(v);
-            textViewLessonDate = (TextView)v.findViewById(R.id.textViewPastLessonDate);
-            textViewLessonGrade = (TextView)v.findViewById(R.id.textViewPastLessonGrade);
-            layout = (ConstraintLayout)v.findViewById(R.id.constraintLayoutStudentPastLessonItem);
+            textViewLessonDate = v.findViewById(R.id.textViewPastLessonDate);
+            textViewLessonGrade = v.findViewById(R.id.textViewPastLessonGrade);
+            layout = v.findViewById(R.id.constraintLayoutStudentPastLessonItem);
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
