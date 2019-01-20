@@ -1,4 +1,4 @@
-package com.example.eliad.drive4u.Notifications;
+package com.example.eliad.drive4u.notifications;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

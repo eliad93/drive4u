@@ -1,10 +1,8 @@
-package com.example.eliad.drive4u.StudentUI;
-
+package com.example.eliad.drive4u.teacher_ui;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,16 +11,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.models.Student;
+import com.example.eliad.drive4u.models.Teacher;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link StudentHomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class StudentHomeFragment extends StudentBaseFragment {
+public class TeacherHomeFragment extends TeacherBaseFragment {
 
-    private static final String TAG = StudentHomeFragment.class.getName();
+    private static final String TAG = TeacherHomeFragment.class.getName();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -45,41 +38,34 @@ public class StudentHomeFragment extends StudentBaseFragment {
         }
     };
 
-    public StudentHomeFragment() {
+    public TeacherHomeFragment() {
         // Required empty public constructor
     }
 
-    public static StudentHomeFragment newInstance(Student student) {
-        StudentHomeFragment fragment = new StudentHomeFragment();
-        Bundle args = newInstanceBaseArgs(student);
+
+    public static TeacherHomeFragment newInstance(Teacher teacher) {
+        TeacherHomeFragment fragment = new TeacherHomeFragment();
+        Bundle args = newInstanceBaseArgs(teacher);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mStudent = getArguments().getParcelable(ARG_STUDENT);
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_student_home, container, false);
+        Log.d(TAG, "onCreateView");
+        View view = inflater.inflate(R.layout.fragment_teacher_home, container, false);
 
-        if (mStudent == null && getArguments() == null) {
+        if (mTeacher == null && getArguments() == null) {
             Log.d(TAG, "Got a Null teacher and no arguments");
             return view;
-        } else if (mStudent == null) {
-            mStudent = getArguments().getParcelable(ARG_STUDENT);
+        } else if (mTeacher == null) {
+            mTeacher = getArguments().getParcelable(ARG_TEACHER);
         }
 
-        BottomNavigationView navigation = (BottomNavigationView) view.findViewById(R.id.student_home_navigation);
+        BottomNavigationView navigation = (BottomNavigationView) view.findViewById(R.id.teacher_home_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
+        // Inflate the layout for this fragment
         return view;
     }
 

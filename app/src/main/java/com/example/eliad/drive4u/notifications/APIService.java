@@ -1,7 +1,4 @@
-package com.example.eliad.drive4u.Notifications;
-
-import com.example.eliad.drive4u.Notifications.MyResponse;
-import com.example.eliad.drive4u.Notifications.Sender;
+package com.example.eliad.drive4u.notifications;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

@@ -1,4 +1,4 @@
-package com.example.eliad.drive4u.Registration;
+package com.example.eliad.drive4u.registration;
 
 
 import android.content.Intent;
@@ -20,7 +20,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.StudentUI.StudentMainActivity;
+import com.example.eliad.drive4u.student_ui.StudentMainActivity;
 import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;

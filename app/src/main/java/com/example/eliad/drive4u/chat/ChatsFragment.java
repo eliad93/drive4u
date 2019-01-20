@@ -2,7 +2,6 @@ package com.example.eliad.drive4u.chat;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.RecoverySystem;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,9 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.example.eliad.drive4u.Notifications.Token;
+import com.example.eliad.drive4u.notifications.Token;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.ChatUsersAdapter;
 import com.example.eliad.drive4u.models.Chat;
@@ -20,9 +18,7 @@ import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.Teacher;
 import com.example.eliad.drive4u.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

@@ -1,4 +1,4 @@
-package com.example.eliad.drive4u.StudentUI;
+package com.example.eliad.drive4u.student_ui;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

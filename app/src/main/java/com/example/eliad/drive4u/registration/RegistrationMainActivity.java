@@ -1,4 +1,4 @@
-package com.example.eliad.drive4u.Registration;
+package com.example.eliad.drive4u.registration;
 
 import android.content.Intent;
 import android.os.Bundle;

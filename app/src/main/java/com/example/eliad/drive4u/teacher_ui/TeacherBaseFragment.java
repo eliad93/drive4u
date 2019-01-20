@@ -1,10 +1,9 @@
-package com.example.eliad.drive4u.TeacherUI;
+package com.example.eliad.drive4u.teacher_ui;
 
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.widget.Toolbar;
 
 import com.example.eliad.drive4u.models.Teacher;
 import com.google.firebase.auth.FirebaseAuth;

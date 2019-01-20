@@ -1,4 +1,4 @@
-package com.example.eliad.drive4u.TeacherUI;
+package com.example.eliad.drive4u.teacher_ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +22,6 @@ import com.bumptech.glide.Glide;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.activities.LoginActivity;
 import com.example.eliad.drive4u.chat.MainChatActivity;
-import com.example.eliad.drive4u.chat.MainChatFragment;
 import com.example.eliad.drive4u.models.Teacher;
 import com.example.eliad.drive4u.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -175,6 +174,7 @@ public class TeacherMainActivity extends AppCompatActivity
 
     public void logoutUser(){
         FirebaseAuth.getInstance().signOut();
+        finish();
         startActivity(new Intent(getBaseContext(), LoginActivity.class)
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }

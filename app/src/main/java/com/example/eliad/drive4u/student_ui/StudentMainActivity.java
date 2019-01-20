@@ -1,4 +1,4 @@
-package com.example.eliad.drive4u.StudentUI;
+package com.example.eliad.drive4u.student_ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,13 +23,10 @@ import com.bumptech.glide.Glide;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.activities.LoginActivity;
 import com.example.eliad.drive4u.chat.MainChatActivity;
-import com.example.eliad.drive4u.chat.MainChatFragment;
 import com.example.eliad.drive4u.models.Student;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.example.eliad.drive4u.models.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;

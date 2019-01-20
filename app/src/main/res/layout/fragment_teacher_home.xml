@@ -6,7 +6,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TeacherUI.TeacherHomeFragment">
+    tools:context=".teacher_ui.TeacherHomeFragment">
 
     <TextView
         android:id="@+id/message"

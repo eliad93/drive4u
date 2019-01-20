@@ -1,4 +1,4 @@
-package com.example.eliad.drive4u.Notifications;
+package com.example.eliad.drive4u.notifications;
 
 public class MyResponse {
 

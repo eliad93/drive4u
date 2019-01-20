@@ -15,9 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.Registration.RegistrationMainActivity;
-import com.example.eliad.drive4u.StudentUI.StudentMainActivity;
-import com.example.eliad.drive4u.TeacherUI.TeacherMainActivity;
+import com.example.eliad.drive4u.registration.RegistrationMainActivity;
+import com.example.eliad.drive4u.student_ui.StudentMainActivity;
+import com.example.eliad.drive4u.teacher_ui.TeacherMainActivity;
 import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.Teacher;
 import com.google.android.gms.tasks.OnCompleteListener;

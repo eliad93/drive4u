@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StudentUI.StudentLessonsArchiveFragment">
+    tools:context=".student_ui.StudentLessonsArchiveFragment">
 
 <TextView
     android:id="@+id/textViewStudentLessonsArchiveHeader"

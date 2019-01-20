@@ -12,11 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.StudentUI.StudentBaseFragment;
+import com.example.eliad.drive4u.student_ui.StudentBaseFragment;
 import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.Teacher;
 

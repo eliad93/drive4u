@@ -1,4 +1,4 @@
-package com.example.eliad.drive4u.Notifications;
+package com.example.eliad.drive4u.notifications;
 
 
 import android.app.Notification;
@@ -29,7 +29,6 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import static com.example.eliad.drive4u.chat.ChatMessageActivity.ARG_CURRENT_USER;
 import static com.example.eliad.drive4u.chat.ChatMessageActivity.ARG_SECOND_USER;
-import static com.example.eliad.drive4u.chat.ChatMessageActivity.ARG_SECOND_USER_ID;
 
 public class MyFirebaseMessaging extends FirebaseMessagingService {
 
