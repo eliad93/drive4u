@@ -83,7 +83,7 @@ public class MainChatFragment extends UserBaseFragment {
         mViewPager.setAdapter(viewPagerAdapter);
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-//        navigation.
+//        registration_navigation.
         displayView(R.id.navigation_chats);
         return view;
     }

@@ -1,21 +1,27 @@
-package com.example.eliad.drive4u.activities;
+package com.example.eliad.drive4u.Registration;
+
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.TeacherUI.TeacherMainActivity;
-import com.example.eliad.drive4u.base_activities.RegistrationBaseActivity;
+import com.example.eliad.drive4u.activities.LoginActivity;
 import com.example.eliad.drive4u.models.Teacher;
 import com.example.eliad.drive4u.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,11 +33,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class TeacherRegistrationActivity extends RegistrationBaseActivity
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class TeacherRegistrationFragment extends Fragment
         implements AdapterView.OnItemSelectedListener {
 
     // Tag for the Log
-    private static final String TAG = TeacherRegistrationActivity.class.getName();
+    private static final String TAG = TeacherRegistrationFragment.class.getName();
 
     // Firebase
     private FirebaseAuth mAuth;
@@ -45,50 +56,76 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
             carModel, priceString, lessonLenString;
     Integer price, lessonLen;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_teacher_registration);
+    private Button btn;
+    protected EditText editTextName;
+    protected EditText editTextPhone;
+    protected EditText editTextCity;
+    protected EditText editTextEmail;
+    protected EditText editTextPassword;
+    protected EditText editTextPasswordRepeat;
+    protected ProgressBar progressBar;
 
+    public TeacherRegistrationFragment() {
+        Log.d(TAG, "empty constructor");
+        // Required empty public constructor
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView");
+        View view =  inflater.inflate(R.layout.fragment_teacher_registration, container, false);
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        progressBar  = findViewById(R.id.TeacherRegistrationProgressBar);
+        progressBar  = view.findViewById(R.id.TeacherRegistrationProgressBar);
         progressBar.setVisibility(View.GONE);
 
-        editTextName = findViewById(R.id.editTextTeacherRegistrationName);
-        editTextPhone = findViewById(R.id.editTextTeacherRegistrationPhone);
-        editTextEmail = findViewById(R.id.editTextTeacherRegistrationEmail);
-        editTextPassword = findViewById(R.id.editTextTeacherRegistrationPassword);
-        editTextPasswordRepeat = findViewById(R.id.editTextTeacherRegistrationPasswordRepeat);
-        editTextCity = findViewById(R.id.editTextTeacherRegistrationCity);
+        btn = view.findViewById(R.id.buttonTeacherRegistration);
+        editTextName = view.findViewById(R.id.editTextTeacherRegistrationName);
+        editTextPhone = view.findViewById(R.id.editTextTeacherRegistrationPhone);
+        editTextEmail = view.findViewById(R.id.editTextTeacherRegistrationEmail);
+        editTextPassword = view.findViewById(R.id.editTextTeacherRegistrationPassword);
+        editTextPasswordRepeat = view.findViewById(R.id.editTextTeacherRegistrationPasswordRepeat);
+        editTextCity = view.findViewById(R.id.editTextTeacherRegistrationCity);
 
-        editTextCarModel = findViewById(R.id.editTextTeacherRegistrationCarModel);
-        editTextPrice = findViewById(R.id.editTextTeacherRegistrationPrice);
-        editTextLessonLen = findViewById(R.id.editTextTeacherRegistrationLessonLen);
-        spinnerGearType = findViewById(R.id.spinnerChooseGearType);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        editTextCarModel = view.findViewById(R.id.editTextTeacherRegistrationCarModel);
+        editTextPrice = view.findViewById(R.id.editTextTeacherRegistrationPrice);
+        editTextLessonLen = view.findViewById(R.id.editTextTeacherRegistrationLessonLen);
+        spinnerGearType = view.findViewById(R.id.spinnerChooseGearType);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.gear_types_teacher, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGearType.setAdapter(adapter);
         spinnerGearType.setOnItemSelectedListener(this);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signUp(v);
+            }
+        });
+
+        return view;
     }
 
     public void signUp(View view) {
         Log.d(TAG, "in signUp");
         initialize();
         if(!isValidInput()){
-            Toast.makeText(this, getString(R.string.signup_failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.signup_failed), Toast.LENGTH_SHORT).show();
         }else{
             signUpSuccess();
         }
     }
 
     private void signUpSuccess() {
+        Log.d(TAG, "signUpSuccess");
         price = Integer.valueOf(priceString);
         lessonLen = Integer.valueOf(lessonLenString);
         progressBar.setVisibility(View.VISIBLE);
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -105,6 +142,7 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
     }
 
     private void initialize() {
+        Log.d(TAG, "initialize");
         name = editTextName.getText().toString().trim();
         phone = editTextPhone.getText().toString().trim();
         city = editTextCity.getText().toString().trim();
@@ -117,6 +155,7 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
     }
 
     private boolean isValidInput(){
+        Log.d(TAG, "isValidInput");
         boolean isValid = true;
         if(name.isEmpty() || !name.contains(" ")) {
             editTextName.setError(getString(R.string.name_error));
@@ -181,12 +220,11 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
         return isValid;
     }
 
-
     private void createNewTeacher(FirebaseUser newUser) {
         Log.d(TAG, "in createNewTeacher");
-        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(INPUT_METHOD_SERVICE);
         try{
-            imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         } catch (NullPointerException ignored){
             Log.d(TAG, "unsafe user input state");
         }
@@ -198,10 +236,10 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "firestore teacher created successfully");
-                        Intent intent = new Intent(getApplicationContext(),
+                        Intent intent = new Intent(getContext(),
                                 TeacherMainActivity.class);
                         intent.putExtra(TeacherMainActivity.ARG_TEACHER, newTeacher);
-                        finish();
+                        getActivity().finish();
                         startActivity(intent);
                     }
                 })
@@ -216,6 +254,7 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG, "onItemSelected");
         gearType = parent.getItemAtPosition(position).toString();
     }
 
@@ -224,10 +263,4 @@ public class TeacherRegistrationActivity extends RegistrationBaseActivity
         gearType = null;
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, UserTypeChoiceActivity.class);
-        finish();
-        startActivity(intent);
-    }
 }

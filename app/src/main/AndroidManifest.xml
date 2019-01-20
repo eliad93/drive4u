@@ -29,25 +29,10 @@
             android:name=".activities.StudentScheduleLessonActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activities.UserTypeChoiceActivity"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".activities.TeacherHomeActivity"
-            android:launchMode="singleTask" />
-        <activity
             android:name=".activities.ProfileActivity"
             android:launchMode="singleTask" />
         <activity
             android:name=".activities.TeacherScheduleActivity"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".activities.StudentRegistrationActivity"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".activities.StudentHomeActivity"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".activities.TeacherRegistrationActivity"
             android:launchMode="singleTask" />
         <activity
             android:name=".activities.TeacherProfileActivity"
@@ -95,8 +80,12 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".chat.MainChatActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".chat.MainChatActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Registration.RegistrationMainActivity"
+            android:label="@string/title_activity_registration_main"></activity>
     </application>
 
 </manifest>

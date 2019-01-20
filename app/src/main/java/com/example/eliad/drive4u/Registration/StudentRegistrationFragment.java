@@ -1,21 +1,26 @@
-package com.example.eliad.drive4u.activities;
+package com.example.eliad.drive4u.Registration;
 
-import android.app.Activity;
+
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.StudentUI.StudentMainActivity;
-import com.example.eliad.drive4u.base_activities.RegistrationBaseActivity;
 import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,51 +32,75 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-
-public class StudentRegistrationActivity extends RegistrationBaseActivity
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class StudentRegistrationFragment extends Fragment
         implements AdapterView.OnItemSelectedListener {
-
-    // Tag for the Log
-    private static final String TAG = StudentRegistrationActivity.class.getName();
+    private static final String TAG = StudentRegistrationFragment.class.getName();
 
     // Firebase
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
+    protected EditText editTextName;
+    protected EditText editTextPhone;
+    protected EditText editTextCity;
+    protected EditText editTextEmail;
+    protected EditText editTextPassword;
+    protected EditText editTextPasswordRepeat;
+    protected ProgressBar progressBar;
+
+    private Button btn;
     private Spinner spinnerGearType;
     private String gearType,name,firstName="", lastName="", phone,city,email, password, passwordRepeat;
+
+    public StudentRegistrationFragment() {
+        // Required empty public constructor
+    }
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "in onCreate");
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_registration);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        Log.d(TAG, "in onCreateView");
+        View view = inflater.inflate(R.layout.fragment_student_registration, container, false);
 
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        progressBar  = findViewById(R.id.StudentRegistrationProgressBar);
+        progressBar  = view.findViewById(R.id.StudentRegistrationProgressBar);
         progressBar.setVisibility(View.GONE);
 
-        editTextName = findViewById(R.id.editTextStudentRegistrationName);
-        editTextPhone = findViewById(R.id.editTextStudentRegistrationPhone);
-        editTextEmail = findViewById(R.id.editTextStudentRegistrationEmail);
-        editTextPassword = findViewById(R.id.editTextStudentRegistrationPassword);
-        editTextPasswordRepeat = findViewById(R.id.editTextStudentRegistrationPasswordRepeat);
-        editTextCity = findViewById(R.id.editTextStudentRegistrationCity);
-
-        spinnerGearType = findViewById(R.id.spinnerChooseGearType);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        btn = view.findViewById(R.id.buttonStudentRegistration);
+        editTextName = view.findViewById(R.id.editTextStudentRegistrationName);
+        editTextPhone = view.findViewById(R.id.editTextStudentRegistrationPhone);
+        editTextEmail = view.findViewById(R.id.editTextStudentRegistrationEmail);
+        editTextPassword = view.findViewById(R.id.editTextStudentRegistrationPassword);
+        editTextPasswordRepeat = view.findViewById(R.id.editTextStudentRegistrationPasswordRepeat);
+        editTextCity = view.findViewById(R.id.editTextStudentRegistrationCity);
+        spinnerGearType = view.findViewById(R.id.spinnerChooseGearType);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.gear_types_student, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGearType.setAdapter(adapter);
         spinnerGearType.setOnItemSelectedListener(this);
 
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signUp(v);
+            }
+        });
+
+        return view;
     }
 
     public void signUp(View view) {
         Log.d(TAG, "in signUp");
         initialize();
         if(!isValidInput()){
-            Toast.makeText(this, getString(R.string.signup_failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.signup_failed), Toast.LENGTH_SHORT).show();
         }else{
             signUpSuccess();
         }
@@ -80,7 +109,7 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity
     private void signUpSuccess() {
         progressBar.setVisibility(View.VISIBLE);
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -96,16 +125,8 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity
                 });
     }
 
-    private void initialize() {
-        name = editTextName.getText().toString().trim();
-        phone = editTextPhone.getText().toString().trim();
-        city = editTextCity.getText().toString().trim();
-        email = editTextEmail.getText().toString().trim();
-        password = editTextPassword.getText().toString().trim();
-        passwordRepeat = editTextPasswordRepeat.getText().toString().trim();
-    }
-
     private boolean isValidInput(){
+        Log.d(TAG, "isValidInput");
         boolean isValid = true;
         if(name.isEmpty() || !name.contains(" ")) {
             editTextName.setError(getString(R.string.name_error));
@@ -157,8 +178,8 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity
     private void createNewStudent(FirebaseUser newUser, String firstName, String lastName,
                                   String phone, String city, String email, String gearType) {
         Log.d(TAG, "in createNewStudent");
-        InputMethodManager imm = (InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         String uId = newUser.getUid();
         final Student newStudent = new Student(uId, firstName, lastName, phone, city,
                 email, "", 0, 0, gearType,
@@ -168,7 +189,7 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "firestore student created successfully");
-                        Intent intent = new Intent(getApplicationContext(),
+                        Intent intent = new Intent(getActivity().getApplicationContext(),
                                 StudentMainActivity.class);
                         intent.putExtra(StudentMainActivity.ARG_STUDENT, newStudent);
                         startActivity(intent);
@@ -183,20 +204,24 @@ public class StudentRegistrationActivity extends RegistrationBaseActivity
                 });
     }
 
+    private void initialize() {
+        Log.d(TAG, "initialize");
+        name = editTextName.getText().toString().trim();
+        phone = editTextPhone.getText().toString().trim();
+        city = editTextCity.getText().toString().trim();
+        email = editTextEmail.getText().toString().trim();
+        password = editTextPassword.getText().toString().trim();
+        passwordRepeat = editTextPasswordRepeat.getText().toString().trim();
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG, "onItemSelected");
         gearType = parent.getItemAtPosition(position).toString();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         gearType = null;
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, UserTypeChoiceActivity.class);
-        finish();
-        startActivity(intent);
     }
 }

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.Registration.RegistrationMainActivity;
 import com.example.eliad.drive4u.StudentUI.StudentMainActivity;
 import com.example.eliad.drive4u.TeacherUI.TeacherMainActivity;
 import com.example.eliad.drive4u.models.Student;
@@ -121,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onNewUserClick(){
         Log.d(TAG, "in onNewUserClick");
         // start a new activity for registration.
-        Intent intent = new Intent(this, UserTypeChoiceActivity.class);
+        Intent intent = new Intent(this, RegistrationMainActivity.class);
         finish();
         startActivity(intent);
 

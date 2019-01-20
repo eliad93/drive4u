@@ -66,8 +66,8 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:background="@color/colorButtonBackground"
         android:text="@string/login"
+        android:background="@color/colorButtonBackground"
         android:textColor="@color/colorButtonText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -99,7 +99,8 @@
         android:text="@string/click_here_to_create_a_new_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNewUser" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewNewUser"
+        android:textStyle="bold|italic"/>
 
     <ProgressBar
         android:id="@+id/loginProgressBar"

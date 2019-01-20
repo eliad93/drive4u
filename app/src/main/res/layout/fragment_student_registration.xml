@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:paddingTop="16dp"
+    android:paddingLeft="16dp"
+    android:paddingBottom="16dp"
+    android:paddingRight="16dp"
+    tools:context=".Registration.StudentRegistrationFragment"
+    android:background="@color/colorRegistrationBackground">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewStudentRegistrationHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/student_registration_title"
+            android:layout_centerHorizontal = "true"
+            android:textSize="35sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="100dp">
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editTextStudentRegistrationName"
+                    android:inputType="textPersonName"
+                    android:layout_marginBottom="15dp"
+                    android:hint="@string/registration_name"
+                    android:nextFocusForward="@id/editTextStudentRegistrationPhone"
+                    android:imeOptions="actionNext"
+                    tools:ignore="Autofill" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editTextStudentRegistrationPhone"
+                    android:inputType="phone"
+                    android:layout_marginBottom="15dp"
+                    android:hint="@string/registration_phone"
+                    android:nextFocusForward="@id/editTextStudentRegistrationCity"
+                    android:imeOptions="actionNext"
+                    tools:ignore="Autofill" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editTextStudentRegistrationCity"
+                    android:inputType="text"
+                    android:layout_marginBottom="15dp"
+                    android:hint="@string/registration_city"
+                    android:nextFocusForward="@id/editTextStudentRegistrationEmail"
+                    android:imeOptions="actionNext"
+                    tools:ignore="Autofill" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editTextStudentRegistrationEmail"
+                    android:inputType="textEmailAddress"
+                    android:layout_marginBottom="15dp"
+                    android:hint="@string/registration_Email"
+                    android:nextFocusForward="@id/editTextStudentRegistrationPassword"
+                    android:imeOptions="actionNext"
+                    tools:ignore="Autofill" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editTextStudentRegistrationPassword"
+                    android:inputType="textPassword"
+                    android:layout_marginBottom="15dp"
+                    android:hint="@string/registration_password"
+                    android:nextFocusForward="@id/editTextStudentRegistrationPasswordRepeat"
+                    android:imeOptions="actionNext"
+                    tools:ignore="Autofill" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editTextStudentRegistrationPasswordRepeat"
+                    android:inputType="textPassword"
+                    android:layout_marginBottom="15dp"
+                    android:hint="@string/registration_password_repeat"
+                    android:nextFocusForward="@id/buttonStudentRegistration"
+                    tools:ignore="Autofill" />
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/registration_gear_type_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_weight="1"
+                    android:text="@string/gear_type_title" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Spinner
+                        android:id="@+id/spinnerChooseGearType"
+                        android:layout_width="@dimen/editTextRegFormFieldWidth"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:prompt="@string/registration_gear_type"
+                        android:spinnerMode="dialog"
+                        android:nextFocusForward="@id/buttonTeacherRegistration"
+                        android:imeOptions="actionNext"/>
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/buttonStudentRegistration"
+                    style="@style/ButtonUserTypeChoice"
+                    android:text="@string/signup"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/StudentRegistrationProgressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="200dp"
+            android:progressDrawable="@drawable/circular_progress_bar" />
+    </RelativeLayout>
+</ScrollView>

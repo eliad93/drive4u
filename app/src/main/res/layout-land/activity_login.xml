@@ -97,7 +97,8 @@
         android:text="@string/click_here_to_create_a_new_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNewUser" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewNewUser"
+        android:textStyle="bold|italic"/>
 
     <ProgressBar
         android:id="@+id/loginProgressBar"

@@ -9,8 +9,8 @@
     android:paddingLeft="16dp"
     android:paddingBottom="16dp"
     android:paddingRight="16dp"
-    tools:context=".activities.StudentRegistrationActivity"
-    android:background="@color/activitiesBackground">
+    tools:context=".Registration.TeacherRegistrationFragment"
+    android:background="@color/colorRegistrationBackground">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,11 +19,11 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textViewStudentRegistrationHeader"
+            android:id="@+id/textViewTeacherRegistrationHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="@string/registration"
+            android:text="@string/teacher_registration_title"
             android:layout_centerHorizontal = "true"
             android:textSize="35sp"/>
         <LinearLayout
@@ -38,11 +38,11 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editTextStudentRegistrationName"
+                    android:id="@+id/editTextTeacherRegistrationName"
                     android:inputType="textPersonName"
                     android:layout_marginBottom="15dp"
                     android:hint="@string/registration_name"
-                    android:nextFocusForward="@id/editTextStudentRegistrationPhone"
+                    android:nextFocusForward="@id/editTextTeacherRegistrationPhone"
                     android:imeOptions="actionNext"
                     tools:ignore="Autofill" />
             </android.support.design.widget.TextInputLayout>
@@ -50,15 +50,14 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editTextStudentRegistrationPhone"
+                    android:id="@+id/editTextTeacherRegistrationPhone"
                     android:inputType="phone"
                     android:layout_marginBottom="15dp"
                     android:hint="@string/registration_phone"
-                    android:nextFocusForward="@id/editTextStudentRegistrationCity"
+                    android:nextFocusForward="@id/editTextTeacherRegistrationCity"
                     android:imeOptions="actionNext"
                     tools:ignore="Autofill" />
             </android.support.design.widget.TextInputLayout>
@@ -70,11 +69,11 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editTextStudentRegistrationCity"
+                    android:id="@+id/editTextTeacherRegistrationCity"
                     android:inputType="text"
                     android:layout_marginBottom="15dp"
                     android:hint="@string/registration_city"
-                    android:nextFocusForward="@id/editTextStudentRegistrationEmail"
+                    android:nextFocusForward="@id/editTextTeacherRegistrationEmail"
                     android:imeOptions="actionNext"
                     tools:ignore="Autofill" />
             </android.support.design.widget.TextInputLayout>
@@ -82,15 +81,14 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editTextStudentRegistrationEmail"
+                    android:id="@+id/editTextTeacherRegistrationEmail"
                     android:inputType="textEmailAddress"
                     android:layout_marginBottom="15dp"
                     android:hint="@string/registration_Email"
-                    android:nextFocusForward="@id/editTextStudentRegistrationPassword"
+                    android:nextFocusForward="@id/editTextTeacherRegistrationCarModel"
                     android:imeOptions="actionNext"
                     tools:ignore="Autofill" />
             </android.support.design.widget.TextInputLayout>
@@ -98,15 +96,59 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editTextStudentRegistrationPassword"
+                    android:id="@+id/editTextTeacherRegistrationCarModel"
+                    android:inputType="text"
+                    android:layout_marginBottom="15dp"
+                    android:hint="@string/registration_car_model"
+                    android:nextFocusForward="@id/editTextTeacherRegistrationPrice"
+                    android:imeOptions="actionNext"
+                    tools:ignore="Autofill" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editTextTeacherRegistrationPrice"
+                    android:inputType="number"
+                    android:layout_marginBottom="15dp"
+                    android:hint="@string/price"
+                    android:nextFocusForward="@id/editTextTeacherRegistrationLessonLen"
+                    android:imeOptions="actionNext"
+                    tools:ignore="Autofill" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editTextTeacherRegistrationLessonLen"
+                    android:inputType="number"
+                    android:layout_marginBottom="15dp"
+                    android:hint="@string/lesson_length"
+                    android:nextFocusForward="@id/editTextTeacherRegistrationPassword"
+                    android:imeOptions="actionNext"
+                    tools:ignore="Autofill" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editTextTeacherRegistrationPassword"
                     android:inputType="textPassword"
                     android:layout_marginBottom="15dp"
                     android:hint="@string/registration_password"
-                    android:nextFocusForward="@id/editTextStudentRegistrationPasswordRepeat"
+                    android:nextFocusForward="@id/editTextTeacherRegistrationPasswordRepeat"
                     android:imeOptions="actionNext"
                     tools:ignore="Autofill" />
             </android.support.design.widget.TextInputLayout>
@@ -118,45 +160,61 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editTextStudentRegistrationPasswordRepeat"
+                    android:id="@+id/editTextTeacherRegistrationPasswordRepeat"
                     android:inputType="textPassword"
                     android:layout_marginBottom="15dp"
                     android:hint="@string/registration_password_repeat"
-                    android:nextFocusForward="@id/buttonStudentRegistration"
+                    android:nextFocusForward="@id/buttonTeacherRegistration"
                     tools:ignore="Autofill" />
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <Spinner
-                    android:id="@+id/spinnerChooseGearType"
-                    android:layout_width="@dimen/editTextRegFormFieldWidth"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/registration_gear_type_title"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:prompt="@string/registration_gear_type"
-                    android:spinnerMode="dialog"
-                    android:nextFocusForward="@id/buttonTeacherRegistration"
-                    android:imeOptions="actionNext"/>
-            </android.support.design.widget.TextInputLayout>
+                    android:textSize="18sp"
+                    android:layout_weight="1"
+                    android:text="@string/gear_type_title" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <Spinner
+                        android:id="@+id/spinnerChooseGearType"
+                        android:layout_width="@dimen/editTextRegFormFieldWidth"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:prompt="@string/registration_gear_type"
+                        android:spinnerMode="dialog"
+                        android:nextFocusForward="@id/buttonTeacherRegistration"
+                        android:imeOptions="actionNext"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/buttonStudentRegistration"
+                    android:id="@+id/buttonTeacherRegistration"
                     style="@style/ButtonUserTypeChoice"
-                    android:onClick="signUp"
-                    android:text="@string/signup" />
+                    android:text="@string/signup"/>
             </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
 
         <ProgressBar
-            android:id="@+id/StudentRegistrationProgressBar"
+            android:id="@+id/TeacherRegistrationProgressBar"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

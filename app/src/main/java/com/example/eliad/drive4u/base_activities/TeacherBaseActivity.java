@@ -5,15 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.activities.LoginActivity;
-import com.example.eliad.drive4u.activities.TeacherHomeActivity;
-import com.example.eliad.drive4u.activities.TeacherMyStudentsActivity;
-import com.example.eliad.drive4u.activities.TeacherProfileActivity;
-import com.example.eliad.drive4u.activities.TeacherScheduleActivity;
 import com.example.eliad.drive4u.models.Teacher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

@@ -24,6 +24,8 @@
     <style name="ButtonUserTypeChoice">
         <item name="android:layout_width">@dimen/big_buttons_width</item>
         <item name="android:layout_height">@dimen/big_buttons_height</item>
+        <item name="android:background">@color/colorButtonBackground</item>
+        <item name="android:textColor">@color/colorButtonText</item>
     </style>
 
     <style name="LogoPrimary">

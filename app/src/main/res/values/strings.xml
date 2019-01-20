@@ -18,7 +18,8 @@
     <string name="user_type_choice_teacher">I am a teacher</string>
     <string name="user_email">User Email</string>
     <string name="search_a_student">Search a student</string>
-    <string name="registration">Registration</string>
+    <string name="student_registration_title">Student Registration</string>
+    <string name="teacher_registration_title">Teacher Registration</string>
     <string name="empty" />
     <string name="empty_email">Please enter email</string>
     <string name="empty_password">Please enter password</string>
@@ -147,8 +148,6 @@
     <string name="title_chats">Chats</string>
     <string name="title_users">users</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_student_main">StudentMainActivity</string>
     <string name="nav_teachers">Teachers</string>
     <string name="type_a_message">Type a message</string>
@@ -165,6 +164,7 @@
     <string name="seen">Seen</string>
     <string name="delivered">Delivered</string>
     <string name="connection_requests">Connection requests</string>
+    <string name="title_activity_registration_main">RegistrationMainActivity</string>
 
 
 </resources>

@@ -6,14 +6,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.activities.LoginActivity;
-import com.example.eliad.drive4u.activities.StudentHomeActivity;
-import com.example.eliad.drive4u.activities.StudentLessonsArchiveActivity;
-import com.example.eliad.drive4u.activities.StudentScheduleLessonActivity;
 import com.example.eliad.drive4u.models.Student;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,7 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 @SuppressLint("Registered")
 public class StudentBaseActivity extends AppCompatActivity {
     // Tag for the Log
-    private static final String TAG = StudentHomeActivity.class.getName();
+    private static final String TAG = StudentBaseActivity.class.getName();
 
     // Bundle arguments
     public static String ARG_STUDENT = Student.class.getName();
