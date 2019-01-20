@@ -35,6 +35,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/teacher_profile_header" />
 
+    <EditText
+        android:id="@+id/editTextTeacherProfilePhone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/TeacherProfilePhoneTitle"
+        app:layout_constraintTop_toBottomOf="@+id/teacher_profile_header"
+        android:hint="@string/registration_phone"
+        android:imeOptions="actionNext"
+        android:inputType="phone"
+        android:nextFocusForward="@id/editTextTeacherRegistrationCity"
+        tools:ignore="Autofill"/>
+
     <TextView
         android:id="@+id/TeacherProfileEmailTitle"
         android:layout_width="wrap_content"
@@ -85,6 +103,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/TeacherProfileEmailTitle" />
 
+    <EditText
+        android:id="@+id/editTextTeacherProfileCity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/TeacherProfileEmailTitle"
+        app:layout_constraintTop_toBottomOf="@+id/TeacherProfileEmailTitle"
+        android:hint="@string/registration_city"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:nextFocusForward="@id/editTextTeacherRegistrationEmail"
+        tools:ignore="Autofill" />
+
     <TextView
         android:id="@+id/TeacherProfileCarModelTitle"
         android:layout_width="wrap_content"
@@ -108,7 +142,23 @@
         android:text="TextView"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TeacherProfileCityTitle" />
+        app:layout_constraintTop_toBottomOf="@id/TeacherProfileCityTitle" />
+
+    <EditText
+        android:id="@+id/editTextTeacherProfileCarModel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/TeacherProfileCarModelTitle"
+        app:layout_constraintTop_toBottomOf="@id/TeacherProfileCityTitle"
+        android:hint="@string/registration_car_model"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:nextFocusForward="@id/editTextTeacherRegistrationPrice"
+        tools:ignore="Autofill"/>
 
     <TextView
         android:id="@+id/TeacherProfileGearTypeTitle"
@@ -132,6 +182,20 @@
         android:textStyle="bold"
         android:text="TextView"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TeacherProfileCarModelTitle" />
+
+    <Spinner
+        android:id="@+id/spinnerTeacherProfileGearType"
+        android:layout_width="@dimen/editTextRegFormFieldWidth"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:imeOptions="actionNext"
+        android:nextFocusForward="@id/buttonTeacherRegistration"
+        android:prompt="@string/registration_gear_type"
+        android:spinnerMode="dialog"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TeacherProfileCarModelTitle" />
 
@@ -159,6 +223,22 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TeacherProfileGearTypeTitle" />
+
+    <EditText
+        android:id="@+id/editTextTeacherProfilePrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/TeacherProfilePriceTitle"
+        app:layout_constraintTop_toBottomOf="@+id/TeacherProfileGearTypeTitle"
+        android:hint="@string/price"
+        android:imeOptions="actionNext"
+        android:inputType="number"
+        android:nextFocusForward="@id/editTextTeacherRegistrationLessonLen"
+        tools:ignore="Autofill"/>
 
     <ImageView
         android:id="@+id/imageView4"
@@ -225,5 +305,17 @@
         android:src="@mipmap/ic_doller_foreground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView10" />
+
+    <ImageButton
+        android:id="@+id/imageButtonEdit"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:background="@drawable/rounded_button"
+        android:src="@mipmap/ic_edit_50_foreground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/TeacherProfilePriceTitle" />
 
 </android.support.constraint.ConstraintLayout>

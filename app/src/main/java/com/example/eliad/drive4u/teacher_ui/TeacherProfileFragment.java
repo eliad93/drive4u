@@ -7,10 +7,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,12 +37,24 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
 
-public class TeacherProfileFragment extends TeacherBaseFragment {
+public class TeacherProfileFragment extends TeacherBaseFragment
+        implements AdapterView.OnItemSelectedListener {
     private static final String TAG = TeacherProfileFragment.class.getName();
 
     CircleImageView image_profile;
     TextView username;
 
+    private ImageButton editBtn;
+    private TextView textViewPhoneNumber, textViewEmail, textViewCity, textViewCarModel,
+            textViewGearType, textViewPrice;
+
+    private EditText editTextName, editTextPhone, editTextCity, editTextCarModel, editTextPrice;
+    private Spinner spinnerGearType;
+
+    private String gearType, name, firstName="", lastName="",
+            phone, city, carModel, priceString;
+
+    private boolean isEditMode;
     StorageReference storageReference;
     private static final int IMAGE_REQUEST = 1;
     private Uri imageUri;
@@ -61,16 +79,19 @@ public class TeacherProfileFragment extends TeacherBaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_teacher_profile, container, false);
 
-        image_profile = view.findViewById(R.id.profile_image);
-        username = view.findViewById(R.id.profile_username);
-
         storageReference = FirebaseStorage.getInstance().getReference(User.UPLOADS);
+        isEditMode = false;
+        image_profile = view.findViewById(R.id.profile_image);
+        editBtn = view.findViewById(R.id.imageButtonEdit);
+        username = view.findViewById(R.id.profile_username);
+        textViewPhoneNumber = view.findViewById(R.id.TeacherProfilePhone);
+        textViewEmail = view.findViewById(R.id.TeacherProfileEmail);
+        textViewCity = view.findViewById(R.id.TeacherProfileCity);
+        textViewCarModel = view.findViewById(R.id.TeacherProfileCarModel);
+        textViewGearType = view.findViewById(R.id.TeacherProfileGearType);
+        textViewPrice = view.findViewById(R.id.TeacherProfilePrice);
 
-        if (mTeacher.getImageUrl() == null || mTeacher.getImageUrl().equals(User.DEFAULT_IMAGE_KEY)) {
-            image_profile.setImageResource(R.mipmap.ic_user_foreground );
-        } else {
-            Glide.with(getContext()).load(mTeacher.getImageUrl()).into(image_profile);
-        }
+        initEditProfile(view);
 
         image_profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,25 +99,158 @@ public class TeacherProfileFragment extends TeacherBaseFragment {
                 openImage();
             }
         });
-        String text;
-        // init text views
-        TextView textViewPhoneNumber = view.findViewById(R.id.TeacherProfilePhone);
-        TextView textViewEmail = view.findViewById(R.id.TeacherProfileEmail);
-        TextView textViewCity = view.findViewById(R.id.TeacherProfileCity);
-        TextView textViewCarModel = view.findViewById(R.id.TeacherProfileCarModel);
-        TextView textViewGearType = view.findViewById(R.id.TeacherProfileGearType);
-        TextView textViewPrice = view.findViewById(R.id.TeacherProfilePrice);
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isEditMode) {
+                    prepForProfileEdit();
+                    isEditMode = true;
+                } else if (isValidInput()){
+                    endEditMode();
+                    isEditMode = false;
+                } else {
+                    Toast.makeText(getContext(), "in valid input!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
-        username.setText(mTeacher.getFullName());
-        textViewPhoneNumber.setText(mTeacher.getPhoneNumber());
-        textViewEmail.setText(mTeacher.getEmail());
-        textViewCity.setText(mTeacher.getCity());
-        textViewCarModel.setText(mTeacher.getCarModel());
-        textViewGearType.setText(mTeacher.getGearType());
-        text = Integer.toString(mTeacher.getPrice());
-        textViewPrice.setText(text);
+        updateProfile();
 
         return view;
+    }
+    private boolean isValidInput(){
+        Log.d(TAG, "isValidInput");
+        boolean isValid = true;
+
+        name = editTextName.getText().toString().trim();
+        phone = editTextPhone.getText().toString().trim();
+        city = editTextCity.getText().toString().trim();
+        carModel = editTextCarModel.getText().toString().trim();
+        priceString = editTextPrice.getText().toString().trim();
+
+        if(name.isEmpty() || !name.contains(" ")) {
+            editTextName.setError(getString(R.string.name_error));
+            isValid = false;
+        }else{
+            firstName = name.split(" ", 2)[0];
+            lastName = name.split(" ", 2)[1];
+            if(firstName.isEmpty() || lastName.isEmpty()){
+                editTextName.setError(getString(R.string.name_error));
+                isValid = false;
+            }
+        }
+        if(phone.isEmpty() || phone.length() != 10) {
+            editTextPhone.setError(getString(R.string.phone_error));
+            isValid = false;
+        }
+        if(city.isEmpty()) {
+            editTextCity.setError(getString(R.string.city_error));
+            isValid = false;
+        }
+        if(carModel.isEmpty()) {
+            editTextCarModel.setError(getString(R.string.car_model_error));
+            isValid = false;
+        }
+        if(priceString.isEmpty()) {
+            editTextPrice.setError(getString(R.string.please_enter_price));
+            isValid = false;
+        }
+        if(gearType == null) {
+            isValid = false;
+        }
+        return isValid;
+    }
+    private void endEditMode() {
+        updateTeacher();
+        updateProfile();
+        swapVisibility(View.VISIBLE, View.GONE);
+    }
+
+    private void initEditProfile (View v) {
+        Log.d(TAG, "initEditProfile");
+        editTextName = v.findViewById(R.id.ProfileEditTextName);
+        editTextPhone = v.findViewById(R.id.editTextTeacherProfilePhone);
+        editTextCity = v.findViewById(R.id.editTextTeacherProfileCity);
+        editTextCarModel = v.findViewById(R.id.editTextTeacherProfileCarModel);
+        editTextPrice = v.findViewById(R.id.editTextTeacherProfilePrice);
+        spinnerGearType = v.findViewById(R.id.spinnerTeacherProfileGearType);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.gear_types_teacher, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerGearType.setAdapter(adapter);
+        spinnerGearType.setOnItemSelectedListener(this);
+
+        swapVisibility(View.VISIBLE, View.GONE);
+    }
+
+    private void prepForProfileEdit() {
+        swapVisibility(View.GONE, View.VISIBLE);
+    }
+
+    private void swapVisibility(int tvCode, int etCode) {
+        Log.d(TAG, "swap visibility textViewCode[" + tvCode + "] editTextCode[" + etCode +"]");
+
+        username.setVisibility(tvCode);
+        editTextName.setVisibility(etCode);
+
+        textViewPhoneNumber.setVisibility(tvCode);
+        editTextPhone.setVisibility(etCode);
+
+        textViewCity.setVisibility(tvCode);
+        editTextCity.setVisibility(etCode);
+
+        textViewCarModel.setVisibility(tvCode);
+        editTextCarModel.setVisibility(etCode);
+
+        textViewPrice.setVisibility(tvCode);
+        editTextPrice.setVisibility(etCode);
+
+        textViewGearType.setVisibility(tvCode);
+        spinnerGearType.setVisibility(etCode);
+    }
+
+    private void updateProfile() {
+        username.setText(mTeacher.getFullName());
+        editTextName.setText(mTeacher.getFullName());
+        textViewPhoneNumber.setText(mTeacher.getPhoneNumber());
+        editTextPhone.setText(mTeacher.getPhoneNumber());
+        textViewEmail.setText(mTeacher.getEmail());
+        textViewCity.setText(mTeacher.getCity());
+        editTextCity.setText(mTeacher.getCity());
+        textViewCarModel.setText(mTeacher.getCarModel());
+        editTextCarModel.setText(mTeacher.getCarModel());
+        textViewGearType.setText(mTeacher.getGearType());
+        String text = Integer.toString(mTeacher.getPrice());
+        textViewPrice.setText(text);
+        editTextPrice.setText(text);
+
+        if (mTeacher.getImageUrl() == null || mTeacher.getImageUrl().equals(User.DEFAULT_IMAGE_KEY)) {
+            image_profile.setImageResource(R.mipmap.ic_user_foreground );
+        } else {
+            Glide.with(getContext()).load(mTeacher.getImageUrl()).into(image_profile);
+        }
+    }
+
+    private void updateTeacher() {
+        Log.d(TAG, "updateTeacher");
+
+        mTeacher.setFirstName(firstName);
+        mTeacher.setLastName(lastName);
+        mTeacher.setPhoneNumber(phone);
+        mTeacher.setCity(city);
+        mTeacher.setCarModel(carModel);
+        mTeacher.setGearType(gearType);
+        mTeacher.setPrice(Integer.parseInt(priceString));
+
+        db.collection("Teachers")
+                .document(mTeacher.getID())
+                .set(mTeacher)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Failed to update the Teacher! " + e);
+                    }
+                });
     }
 
     private void openImage() {
@@ -174,5 +328,16 @@ public class TeacherProfileFragment extends TeacherBaseFragment {
                 uploadImage();
             }
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG, "onItemSelected");
+        gearType = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        gearType = null;
     }
 }
