@@ -14,25 +14,28 @@ import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.models.Lesson;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class StudentScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-    private Lesson.Status[] lessonsHours;
-    private Context mcontext;
+import java.util.LinkedList;
+import java.util.List;
 
+public class StudentScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    private Context mcontext;
+    private List<Lesson> lessons;
+    private List<String> hours;
+    private int lessonLength;
     private OnItemClickListener mListener;
     // interface for callback to get position
     public interface OnItemClickListener{
-        void onItemClick(int position);
+        void onItemClick(int position, List<Lesson> lessonsInHour);
     }
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){
         mListener = onItemClickListener;
     }
 
-    private String[] hours = new String[]{"07:00", "08:00","09:00","10:00","11:00","12:00","13:00","14:00",
-            "15:00","16:00","17:00","18:00","19:00","20:00", "21:00"};
-
-    public StudentScheduleAdapter(Context context, Lesson.Status[] hoursStatus){
-        lessonsHours = hoursStatus;
+    public StudentScheduleAdapter(Context context,List<String>  relevantHours,  List<Lesson> lessonList, int length){
         mcontext = context;
+        lessons = lessonList;
+        lessonLength = length;
+        hours = relevantHours;
     }
 
 
@@ -49,21 +52,27 @@ public class StudentScheduleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         Resources res = viewHolder.itemView.getResources();
         StudentScheduleAdapter.StudentScheduleViewHolder holder = (StudentScheduleAdapter.StudentScheduleViewHolder) viewHolder;
-        String hour = this.hours[position];
         holder.setIsRecyclable(false);
-        holder.lessonTime.setText(hour);
-        if (lessonsHours[position] == Lesson.Status.T_CONFIRMED) {
-            viewHolder.itemView.setBackgroundColor(Color.GRAY);
-        }else {
-            if (lessonsHours[position] == Lesson.Status.S_CONFIRMED || lessonsHours[position] == Lesson.Status.S_UPDATE || lessonsHours[position] == Lesson.Status.T_UPDATE || lessonsHours[position] == Lesson.Status.S_REQUEST) {
-                viewHolder.itemView.setBackgroundColor(Color.YELLOW);
+        String startingHour = hours.get(position);
+        Lesson.Status lessonStatus = Lesson.Status.T_OPTION;
+        for (Lesson l : lessons) {
+            if (l.getHour().equals(hours.get(position))) {
+                lessonStatus = lessons.get(position).getConformationStatus();
+                break;
             }
         }
+        holder.lessonTime.setText(startingHour + "-" + calculateTime(startingHour, lessonLength));
+        if (lessonStatus == Lesson.Status.S_CONFIRMED || lessonStatus == Lesson.Status.S_UPDATE || lessonStatus == Lesson.Status.T_UPDATE || lessonStatus == Lesson.Status.S_REQUEST) {
+            viewHolder.itemView.setBackgroundColor(mcontext.getResources().getColor(R.color.lessonHaveRequests));
+        } else {
+            viewHolder.itemView.setBackgroundColor(mcontext.getResources().getColor(R.color.lessonFree));
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return hours.length-1;
+        return hours.size();
     }
 
     public class StudentScheduleViewHolder extends RecyclerView.ViewHolder{
@@ -77,8 +86,14 @@ public class StudentScheduleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 public void onClick(View v) {
                     if(mListener != null){
                         int position = getAdapterPosition();
+                        List<Lesson> lessonsInHour = new LinkedList<>();
+                        for(Lesson l:lessons){
+                            if(l.getHour().equals(hours.get(position))){
+                                lessonsInHour.add(l);
+                            }
+                        }
                         if(position != RecyclerView.NO_POSITION){
-                            mListener.onItemClick(position);
+                            mListener.onItemClick(position, lessonsInHour);
                         }
                     }
                 }
@@ -87,6 +102,16 @@ public class StudentScheduleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     }
 
+    private String calculateTime(String hour, int addition) {
+        String[] hourMinutes = hour.split(":");
+        int time = Integer.parseInt(hourMinutes[0]) * 60 + Integer.parseInt(hourMinutes[1]) + addition;
+        int newHour = time / 60;
+        int newMinutes = time % 60;
+        if (newMinutes < 10) {
+            return String.valueOf(newHour) + ":" + "0" + String.valueOf(newMinutes);
+        }
+        return String.valueOf(newHour) + ":" + String.valueOf(newMinutes);
+    }
 
 
 

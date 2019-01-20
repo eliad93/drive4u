@@ -43,13 +43,14 @@
     <string name="my_students">My students</string>
     <string name="lessons_completed">Lessons completed:</string>
     <string name="balance">Balance:</string>
-    <string name="select_date">Select a Date</string>
+    <string name="select_date">Select Specific Date</string>
     <string name="starting_location">Starting location: </string>
     <string name="ending_location">Ending location: </string>
     <string name="set_starting_location">Set starting location</string>
     <string name="set_ending_location">set ending location</string>
     <string name="submit">Submit</string>
     <string name="update">Update</string>
+    <string name="updateAll">Update All</string>
     <string name="registration_last_name">Last name</string>
     <string name="registration_city">City</string>
     <string name="registration_car_model">Car model</string>
@@ -131,14 +132,14 @@
     <string name="update_lesson_request">Update lesson request</string>
     <string name="student_name">Student name</string>
     <string name="time_picker">pick time</string>
-    <string name="date_picker">pick date</string>
+    <string name="date_picker">change date</string>
     <string name="full_hour">Select only full hours!</string>
     <string name="illegal_hour">Select only hours between 07:00 to 20:00!</string>
     <string name="select_hour">Select hour</string>
     <string name="lessons_archive_activity_header">Lessons archive</string>
     <string name="wait_for_student_response">Wait for student response</string>
     <string name="wait_for_teacher_response">Wait for student response</string>
-    <string name="hour_is_taken">That hour is taken!</string>
+    <string name="hour_is_taken">That hour is taken</string>
     <string name="teacher_update_lesson_to_hour">Your teacher updated the lesson time to that hour, waiting for your response !</string>
     <string name="update_lesson_to_hour">You updated the lesson time to that hour</string>
     <string name="remove_from_home_page_message">That lesson have been canceled by your teacher, remove it?</string>
@@ -202,5 +203,37 @@
     <string name="title_activity_registration_main">RegistrationMainActivity</string>
     <string name="communicate_title">Communicate</string>
 
+
+    <string name="time_5">5:00-6:00</string>
+    <string name="time_6">6:00-7:00</string>
+    <string name="time_7">7:00-8:00</string>
+    <string name="time_8">8:00-9:00</string>
+    <string name="time_9">9:00-10:00</string>
+    <string name="time_10">10:00-11:00</string>
+    <string name="time_11">11:00-12:00</string>
+    <string name="time_12">12:00-13:00</string>
+    <string name="time_13">13:00-14:00</string>
+    <string name="time_14">14:00-15:00</string>
+    <string name="time_15">15:00-16:00</string>
+    <string name="time_16">16:00-17:00</string>
+    <string name="time_17">17:00-18:00</string>
+    <string name="time_18">18:00-19:00</string>
+    <string name="time_19">19:00-20:00</string>
+    <string name="time_20">20:00-21:00</string>
+    <string name="time_21">21:00-22:00</string>
+    <string name="time_22">22:00-23:00</string>
+    <string name="time_23">23:00-24:00</string>
+    <string name="new_lesson_added">New lesson added</string>
+    <string name="previous"><![CDATA[<]]></string>
+    <string name="next"><![CDATA[>]]></string>
+    <string name="edit_lesson">Edit Lesson</string>
+    <string name="delete">Delete</string>
+    <string name="deleteAll">Delete All</string>
+    <string name="show_requests_or_update_or_dalete">What to do with the requests for this hour?</string>
+    <string name="show_requests">Show</string>
+    <string name="need_to_delete_or_update">need to delete or update all of the lessons after one is approve</string>
+    <string name="lesson_confirmed">Lesson confirmed!</string>
+    <string name="lesson_reject">Lesson rejected</string>
+    <string name="select_all_values">Select all values</string>
 
 </resources>

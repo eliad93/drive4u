@@ -28,15 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.StudentScheduleLessonActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activities.ProfileActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activities.TeacherScheduleActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
@@ -59,47 +51,6 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
-        <activity
-            android:name=".teacher_ui.TeacherMainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".student_ui.StudentMainActivity"
-            android:label="@string/title_activity_student_main"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".chat.ChatMessageActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" />
-
-        <service
-            android:name=".notifications.MyFirebaseIdService"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-        <service
-            android:name=".notifications.MyFirebaseMessaging"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
-        <activity
-            android:name=".chat.MainChatActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".registration.RegistrationMainActivity"
-            android:label="@string/title_activity_registration_main"
-            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

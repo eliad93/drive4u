@@ -22,11 +22,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class TeacherChooseStudentLessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
-    private LinkedList<Lesson> lessons;
-    private int hour;
+    private List<Lesson> lessons;
     // Firebase
     private FirebaseFirestore db;
 
@@ -34,19 +34,18 @@ public class TeacherChooseStudentLessonAdapter extends RecyclerView.Adapter<Recy
 
     // interface for callback to get position
     public interface OnItemClickListener {
-        void onItemClickRequestsList(int position, int hour);
+        void onItemClickRequestsList(List<Lesson> lessonsList, int position);
 
-        void onEditButtonClickRequestsList(int position, int hour);
+        void onEditButtonClickRequestsList(List<Lesson> lessonsList, int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         mListener = onItemClickListener;
     }
 
-    public TeacherChooseStudentLessonAdapter(Context context, LinkedList<Lesson> items, int position) {
+    public TeacherChooseStudentLessonAdapter(Context context, List<Lesson> items) {
         lessons = items;
         mContext = context;
-        hour = position;
         db = FirebaseFirestore.getInstance();
     }
 
@@ -121,7 +120,7 @@ public class TeacherChooseStudentLessonAdapter extends RecyclerView.Adapter<Recy
                     if (mListener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            mListener.onItemClickRequestsList(position, hour);
+                            mListener.onItemClickRequestsList(lessons, position);
                         }
                     }
                 }
@@ -133,7 +132,7 @@ public class TeacherChooseStudentLessonAdapter extends RecyclerView.Adapter<Recy
                     if (mListener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            mListener.onEditButtonClickRequestsList(position, hour);
+                            mListener.onEditButtonClickRequestsList(lessons, position);
                         }
                     }
                 }

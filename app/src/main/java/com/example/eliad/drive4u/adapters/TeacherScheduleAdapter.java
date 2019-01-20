@@ -1,11 +1,9 @@
 package com.example.eliad.drive4u.adapters;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +11,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.activities.TeacherScheduleActivity;
 import com.example.eliad.drive4u.models.Lesson;
 import com.example.eliad.drive4u.models.Student;
-import com.example.eliad.drive4u.models.Teacher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -102,7 +96,7 @@ public class TeacherScheduleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     viewHolder.itemView.setBackgroundColor(Color.YELLOW);
                     viewHolder.itemView.setClickable(true);
                 }else{
-                    viewHolder.itemView.setClickable(false);
+                    viewHolder.itemView.setClickable(true);
                 }
             }
         }

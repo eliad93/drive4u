@@ -10,6 +10,17 @@
     <color name="fragments_light">#448CD1</color>
     <color name="colorWhite">#ffffff</color>
 
+    <color name="lessonFree">#407ee2</color>
+    <color name="lessonHaveRequests">#fff27c</color>
+    <color name="lessonCancel">#ff5656</color>
+    <color name="lessonApprove">#79ff82</color>
+    <color name="lessonUnvalid">#999999</color>
+    <color name="lessonUnsaved">#c5518ff4</color>
+
+    <color name="colorBlack">#000000</color>
+    <color name="colorDivider">#aaaaaa</color>
+
+
     <color name="colorChatMessageRight">#00a6ff</color>
     <color name="colorChatMessageLeft">#ffffff</color>
 
