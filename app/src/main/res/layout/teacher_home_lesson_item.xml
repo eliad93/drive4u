@@ -39,7 +39,7 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/google_location_icon_location" />
+        app:srcCompat="@mipmap/ic_location_foreground" />
 
     <TextView
         android:id="@+id/TeacherHomeLessonItemLocation"

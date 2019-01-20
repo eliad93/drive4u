@@ -3,12 +3,12 @@
 
     <item
         android:id="@+id/navigation_register_student"
-        android:icon="@drawable/icons8_user_24_profile"
+        android:icon="@mipmap/ic_user_foreground"
         android:title="@string/student_title" />
 
     <item
         android:id="@+id/navigation_register_teacher"
-        android:icon="@drawable/icons8_user_24_profile"
+        android:icon="@mipmap/ic_school_foreground"
         android:title="@string/teacher_title" />
 
 </menu>

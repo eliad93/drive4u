@@ -200,6 +200,7 @@
     <string name="delivered">Delivered</string>
     <string name="connection_requests">Connection requests</string>
     <string name="title_activity_registration_main">RegistrationMainActivity</string>
+    <string name="communicate_title">Communicate</string>
 
 
 </resources>

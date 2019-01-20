@@ -42,7 +42,7 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageViewProfilePic"
-        app:srcCompat="@drawable/google_location_icon_location" />
+        app:srcCompat="@mipmap/ic_location_foreground" />
 
     <TextView
         android:id="@+id/StudentPluralInfoItemCity"
@@ -69,7 +69,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icons8_phone_24" />
+        app:srcCompat="@mipmap/ic_phone_foreground" />
 
     <ImageView
         android:id="@+id/imageViewProfilePic"
@@ -82,5 +82,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icons8_user_24_profile" />
+        app:srcCompat="@mipmap/ic_user_foreground" />
 </android.support.constraint.ConstraintLayout>

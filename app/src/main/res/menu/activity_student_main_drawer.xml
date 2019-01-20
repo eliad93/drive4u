@@ -6,36 +6,36 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/student_nav_home"
-            android:icon="@drawable/icons8_home_page_24"
+            android:icon="@mipmap/ic_home_foreground"
             android:title="@string/home" />
 
         <item
             android:id="@+id/student_nav_schedule"
-            android:icon="@drawable/icons8_calendar_filled_24"
+            android:icon="@mipmap/ic_calander_foreground"
             android:title="@string/schedule" />
 
         <item
             android:id="@+id/student_nav_lessons_archive"
-            android:icon="@drawable/icons8_user_24_profile"
+            android:icon="@mipmap/ic_school_foreground"
             android:title="@string/lessons_archive" />
 
         <item
             android:id="@+id/student_nav_teachers"
-            android:icon="@drawable/icons_contacts"
+            android:icon="@mipmap/ic_contacts_foreground"
             android:title="@string/nav_teachers" />
 
         <item
             android:id="@+id/student_nav_profile"
-            android:icon="@drawable/icons8_user_24_profile"
+            android:icon="@mipmap/ic_user_foreground"
             android:title="@string/profile" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/communicate_title">
         <menu>
             <item
                 android:id="@+id/student_nav_send"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Chat" />
+                android:title="@string/title_chat" />
         </menu>
     </item>
 

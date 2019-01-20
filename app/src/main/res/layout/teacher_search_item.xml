@@ -21,7 +21,7 @@
                 android:layout_height="@dimen/list_item_image_size"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/icons8_user_24_profile" />
+                android:src="@mipmap/ic_user_foreground" />
 
             <TextView
                 android:id="@+id/textViewTeacherName"

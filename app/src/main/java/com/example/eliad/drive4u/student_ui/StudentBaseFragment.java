@@ -12,7 +12,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+
+import javax.annotation.Nullable;
 
 public class StudentBaseFragment extends Fragment {
     private static final String TAG = StudentBaseFragment.class.getName();
@@ -36,13 +40,30 @@ public class StudentBaseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        initDbVariables();
+
         Bundle arguments = getArguments();
         if (arguments != null) {
             mStudent = arguments.getParcelable(ARG_STUDENT);
+            db.collection("Students")
+                    .document(mStudent.getID())
+                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                            if (e != null) {
+                                Log.d(TAG, "Listen failed: " + e);
+                                return;
+                            }
+
+                            if (documentSnapshot != null && documentSnapshot.exists()) {
+                                mStudent = documentSnapshot.toObject(Student.class);
+                            }
+                        }
+                    });
         } else {
-            Log.d(TAG, "Created a TeacherBaseFragment with no teacher");
+            Log.d(TAG, "Created a StudentBaseFragment with no student!");
         }
-        initDbVariables();
     }
 
     @Override
