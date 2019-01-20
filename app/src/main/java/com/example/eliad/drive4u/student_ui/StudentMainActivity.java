@@ -161,6 +161,7 @@ public class StudentMainActivity extends AppCompatActivity
     }
 
     public void logoutUser() {
+        status(User.OFFLINE);
         FirebaseAuth.getInstance().signOut();
         finish();
         startActivity(new Intent(getBaseContext(), LoginActivity.class)

@@ -20,7 +20,6 @@ public class RegistrationMainActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
     private BottomNavigationView mNavigation;
-    private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {

@@ -142,6 +142,7 @@ public class TeacherMainActivity extends AppCompatActivity
         } else if (!isAtHome) {
             displayView(R.id.teacher_nav_home);
         } else {
+            status(User.OFFLINE);
             super.onBackPressed();
         }
     }
@@ -173,6 +174,7 @@ public class TeacherMainActivity extends AppCompatActivity
     }
 
     public void logoutUser(){
+        status(User.OFFLINE);
         FirebaseAuth.getInstance().signOut();
         finish();
         startActivity(new Intent(getBaseContext(), LoginActivity.class)

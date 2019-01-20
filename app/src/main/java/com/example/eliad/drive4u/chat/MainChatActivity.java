@@ -8,10 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.activities.LoginActivity;
 import com.example.eliad.drive4u.student_ui.StudentMainActivity;
 import com.example.eliad.drive4u.teacher_ui.TeacherMainActivity;
 import com.example.eliad.drive4u.adapters.ViewPagerAdapter;
@@ -100,7 +103,25 @@ public class MainChatActivity extends AppCompatActivity {
         viewPagerAdapter.addFragment(ChatUsersFragment.newInstance(mUser));
 
         mViewPager.setAdapter(viewPagerAdapter);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) { }
 
+            @Override
+            public void onPageSelected(int i) {
+                switch (i) {
+                    case 0:
+                        mNavigation.setSelectedItemId(R.id.navigation_chats);
+                        break;
+                    case 1:
+                        mNavigation.setSelectedItemId(R.id.navigation_users);
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {}
+        });
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         displayView(R.id.navigation_chats);
     }
@@ -146,29 +167,47 @@ public class MainChatActivity extends AppCompatActivity {
                 });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Toast.makeText(this, "Settings butten was pressed, not functional yet", Toast.LENGTH_SHORT).show();
+            // TODO: what do we want to do in the settings?!
+            return true;
+        } else if (id == R.id.action_logout) {
+            logoutUser();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void logoutUser(){
+        status(User.OFFLINE);
+        FirebaseAuth.getInstance().signOut();
+        finish();
+        startActivity(new Intent(getBaseContext(), LoginActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+    }
+
     private void status(final String status) {
         mUser.setStatus(status);
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(getString(R.string.DB_Teachers))
+        String collection_path = mUser instanceof Teacher ? "Teachers" : "Students";
+        db.collection(collection_path)
                 .document(mUser.getID())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document != null && document.exists()) {
-                                db.collection(getString(R.string.DB_Teachers))
-                                        .document(mUser.getID())
-                                        .update("status", status);
-                            } else {
-                                db.collection(getString(R.string.DB_Students))
-                                        .document(mUser.getID())
-                                        .update("status", status);
-                            }
-                        }
-                    }
-                });
+                .update("status", status);
     }
 
     @Override
