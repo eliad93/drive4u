@@ -1,6 +1,7 @@
 package com.example.eliad.drive4u.chat;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -63,6 +64,9 @@ public class ChatMessageActivity extends AppCompatActivity {
     public static final String MESSAGE = "message";
     public static final String IS_SEEN = "seen";
     public static final String CHATS = "chats";
+    public static final String PREFS = "PREFS";
+    public static final String CURRENT_USER = "currentuser";
+    public static final String NO_CURRENT_USER = "no_current_user";
 
     private CircleImageView profile_image;
     private TextView username;
@@ -383,10 +387,17 @@ public class ChatMessageActivity extends AppCompatActivity {
                 });
     }
 
+    private void currentUser(String secUserId) {
+        SharedPreferences.Editor editor = getSharedPreferences(PREFS, MODE_PRIVATE).edit();
+        editor.putString(CURRENT_USER, secUserId);
+        editor.apply();
+
+    }
     @Override
     protected void onResume() {
         super.onResume();
         status(User.ONLINE);
+        currentUser(secUser.getID());
     }
 
     @Override
@@ -394,5 +405,6 @@ public class ChatMessageActivity extends AppCompatActivity {
         super.onPause();
         reference.removeEventListener(seenListener);
         status(User.OFFLINE);
+        currentUser(NO_CURRENT_USER);
     }
 }

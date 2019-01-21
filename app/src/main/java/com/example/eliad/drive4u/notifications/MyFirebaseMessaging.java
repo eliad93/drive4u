@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -44,11 +45,20 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
         String sented = remoteMessage.getData().get("sented");
+        String user = remoteMessage.getData().get("user");
+
+        SharedPreferences preferences = getSharedPreferences(ChatMessageActivity.PREFS, MODE_PRIVATE);
+        String currentUser = preferences.getString(ChatMessageActivity.CURRENT_USER, ChatMessageActivity.NO_CURRENT_USER);
+
 
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         if (firebaseUser != null && sented.equals(firebaseUser.getUid())) {
+
+            if (currentUser.equals(user)) {
+                return;
+            }
             Log.d(TAG,"sendNotification");
             final String secUserId = remoteMessage.getData().get("user");
             Log.d(TAG,"user " + secUserId);
