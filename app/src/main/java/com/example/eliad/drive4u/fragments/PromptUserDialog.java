@@ -3,10 +3,9 @@ package com.example.eliad.drive4u.fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
+import android.util.Log;
 
 import com.example.eliad.drive4u.R;
 
@@ -20,8 +19,8 @@ public class PromptUserDialog extends BaseDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Log.d(TAG, "in onCreateDialog");
         String message = "no message", title = "no title";
-        Resources resources = getResources();
         Bundle args = getArguments();
         if (args != null) {
             title = args.getString(ARG_TITLE);

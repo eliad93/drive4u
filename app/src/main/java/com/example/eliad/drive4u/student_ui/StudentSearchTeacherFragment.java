@@ -24,8 +24,10 @@ import android.widget.Toast;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.TeacherSearchAdapter;
 import com.example.eliad.drive4u.fragments.StudentChooseTeacherFragment;
+import com.example.eliad.drive4u.helpers.ConditionsHelper;
 import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.Teacher;
+import com.example.eliad.drive4u.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,6 +42,7 @@ import com.google.firebase.firestore.WriteBatch;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * A simple {@link StudentBaseFragment} subclass.
@@ -50,7 +53,6 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
         implements TeacherSearchAdapter.OnItemClickListener,
         StudentChooseTeacherFragment.PerformUserAction,
         AdapterView.OnItemSelectedListener, View.OnClickListener {
-
     // Tag for the Log
     private static final String TAG = StudentSearchTeacherFragment.class.getName();
     // Firebase
@@ -60,32 +62,23 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
+    // widgets
     private Spinner mSortSpinner;
     private Spinner mFilterSpinner;
-
     private Switch mSortSwitch;
-
     private EditText mFilterSelectedEditText;
     private TextView mSortSelectedTextView;
     private TextView mFilterSelectedTextView;
-    private Button mApplayButton;
+    private Button mApplyButton;
+    private TextView textViewNoTeachers;
 
     private String mSortSelectedStr;
-    private String mFilterSelectdStr;
+    private String mFilterSelectedStr;
     private String mFilterSelectedValueStr;
-
-
-
-
     // models
     private LinkedList<Teacher> teachers = new LinkedList<>();
-
     private LinkedList<Teacher> presentedTeachers = new LinkedList<>();
-
     private Teacher currentTeacher;
-
-    private TextView textViewNoTeachers;
 
     public StudentSearchTeacherFragment() {
         // Required empty public constructor
@@ -111,11 +104,9 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
                 container, false);
         textViewNoTeachers = view.findViewById(R.id.textViewStudentSearchTeacherNoTeachers);
         textViewNoTeachers.setVisibility(View.GONE);
-
         // data handling
         mStudentDoc = db.collection("Students").document(mStudent.getID());
         mTeachersDb = db.collection("Teachers");
-
         initializeSpinners(view);
         initializeRecyclerView(view);
         // populate recycler view
@@ -124,13 +115,12 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
     }
 
     private void initializeSpinners(View view) {
-
         mSortSelectedTextView =   view.findViewById(R.id.textViewStudentSearchTeacherSort);
         mFilterSelectedTextView = view.findViewById(R.id.textViewStudentSearchTeacherFilter);
         mFilterSelectedEditText = view.findViewById(R.id.editTextStudentSearchTeacherFilter);
         mFilterSpinner =          view.findViewById(R.id.spinnerStudentSearchTeacherFilter);
         mSortSpinner =            view.findViewById(R.id.spinnerStudentSearchTeacherSort);
-        mApplayButton =           view.findViewById(R.id.buttonStudentSearchTeacherApply);
+        mApplyButton =           view.findViewById(R.id.buttonStudentSearchTeacherApply);
         mSortSwitch =             view.findViewById(R.id.switchStudentSearchTeacherSortOrder);
         //sort spinner
         Context context = getContext();
@@ -149,7 +139,7 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
             mFilterSpinner.setAdapter(filterAdapter);
             mFilterSpinner.setOnItemSelectedListener(this);
 
-            mApplayButton.setOnClickListener(this);
+            mApplyButton.setOnClickListener(this);
         } else {
             unexpectedError();
         }
@@ -160,28 +150,26 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
         switch(view.getId()){
             case R.id.buttonStudentSearchTeacherApply:
                 mSortSelectedStr = mSortSelectedTextView.getText().toString();
-                mFilterSelectdStr = mFilterSelectedTextView.getText().toString();
+                mFilterSelectedStr = mFilterSelectedTextView.getText().toString();
                 mFilterSelectedValueStr = mFilterSelectedEditText.getText().toString();
 
-                if(mSortSelectedStr.isEmpty() && mFilterSelectdStr.isEmpty()
+                if(mSortSelectedStr.isEmpty() && mFilterSelectedStr.isEmpty()
                         && mFilterSelectedValueStr.isEmpty()) {
                     Toast.makeText(getContext(),
-                            R.string.student_search_tacher_filter_sort_empty_error ,
+                            R.string.filter_sort_empty_error,
                             Toast.LENGTH_SHORT ).show();
                 }
                 else {
-                    if((!mFilterSelectedValueStr.isEmpty()) && (!mFilterSelectdStr.isEmpty())){
-                        TeachersFilter(mFilterSelectdStr,mFilterSelectedValueStr);
+                    if((!mFilterSelectedValueStr.isEmpty()) && (!mFilterSelectedStr.isEmpty())){
+                        TeachersFilter(mFilterSelectedStr, mFilterSelectedValueStr);
                     }
                     if(mSortSelectedStr.compareTo
-                            (getString(R.string.student_search_teacher_all)) != 0){
+                            (getString(R.string.all)) != 0){
                        if(mSortSwitch.isChecked()) {
-                           Collections.sort(presentedTeachers,
-                                   new TeachersCompareDescending(mSortSelectedStr));
+                           sortTeachers(mSortSelectedStr, ConditionsHelper.Order.DESCENDING);
                        }
                        else {
-                           Collections.sort(presentedTeachers,
-                                   new TeachersCompareAscending(mSortSelectedStr));
+                           sortTeachers(mSortSelectedStr, ConditionsHelper.Order.ASCENDING);
                        }
                     mAdapter.notifyDataSetChanged();
                 }
@@ -190,73 +178,39 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private void sortTeachers(String mSortSelectedStr, ConditionsHelper.Order order) {
+        switch(mSortSelectedStr){
+            case "city":
+                Teacher.Sort.name(presentedTeachers, order);
+            case "number of students":
+                Teacher.Sort.numberOfStudents(presentedTeachers, order);
+            case "lesson length":
+                Teacher.Sort.lessonLength(presentedTeachers, order);
+            case "price":
+                Teacher.Sort.price(presentedTeachers, order);
+            case "worth":
+                Teacher.Sort.worth(presentedTeachers, order);
+            default:
+                Teacher.Sort.name(presentedTeachers, order);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
     public void TeachersFilter(String key , String value){
         presentedTeachers.clear();
-        for(Teacher t:teachers){
-            switch (key){
-                case "city":
-                    if(t.getCity().equals(value)){
-                        presentedTeachers.add(t);
-                    }
-                    break;
-                case "number of students":
-                    if(t.numberOfStudents() >= Integer.parseInt(value)){
-                        presentedTeachers.add(t);
-                    }
-                    break;
-                case "gear type":
-                    if(t.getGearType().equals(value)){
-                        presentedTeachers.add(t);
-                    }
-                    break;
-            }
-        }
-        mAdapter.notifyDataSetChanged();
-    }
-
-    public class TeachersCompareDescending implements Comparator<Teacher> {
-        private String type;
-        TeachersCompareDescending(String type){
-            this.type = type;
-        }
-        @Override
-        public int compare(Teacher t1, Teacher t2) {
-            switch(type){
-                case "city":
-                    return t2.compareByCity(t1);
-                case "number of students":
-                    return t2.compareByNumStudents(t1);
-                case "lesson length":
-                    return t2.compareByLessonLength(t1);
-                case "price":
-                    return t2.compareByPrice(t1);
-                case "worth":
-                    return t2.compareByWorth(t1);
-                default: return t2.compareByNumStudents(t1);
-            }
-        }
-    }
-
-    public class TeachersCompareAscending implements Comparator<Teacher> {
-        private String type;
-        TeachersCompareAscending(String type){
-            this.type = type;
-        }
-        @Override
-        public int compare(Teacher t1, Teacher t2) {
-            switch(type){
-                case "city":
-                    return t1.compareByCity(t2);
-                case "number of students":
-                    return t1.compareByNumStudents(t2);
-                case "lesson length":
-                    return t1.compareByLessonLength(t2);
-                case "price":
-                    return t1.compareByPrice(t2);
-                case "worth":
-                    return t1.compareByWorth(t2);
-                default: return t1.compareByNumStudents(t2);
-            }
+        presentedTeachers.addAll(teachers);
+        switch (key){
+            case "city":
+                Teacher.Filter.cityEquals(presentedTeachers, value);
+                break;
+            case "number of students":
+                Teacher.Filter.numberOfStudents(presentedTeachers,
+                        Integer.valueOf(value));
+                break;
+            case "gear type":
+                Teacher.Filter.gearType(presentedTeachers, value);
+                break;
         }
     }
 

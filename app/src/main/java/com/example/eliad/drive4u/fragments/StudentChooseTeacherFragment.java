@@ -1,6 +1,7 @@
 package com.example.eliad.drive4u.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.helpers.ConditionsHelper;
 import com.example.eliad.drive4u.student_ui.StudentBaseFragment;
 import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.Teacher;
@@ -45,7 +47,7 @@ public class StudentChooseTeacherFragment extends StudentBaseFragment
     private PerformUserAction callBack;
 
     public interface PerformUserAction{
-        public void performUserAction();
+        void performUserAction();
     }
 
     public StudentChooseTeacherFragment() {
@@ -97,13 +99,16 @@ public class StudentChooseTeacherFragment extends StudentBaseFragment
         textViewTeacherCar = view.findViewById(R.id.textViewStudentChooseTeacherCar);
         buttonChooseTeacher = view.findViewById(R.id.buttonStudentChooseTeacher);
 
-        String teacherImageString = mTeacher.getImageUrl();
-        if(teacherImage != null){
-            Glide.with(getContext()).load(teacherImageString).into(teacherImage);
-        } else {
-            // TODO: this doesn't work
-            teacherImage.setBackgroundResource(R.mipmap.ic_launcher_round);
+        Context context;
+        if(teacherImage != null && ((context=getContext())!=null)){
+            String teacherImageString = mTeacher.getImageUrl();
+            if(ConditionsHelper.imageStringValid(teacherImageString)){
+                Glide.with(context).load(teacherImageString).into(teacherImage);
+            } else {
+                teacherImage.setBackgroundResource(R.mipmap.ic_launcher_round);
+            }
         }
+
         textViewTeacherName.setText(String.format("Name: %s", mTeacher.getFullName()));
         textViewTeacherCity.setText(String.format("City: %s", mTeacher.getCity()));
         textViewTeacherNumStudents.setText(String.format("Number of students: %s", mTeacher.getCity()));

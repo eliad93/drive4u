@@ -1,9 +1,17 @@
 package com.example.eliad.drive4u.models;
+import com.example.eliad.drive4u.helpers.ConditionsHelper.Order;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 
 public abstract class User implements Parcelable{
 
@@ -22,9 +30,8 @@ public abstract class User implements Parcelable{
     protected String phoneNumber = null;
     protected String city = null;
     protected String email = null;
-    protected Integer balance = 0;
+    protected int balance = 0;
     protected String imageUrl = null;
-
     protected String status = null;
 
     protected User(String mId, String mFirstName,String mLastName, String mPhoneNumber,
@@ -67,11 +74,11 @@ public abstract class User implements Parcelable{
         this.city = city;
     }
 
-    public Integer getBalance() {
+    public int getBalance() {
         return balance;
     }
 
-    public void setBalance(Integer balance) {
+    public void setBalance(int balance) {
         this.balance = balance;
     }
 
@@ -164,5 +171,4 @@ public abstract class User implements Parcelable{
     public String getFullName() {
         return getFirstName() + " " + getLastName();
     }
-
 }
