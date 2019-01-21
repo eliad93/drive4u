@@ -71,7 +71,7 @@
     <string name="student_search_teacher_lesson_length">lesson length</string>
     <string name="student_search_teacher_price">price</string>
     <string name="student_search_teacher_worth">worth</string>
-   <string name="student_search_teacher_gear_type">gear type</string>
+    <string name="student_search_teacher_gear_type">gear type</string>
     <string-array name="gear_types_teacher">
         <item>manual</item>
         <item>automatic</item>
@@ -108,7 +108,6 @@
         <item>@string/all</item>
         <item>@string/city</item>
     </string-array>
-
 
 
     <string name="you_have_no_lessons">You have no lessons.</string>
