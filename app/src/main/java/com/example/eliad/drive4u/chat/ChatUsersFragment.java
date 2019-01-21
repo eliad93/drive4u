@@ -71,7 +71,7 @@ public class ChatUsersFragment extends UserBaseFragment {
 
         Activity activity = getActivity();
         if (activity == null || !isAdded()) {
-            Log.d(TAG, "!!!!!!!!!!!!!!Fragment not attached to a activity!!!!!!!!");
+            Log.d(TAG, "Fragment not attached to a activity");
             return;
         }
 

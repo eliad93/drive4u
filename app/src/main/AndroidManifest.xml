@@ -84,6 +84,9 @@
             android:name=".registration.RegistrationMainActivity"
             android:label="@string/title_activity_registration_main"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".activities.ResetPasswordActivity"
+            android:parentActivityName=".activities.LoginActivity"/>
     </application>
 
 </manifest>

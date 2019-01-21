@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editTextPassword;
     private Button   buttonLogin;
     private TextView textViewNewUser;
+    private TextView textViewForgotPassword;
     private ProgressBar progressBar;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -51,23 +52,24 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "in onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        progressBar      = findViewById(R.id.loginProgressBar);
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-
-
-        // set all the widgets
-        editTextUserEmail = findViewById(R.id.editTextUserEmail);
-        editTextUserEmail.requestFocus();
-        editTextPassword = findViewById(R.id.editTextPassword);
-        buttonLogin      = findViewById(R.id.buttonLogin);
-        textViewNewUser  = findViewById(R.id.textViewNewUserClick);
-        progressBar      = findViewById(R.id.loginProgressBar);
-
         if(mAuth.getCurrentUser() != null){
             login();
         }
+
         // there is no need to see the progress bar as long as there is no blocking task.
         progressBar.setVisibility(View.GONE);
+
+        initWidgets();
+        setListeners();
+
+    }
+
+    private void setListeners() {
+        Log.d(TAG, "Set Listeners");
 
         // set a callback for the login button
         buttonLogin.setOnClickListener(new View.OnClickListener() {
@@ -77,15 +79,35 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        textViewNewUser.setOnTouchListener(new View.OnTouchListener() {
+        textViewNewUser.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-//                progressBar.setVisibility(View.VISIBLE);
+            public void onClick(View v) {
                 onNewUserClick();
-//                progressBar.setVisibility(View.GONE);
-                return false;
             }
         });
+
+        textViewForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onForgotPassword();
+            }
+        });
+    }
+
+    public void onForgotPassword() {
+        Log.d(TAG, "Forgot Password");
+        startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
+    }
+
+    private void initWidgets() {
+        // set all the widgets
+        editTextUserEmail = findViewById(R.id.editTextUserEmail);
+        editTextUserEmail.requestFocus();
+        editTextPassword = findViewById(R.id.editTextPassword);
+        buttonLogin      = findViewById(R.id.buttonLogin);
+        textViewNewUser  = findViewById(R.id.textViewNewUserClick);
+
+        textViewForgotPassword = findViewById(R.id.textViewForgotPassword);
     }
 
     public void onLoginClick(){
@@ -127,6 +149,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
     public void login (){
         progressBar.setVisibility(View.VISIBLE);
         FirebaseUser user = mAuth.getCurrentUser();

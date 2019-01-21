@@ -248,5 +248,9 @@
     <string name="lesson_confirmed">Lesson confirmed!</string>
     <string name="lesson_reject">Lesson rejected</string>
     <string name="select_all_values">Select all values</string>
+    <string name="forgot_password_msg">Forgot your password? Click here</string>
+    <string name="reset_instructions">By clicking Reset, you will receive an email with instruction to reset your password</string>
+    <string name="reset">Reset</string>
+    <string name="reset_password_header">Reset Password</string>
 
 </resources>
