@@ -1,14 +1,10 @@
 package com.example.eliad.drive4u.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +13,6 @@ import android.widget.Button;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.models.Lesson;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 
 
@@ -64,6 +58,7 @@ public class StudentArchiveLessonSummaryFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static StudentArchiveLessonSummaryFragment newInstance(Lesson lesson) {
+        Log.d(TAG,"in StudentArchiveLessonSummaryFragment");
         StudentArchiveLessonSummaryFragment fragment = new StudentArchiveLessonSummaryFragment();
         fragment.lesson = lesson;
 //        Bundle args = new Bundle();
@@ -76,15 +71,13 @@ public class StudentArchiveLessonSummaryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        Log.d(TAG,"in onCreate");
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG,"in onCreateView");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_student_lesson_arcive_summary,
                 container, false);
@@ -92,7 +85,10 @@ public class StudentArchiveLessonSummaryFragment extends Fragment {
         buttonClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().onBackPressed(); // TODO: how can we avoid it?
+                Activity activity = getActivity();
+                if(activity != null){
+                    getActivity().onBackPressed(); // TODO: how can we avoid it?
+                }
             }
         });
         return view;
@@ -121,11 +117,16 @@ public class StudentArchiveLessonSummaryFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Log.d(TAG,"in onAttach");
         if (context instanceof StudentLessonSummaryFragmentListener) {
             mListener = (StudentLessonSummaryFragmentListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            Log.e(TAG,"calling activity/fragment does not implement " +
+                    "StudentLessonSummaryFragmentListener");
+            Activity activity = getActivity();
+            if(activity != null){
+                getActivity().onBackPressed();
+            }
         }
     }
 

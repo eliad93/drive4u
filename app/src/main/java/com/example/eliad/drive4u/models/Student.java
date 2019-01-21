@@ -1,7 +1,14 @@
 package com.example.eliad.drive4u.models;
+import com.example.eliad.drive4u.helpers.ConditionsHelper.Order;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Student extends User {
     private Integer numberOfLessons = 0;
@@ -91,7 +98,7 @@ public class Student extends User {
         this.teacherId = teacherId;
     }
 
-    public Integer getBalance() { return 0; }
+    public int getBalance() { return 0; }
 
     public Integer getTotalExpense() {
         return totalExpense;
@@ -171,5 +178,169 @@ public class Student extends User {
     @Override
     public String getClassRoom() {
         return teacherId;
+    }
+
+    public static class Comparators{
+        static int compareStrings(String s1, String s2){
+            if(s1 != null){
+                return s1.compareTo(s2);
+            }
+            return "".compareTo(s2);
+        }
+        static final class Name implements Comparator<Student>{
+            @Override
+            public int compare(Student u1, Student u2) {
+                if(u1 == null || u2 == null){
+                    return 0;
+                }
+                return compareStrings(u1.getFullName(), u2.getFullName());
+            }
+        }
+        static final class City implements Comparator<Student>{
+            @Override
+            public int compare(Student u1, Student u2) {
+                if(u1 == null || u2 == null){
+                    return 0;
+                }
+                return compareStrings(u1.getCity(), u2.getCity());
+            }
+        }
+        static final class Balance implements Comparator<Student>{
+            @Override
+            public int compare(Student u1, Student u2) {
+                if(u1 == null || u2 == null){
+                    return 0;
+                }
+                return u1.getBalance() - u2.getBalance();
+            }
+        }
+        static final class NumberOfLessons implements Comparator<Student>{
+            @Override
+            public int compare(Student s1, Student s2) {
+                if(s1 == null || s2 == null){
+                    return 0;
+                }
+                return s1.getNumberOfLessons() - s2.getNumberOfLessons();
+            }
+        }
+        static final class TotalExpense implements Comparator<Student>{
+            @Override
+            public int compare(Student s1, Student s2) {
+                if(s1 == null || s2 == null){
+                    return 0;
+                }
+                return s1.getTotalExpense() - s2.getTotalExpense();
+            }
+        }
+    }
+    public static class Sort{
+        private Sort(){}
+        public static void name(List<Student> users, Order order){
+            Comparator<Student> c = new Comparators.Name();
+            sort(users, order, c);
+        }
+        public static void city(List<Student> users, Order order){
+            Comparator<Student> c = new Comparators.City();
+            sort(users, order, c);
+        }
+        public static void balance(List<Student> users, Order order){
+            Comparator<Student> c = new Comparators.Balance();
+            sort(users, order, c);
+        }
+        private static void sort(List<Student> students, Order order, Comparator<Student> c){
+            if(order == null || order.equals(Order.ASCENDING)){
+                Collections.sort(students, c);
+            } else {
+                Collections.sort(students, Collections.reverseOrder(c));
+            }
+        }
+        public void numberOfLessons(List<Student> users, Order order){
+            Comparator<Student> c = new Comparators.NumberOfLessons();
+            sort(users, order, c);
+        }
+        public void totalExpense(List<Student> students, Order order){
+            Comparator<Student> c = new Comparators.TotalExpense();
+            sort(students, order, c);
+        }
+    }
+    public static class Filter{
+        private interface Cond{
+            Boolean condition(Student s);
+        }
+        private Filter(){}
+        private static LinkedList<Student> filter(List<Student> students, Cond c){
+            LinkedList<Student> filteredList = new LinkedList<>(students);
+            Iterator<Student> i = filteredList.iterator();
+            while (i.hasNext()) {
+                Student student = i.next();
+                if(c.condition(student)){
+                    i.remove();
+                }
+            }
+            return filteredList;
+        }
+        public static LinkedList<Student> nameEquals(LinkedList<Student> users, final String name){
+            return filter(users, new Cond() {
+                @Override
+                public Boolean condition(Student u) {
+                    assert u != null;
+                    if(u.getFullName() != null){
+                        return u.getFullName().equals(name);
+                    }
+                    return name == null;
+                }
+            });
+        }
+        public static LinkedList<Student> cityEquals(LinkedList<Student> users, final String city){
+            return filter(users, new Cond() {
+                @Override
+                public Boolean condition(Student u) {
+                    assert u != null;
+                    if(u.getCity() != null){
+                        return u.getCity().equals(city);
+                    }
+                    return city == null;
+                }
+            });
+        }
+        public static List<Student> balanceGreaterEquals(LinkedList<Student> users, final int balance){
+            return filter(users, new Cond() {
+                @Override
+                public Boolean condition(Student u) {
+                    assert u != null;
+                    return u.getBalance() >= balance;
+                }
+            });
+        }
+        public List<Student> gearTypeEquals(List<Student> students, final String gearType){
+            return filter(students, new Cond() {
+                @Override
+                public Boolean condition(Student s) {
+                    assert s != null;
+                    if(s.getGearType() != null){
+                        return s.getGearType().equals(gearType);
+                    }
+                    return gearType == null;
+                }
+            });
+        }
+        public List<Student> numberOfLessonsGreaterEquals(List<Student> students, final int n){
+            return filter(students, new Cond() {
+                @Override
+                public Boolean condition(Student s) {
+                    assert s != null;
+                    return s.getNumberOfLessons() >= n;
+                }
+            });
+        }
+        public List<Student> totalExpenseGreaterEquals(List<Student> students, final int n){
+            return filter(students, new Cond() {
+                @Override
+                public Boolean condition(Student s) {
+                    assert s != null;
+                    return s.getTotalExpense() >= n;
+                }
+            });
+        }
     }
 }

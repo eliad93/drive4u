@@ -51,4 +51,8 @@ public class TeacherBaseFragment extends Fragment {
         assert mUser != null;
         db = FirebaseFirestore.getInstance();
     }
+
+    protected void unexpectedError(){
+
+    }
 }

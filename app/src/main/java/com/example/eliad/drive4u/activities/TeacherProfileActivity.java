@@ -1,12 +1,10 @@
 package com.example.eliad.drive4u.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.base_activities.TeacherBaseActivity;
-import com.example.eliad.drive4u.models.Teacher;
 
 public class TeacherProfileActivity extends TeacherBaseActivity {
     // for log and debugging
@@ -46,7 +44,7 @@ public class TeacherProfileActivity extends TeacherBaseActivity {
         textViewGearType.setText(mTeacher.getGearType());
         text = Integer.toString(mTeacher.getPrice());
         textViewPrice.setText(text);
-        text = Integer.toString(mTeacher.getTotalPayed());
+        text = Integer.toString(mTeacher.getTotalPaid());
         textViewTotalPayed.setText(text);
     }
 }

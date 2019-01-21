@@ -59,13 +59,13 @@
     <string name="lesson_starting_time">Lesson starting time</string>
     <string name="lesson_date">Lesson date</string>
     <string name="lessons_remaining_today">Lessons remaining today:</string>
-    <string name="student_search_teacher_sort_ascending">Ascending</string>
-    <string name="student_search_teacher_sort_descending">Descending</string>
-    <string name="student_search_teacher_sort">Sort By:</string>
-    <string name="student_search_teacher_filter">Filter By:</string>
-    <string name="student_search_tacher_filter_sort_empty_error">no filter or sort values were inserted</string>
-    <string name="student_search_teacher_apply">apply</string>
-    <string name="student_search_teacher_all">all</string>
+    <string name="sort_ascending">Ascending</string>
+    <string name="sort_descending">Descending</string>
+    <string name="sort_by">Sort By:</string>
+    <string name="filter_by">Filter By:</string>
+    <string name="filter_sort_empty_error">no filter or sort values were inserted</string>
+    <string name="apply">apply</string>
+    <string name="all">all</string>
     <string name="student_search_teacher_students_number">number of students</string>
     <string name="student_search_teacher_city">city</string>
     <string name="student_search_teacher_lesson_length">lesson length</string>
@@ -83,19 +83,30 @@
     </string-array>
 
     <string-array name="student_search_teacher_filter_categories">
-        <item>@string/student_search_teacher_all</item>
+        <item>@string/all</item>
         <item>@string/student_search_teacher_gear_type</item>
         <item>@string/student_search_teacher_students_number</item>
         <item>@string/student_search_teacher_city</item>
     </string-array>
 
     <string-array name="student_search_teacher_sort_categories">
-        <item>@string/student_search_teacher_all</item>
+        <item>@string/all</item>
         <item>@string/student_search_teacher_students_number</item>
         <item>@string/student_search_teacher_city</item>
         <item>@string/student_search_teacher_lesson_length</item>
         <item>@string/student_search_teacher_price</item>
         <item>@string/student_search_teacher_worth</item>
+    </string-array>
+
+    <string name="name">name</string>
+    <string-array name="teacher_connection_requests_sort_categories">
+        <item>@string/all</item>
+        <item>@string/name</item>
+    </string-array>
+
+    <string-array name="teacher_connection_requests_filter_categories">
+        <item>@string/all</item>
+        <item>@string/city</item>
     </string-array>
 
 
@@ -201,7 +212,10 @@
     <string name="delivered">Delivered</string>
     <string name="connection_requests">Connection requests</string>
     <string name="title_activity_registration_main">RegistrationMainActivity</string>
+    <string name="enter_value">Enter value</string>
+    <string name="no_connection_requests">No connection requests</string>
     <string name="communicate_title">Communicate</string>
+    <string name="city">city</string>
 
 
     <string name="time_5">5:00-6:00</string>
