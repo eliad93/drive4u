@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.activities.LoginActivity;
+import com.example.eliad.drive4u.models.Chat;
 import com.example.eliad.drive4u.student_ui.StudentMainActivity;
 import com.example.eliad.drive4u.teacher_ui.TeacherMainActivity;
 import com.example.eliad.drive4u.adapters.ViewPagerAdapter;
@@ -25,6 +26,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -38,6 +44,7 @@ public class MainChatActivity extends AppCompatActivity {
     private BottomNavigationView mNavigation;
     private Toolbar mToolbar;
     private User mUser;
+    private DatabaseReference reference;
 
     public void displayView(int viewId) {
         Log.d(TAG, "displayView");
@@ -96,7 +103,7 @@ public class MainChatActivity extends AppCompatActivity {
             }
         });
         getUser();
-        mNavigation = (BottomNavigationView) findViewById(R.id.bottom_main_chat_navigation);
+        mNavigation = findViewById(R.id.bottom_main_chat_navigation);
         mViewPager = findViewById(R.id.main_chat_frame);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(ChatsFragment.newInstance(mUser));
@@ -124,6 +131,30 @@ public class MainChatActivity extends AppCompatActivity {
         });
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         displayView(R.id.navigation_chats);
+
+        reference = FirebaseDatabase.getInstance().getReference(ChatMessageActivity.CHATS);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int unread = 0;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Chat chat = snapshot.getValue(Chat.class);
+                    if (chat.getReceiver().equals(mUser.getID()) && !chat.isSeen()) {
+                        unread++;
+                    }
+                }
+                String title = "Chats";
+                if (unread != 0) {
+                    title = "(" + unread + ")" + title;
+                }
+                mNavigation.getMenu().getItem(0).setTitle(title);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void getUser() {
