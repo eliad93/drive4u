@@ -110,13 +110,13 @@ public class StudentHomeFragment extends StudentBaseFragment {
             public void onPageSelected(int i) {
                 switch (i) {
                     case 0:
-                        mNavigation.setSelectedItemId(R.id.teacher_navigation_home);
+                        mNavigation.setSelectedItemId(R.id.student_navigation_home);
                         break;
                     case 1:
-                        mNavigation.setSelectedItemId(R.id.teacher_navigation_dashboard);
+                        mNavigation.setSelectedItemId(R.id.student_navigation_dashboard);
                         break;
                     case 2:
-                        mNavigation.setSelectedItemId(R.id.teacher_navigation_notifications);
+                        mNavigation.setSelectedItemId(R.id.student_navigation_notifications);
                         break;
                 }
             }

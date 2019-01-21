@@ -79,7 +79,15 @@ public class MainChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_chat);
+        setUpToolbar();
+        getUser();
+        mNavigation = findViewById(R.id.bottom_main_chat_navigation);
+        setUpPager();
+        setUnreadMessagesListener();
+        displayView(R.id.navigation_chats);
+    }
 
+    private void setUpToolbar() {
         mToolbar = findViewById(R.id.chat_message_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
@@ -102,8 +110,8 @@ public class MainChatActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        getUser();
-        mNavigation = findViewById(R.id.bottom_main_chat_navigation);
+    }
+    private void setUpPager(){
         mViewPager = findViewById(R.id.main_chat_frame);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(ChatsFragment.newInstance(mUser));
@@ -130,8 +138,9 @@ public class MainChatActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int i) {}
         });
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        displayView(R.id.navigation_chats);
-
+    }
+    private void setUnreadMessagesListener() {
+        Log.d(TAG, "setUnreadMessagesListener");
         reference = FirebaseDatabase.getInstance().getReference(ChatMessageActivity.CHATS);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -156,7 +165,6 @@ public class MainChatActivity extends AppCompatActivity {
             }
         });
     }
-
     private void getUser() {
         mUser = getIntent().getParcelableExtra(ARG_USER);
 

@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.example.eliad.drive4u.notifications.APIService;
 import com.example.eliad.drive4u.notifications.Client;
 import com.example.eliad.drive4u.notifications.Data;
+import com.example.eliad.drive4u.notifications.MyFirebaseMessaging;
 import com.example.eliad.drive4u.notifications.MyResponse;
 import com.example.eliad.drive4u.notifications.Sender;
 import com.example.eliad.drive4u.notifications.Token;
@@ -295,7 +296,7 @@ public class ChatMessageActivity extends AppCompatActivity {
                 });
     }
 
-    private void sendNotification(String receiver, final String username, final String message) {
+    private void sendNotification(String receiver, final String senderName, final String message) {
         Log.d(TAG,"sendNotification");
 
         DatabaseReference tokens = FirebaseDatabase.getInstance().getReference(Token.TOKEN_PATH);
@@ -306,7 +307,8 @@ public class ChatMessageActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Token token = snapshot.getValue(Token.class);
                     Data data = new Data(currUser.getID(), R.mipmap.ic_launcher,
-                            username + ": " + message, "New Message", secUser.getID());
+                            senderName + ": " + message, MyFirebaseMessaging.NEW_MESSAGE_TITLE,
+                            secUser.getID());
 
                     Sender sender = new Sender(data, token.getToken());
 
@@ -336,7 +338,7 @@ public class ChatMessageActivity extends AppCompatActivity {
         });
     }
 
-    private void readMessages(final String myid, final String userid, final String imageURL) {
+    private void readMessages(final String currUserId, final String secUserId, final String imageURL) {
         Log.d(TAG,"readMessages");
         mChats = new ArrayList<>();
         reference = FirebaseDatabase.getInstance().getReference(CHATS);
@@ -347,8 +349,8 @@ public class ChatMessageActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Chat chat = snapshot.getValue(Chat.class);
                     assert chat != null;
-                    if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid) ||
-                            chat.getReceiver().equals(userid) && chat.getSender().equals(myid)) {
+                    if (chat.getReceiver().equals(currUserId) && chat.getSender().equals(secUserId) ||
+                            chat.getReceiver().equals(secUserId) && chat.getSender().equals(currUserId)) {
                         mChats.add(chat);
                     }
                 }

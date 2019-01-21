@@ -2,29 +2,29 @@ package com.example.eliad.drive4u.notifications;
 
 public class Data {
 
-    private String user;
+    private String sourceId;
     private int icon;
     private String body;
     private String title;
-    private String sented;
+    private String receiverId;
 
-    public Data(String user, int icon, String body, String title, String sented) {
-        this.user = user;
+    public Data(String sourceId, int icon, String body, String title, String receiverId) {
+        this.sourceId = sourceId;
         this.icon = icon;
         this.body = body;
         this.title = title;
-        this.sented = sented;
+        this.receiverId = receiverId;
     }
 
     public Data() {
     }
 
-    public String getUser() {
-        return user;
+    public String getSourceId() {
+        return sourceId;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
     }
 
     public int getIcon() {
@@ -51,11 +51,11 @@ public class Data {
         this.title = title;
     }
 
-    public String getSented() {
-        return sented;
+    public String getReceiverId() {
+        return receiverId;
     }
 
-    public void setSented(String sented) {
-        this.sented = sented;
+    public void setReceiverId(String receiverId) {
+        this.receiverId = receiverId;
     }
 }

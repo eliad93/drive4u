@@ -83,10 +83,10 @@ public class ChatUsersFragment extends UserBaseFragment {
         if (classRoom.equals("")) {
             // this is a student with no teacher. we can let him message all teachers, or nobody.
             Toast.makeText(getContext(), "Choose a teacher before trying to chat", Toast.LENGTH_SHORT).show();
-//            return; TODO: block students with no teachers
-        } else if (!classRoom.equals(mUser.getID())) {
+            return;
+        } else if (mUser instanceof Student) {
             // this is a student, add his teacher to the list.
-            db.collection(getString(R.string.DB_Teachers))
+            db.collection("Teachers")
                     .document(classRoom)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -104,8 +104,9 @@ public class ChatUsersFragment extends UserBaseFragment {
                         }
                     });
         }
-        db.collection(getString(R.string.DB_Students))
-//                .whereEqualTo("teacherId", classRoom) //TODO: for debugging Ill show all students
+
+        db.collection("Students")
+                .whereEqualTo("teacherId", classRoom)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
