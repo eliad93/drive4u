@@ -138,7 +138,7 @@
     <string name="cat_model_title">Car Model:</string>
     <string name="gear_type_title">Gear Type:</string>
     <string name="price_per_lesson_title">Price Per Lesson:</string>
-    <string name="total_payed_title">Total Payed:</string>
+    <string name="total_payed_title">Total Paid:</string>
     <string name="update_lesson_request">Update lesson request</string>
     <string name="student_name">Student name</string>
     <string name="time_picker">pick time</string>
@@ -202,40 +202,39 @@
     <string name="dialog_negative_button">Cancel</string>
     <string name="choose_teacher_dialog_message_no_teacher">Are you sure you want to send a connection request?</string>
     <string name="choose_teacher_dialog_message_has_teacher">Already has a teacher, disconnect first.</string>
-    <string name="dialog_ok">Ok</string>
+    <string name="dialog_ok">OK</string>
     <string name="user_message_unexpected_error">Sorry for the inconvenience, an unexpected error occurred</string>
     <string name="unexpected_error">Unexpected error</string>
-    <string name="lesson_len_range_error">length range is 30-60</string>
+    <string name="lesson_len_range_error">length range is 30–60</string>
     <string name="lessons_archive">Lessons archive</string>
     <string name="seen">Seen</string>
     <string name="delivered">Delivered</string>
     <string name="connection_requests">Connection requests</string>
     <string name="title_activity_registration_main">RegistrationMainActivity</string>
-    <string name="enter_value">Enter value</string>
     <string name="no_connection_requests">No connection requests</string>
     <string name="communicate_title">Communicate</string>
     <string name="city">city</string>
 
 
-    <string name="time_5">5:00-6:00</string>
-    <string name="time_6">6:00-7:00</string>
-    <string name="time_7">7:00-8:00</string>
-    <string name="time_8">8:00-9:00</string>
-    <string name="time_9">9:00-10:00</string>
-    <string name="time_10">10:00-11:00</string>
-    <string name="time_11">11:00-12:00</string>
-    <string name="time_12">12:00-13:00</string>
-    <string name="time_13">13:00-14:00</string>
-    <string name="time_14">14:00-15:00</string>
-    <string name="time_15">15:00-16:00</string>
-    <string name="time_16">16:00-17:00</string>
-    <string name="time_17">17:00-18:00</string>
-    <string name="time_18">18:00-19:00</string>
-    <string name="time_19">19:00-20:00</string>
-    <string name="time_20">20:00-21:00</string>
-    <string name="time_21">21:00-22:00</string>
-    <string name="time_22">22:00-23:00</string>
-    <string name="time_23">23:00-24:00</string>
+    <string name="time_5">5:00–6:00</string>
+    <string name="time_6">6:00–7:00</string>
+    <string name="time_7">7:00–8:00</string>
+    <string name="time_8">8:00–9:00</string>
+    <string name="time_9">9:00–10:00</string>
+    <string name="time_10">10:00–11:00</string>
+    <string name="time_11">11:00–12:00</string>
+    <string name="time_12">12:00–13:00</string>
+    <string name="time_13">13:00–14:00</string>
+    <string name="time_14">14:00–15:00</string>
+    <string name="time_15">15:00–16:00</string>
+    <string name="time_16">16:00–17:00</string>
+    <string name="time_17">17:00–18:00</string>
+    <string name="time_18">18:00–19:00</string>
+    <string name="time_19">19:00–20:00</string>
+    <string name="time_20">20:00–21:00</string>
+    <string name="time_21">21:00–22:00</string>
+    <string name="time_22">22:00–23:00</string>
+    <string name="time_23">23:00–24:00</string>
     <string name="new_lesson_added">New lesson added</string>
     <string name="previous"><![CDATA[<]]></string>
     <string name="next"><![CDATA[>]]></string>
@@ -259,5 +258,6 @@
     <string name="not_ready_yet">Sorry this section is not ready yet</string>
     <string name="accept">Accept</string>
     <string name="decline">Decline</string>
+    <string name="enter_value">Enter value</string>
 
 </resources>

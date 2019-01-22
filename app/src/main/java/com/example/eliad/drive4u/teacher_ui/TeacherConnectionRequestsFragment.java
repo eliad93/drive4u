@@ -204,7 +204,7 @@ public class TeacherConnectionRequestsFragment extends TeacherBaseFragment
     }
 
     @Override
-    public void onRequestClick(int position,
+    public void onRequestClick(final int position,
                                final Student.ConnectionRequestStatus connectionRequestStatus) {
         final Student selectedStudent = presentedRequests.get(position);
         WriteBatch batch = db.batch();
@@ -219,7 +219,8 @@ public class TeacherConnectionRequestsFragment extends TeacherBaseFragment
                 @Override
                 public void onSuccess(Void aVoid) {
                     selectedStudent.setRequest(connectionRequestStatus.getUserMessage());
-                    presentedRequests.remove(selectedStudent);
+                    presentedRequests.remove(position);
+                    mAdapter.notifyItemRemoved(position);
                     mTeacher.removeConnectionRequest(selectedStudent.getID());
                     mTeacher.addStudent(selectedStudent.getID());
                     mAdapter.notifyDataSetChanged();

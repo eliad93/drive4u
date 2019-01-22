@@ -30,11 +30,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.LinkedList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link StudentLessonsArchiveFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class StudentLessonsArchiveFragment extends StudentBaseFragment
         implements StudentPastLessonsAdapter.StudentPastLessonsItemClickListener,
         StudentArchiveLessonSummaryFragment.StudentLessonSummaryFragmentListener {
