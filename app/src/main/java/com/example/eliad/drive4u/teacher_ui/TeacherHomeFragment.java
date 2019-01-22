@@ -3,7 +3,6 @@ package com.example.eliad.drive4u.teacher_ui;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,9 +13,6 @@ import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.ViewPagerAdapter;
-import com.example.eliad.drive4u.chat.ChatUsersFragment;
-import com.example.eliad.drive4u.chat.ChatsFragment;
-import com.example.eliad.drive4u.models.Teacher;
 
 public class TeacherHomeFragment extends TeacherBaseFragment  {
 
@@ -58,34 +54,24 @@ public class TeacherHomeFragment extends TeacherBaseFragment  {
     }
 
 
-    public static TeacherHomeFragment newInstance(Teacher teacher) {
-        TeacherHomeFragment fragment = new TeacherHomeFragment();
-        Bundle args = newInstanceBaseArgs(teacher);
-        fragment.setArguments(args);
-        return fragment;
+    public static TeacherHomeFragment newInstance() {
+        return new TeacherHomeFragment();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_teacher_home, container, false);
-
-        if (mTeacher == null && getArguments() == null) {
-            Log.d(TAG, "Got a Null teacher and no arguments");
-            return view;
-        } else if (mTeacher == null) {
-            mTeacher = getArguments().getParcelable(ARG_TEACHER);
-        }
 
         mNavigation = view.findViewById(R.id.teacher_home_navigation);
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         mViewPager = view.findViewById(R.id.teacher_home_container);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-        viewPagerAdapter.addFragment(TeacherSummaryFragment.newInstance(mTeacher));
-        viewPagerAdapter.addFragment(TeacherDashboardFragment.newInstance(mTeacher));
-        viewPagerAdapter.addFragment(TeacherSummaryFragment.newInstance(mTeacher));
+        viewPagerAdapter.addFragment(TeacherSummaryFragment.newInstance());
+        viewPagerAdapter.addFragment(TeacherDashboardFragment.newInstance());
+        viewPagerAdapter.addFragment(TeacherSummaryFragment.newInstance());
         mViewPager.setAdapter(viewPagerAdapter);
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

@@ -1,7 +1,10 @@
 package com.example.eliad.drive4u.registration;
 
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -20,9 +23,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.student_ui.StudentMainActivity;
 import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.User;
+import com.example.eliad.drive4u.student_ui.StudentMainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,18 +34,17 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class StudentRegistrationFragment extends Fragment
         implements AdapterView.OnItemSelectedListener {
     private static final String TAG = StudentRegistrationFragment.class.getName();
-
+    // shared preferences
+    protected SharedPreferences sharedPreferences;
     // Firebase
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-
+    // widgets
     protected EditText editTextName;
     protected EditText editTextPhone;
     protected EditText editTextCity;
@@ -50,9 +52,9 @@ public class StudentRegistrationFragment extends Fragment
     protected EditText editTextPassword;
     protected EditText editTextPasswordRepeat;
     protected ProgressBar progressBar;
-
     private Button btn;
     private Spinner spinnerGearType;
+
     private String gearType,name,firstName="", lastName="", phone,city,email, password, passwordRepeat;
 
     public StudentRegistrationFragment() {
@@ -61,9 +63,8 @@ public class StudentRegistrationFragment extends Fragment
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         Log.d(TAG, "in onCreateView");
         View view = inflater.inflate(R.layout.fragment_student_registration, container, false);
 
@@ -178,21 +179,19 @@ public class StudentRegistrationFragment extends Fragment
     private void createNewStudent(FirebaseUser newUser, String firstName, String lastName,
                                   String phone, String city, String email, String gearType) {
         Log.d(TAG, "in createNewStudent");
-        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager)getActivity()
+                .getSystemService(getActivity().INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         String uId = newUser.getUid();
         final Student newStudent = new Student(uId, firstName, lastName, phone, city,
                 email, "", 0, 0, gearType,
                 User.DEFAULT_IMAGE_KEY, User.OFFLINE);
+        writeStudentToSharedPreferences(newStudent);
         db.collection("Students").document(uId).set(newStudent)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "firestore student created successfully");
-                        Intent intent = new Intent(getActivity().getApplicationContext(),
-                                StudentMainActivity.class);
-                        intent.putExtra(StudentMainActivity.ARG_STUDENT, newStudent);
-                        startActivity(intent);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -202,6 +201,9 @@ public class StudentRegistrationFragment extends Fragment
                         Log.d(TAG, "firestore student creation failed");
                     }
                 });
+        Intent intent = new Intent(getActivity().getApplicationContext(),
+                StudentMainActivity.class);
+        startActivity(intent);
     }
 
     private void initialize() {
@@ -223,5 +225,23 @@ public class StudentRegistrationFragment extends Fragment
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         gearType = null;
+    }
+
+    @SuppressLint("ApplySharedPref")
+    @SuppressWarnings("UnusedReturnValue")
+    protected Boolean writeStudentToSharedPreferences(Student student) {
+        if(sharedPreferences == null){
+            sharedPreferences = getContext().getSharedPreferences(getString(R.string.app_name)
+                    + student.getID(), Context.MODE_PRIVATE);
+        }
+        if(student != null){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(student);
+            editor.putString(StudentMainActivity.ARG_STUDENT, json);
+            editor.commit();
+            return true;
+        }
+        return false;
     }
 }

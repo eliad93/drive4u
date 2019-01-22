@@ -10,7 +10,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,19 +20,17 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.activities.LoginActivity;
+import com.example.eliad.drive4u.base_activities.TeacherBaseActivity;
 import com.example.eliad.drive4u.chat.MainChatActivity;
 import com.example.eliad.drive4u.models.Teacher;
 import com.example.eliad.drive4u.models.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class TeacherMainActivity extends AppCompatActivity
+public class TeacherMainActivity extends TeacherBaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     // Tag for the Log
     private static final String TAG = TeacherMainActivity.class.getName();
@@ -42,27 +39,15 @@ public class TeacherMainActivity extends AppCompatActivity
     public static final String ARG_TEACHER = TAG + ".arg_teacher";
     public static final String ARG_NAV = TAG + ".arg_nav";
 
-    // the user
-    protected Teacher mTeacher;
-    // Firebase
-    protected FirebaseAuth mAuth;
-    protected FirebaseUser mUser;
-    protected FirebaseFirestore db;
-
     Toolbar mToolbar;
     private boolean isAtHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_teacher_main);
-
         Log.d(TAG, "onCreate");
-
+        setContentView(R.layout.activity_teacher_main);
         initDbVariables();
-
-        initTeacher();
-
         initToolbar();
         initNavigationView();
         displayView(getIntent().getIntExtra(ARG_NAV, R.id.teacher_nav_home));
@@ -71,38 +56,10 @@ public class TeacherMainActivity extends AppCompatActivity
 
     protected void initToolbar() {
         Log.d(TAG, "initToolbar");
-        mToolbar = (Toolbar) findViewById(R.id.toolbarTeacher);
+        mToolbar = findViewById(R.id.toolbarTeacher);
         setSupportActionBar(mToolbar);
         String toolbarTitle = mTeacher.getFirstName() + " " + mTeacher.getLastName();
         mToolbar.setTitle(toolbarTitle);
-    }
-
-    protected void initTeacher() {
-        Log.d(TAG, "initTeacher");
-        Intent parcelablesIntent = getIntent();
-        mTeacher = parcelablesIntent.getParcelableExtra(ARG_TEACHER);
-
-        if (mTeacher == null) {
-            Log.d(TAG, " Got an intent with out a teacher. fetching him fom the dp.");
-            db.collection(getString(R.string.DB_Teachers))
-                    .document(mUser.getUid())
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot snapshot = task.getResult();
-                                if (snapshot != null && snapshot.exists()) {
-                                    mTeacher = snapshot.toObject(Teacher.class);
-                                } else {
-                                    Log.d(TAG, "Query returned without a teacher");
-                                }
-                            } else {
-                                Log.d(TAG, "Query failed!");
-                            }
-                        }
-                    });
-        }
     }
 
     protected void initNavigationView() {
@@ -119,9 +76,9 @@ public class TeacherMainActivity extends AppCompatActivity
 
         // set the content of the menu.
         View headerView = navigationView.getHeaderView(0);
-        CircleImageView drawerImage = (CircleImageView) headerView.findViewById(R.id.nav_header_image);
-        TextView drawerUsername = (TextView) headerView.findViewById(R.id.user_name);
-        TextView drawerAccount = (TextView) headerView.findViewById(R.id.user_email);
+        CircleImageView drawerImage = headerView.findViewById(R.id.nav_header_image);
+        TextView drawerUsername = headerView.findViewById(R.id.user_name);
+        TextView drawerAccount = headerView.findViewById(R.id.user_email);
 
         if (mTeacher.getImageUrl() == null || mTeacher.getImageUrl().equals(User.DEFAULT_IMAGE_KEY)) {
             drawerImage.setImageResource(R.mipmap.ic_launcher);
@@ -136,7 +93,7 @@ public class TeacherMainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (!isAtHome) {
@@ -160,10 +117,10 @@ public class TeacherMainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Toast.makeText(this, "Settings butten was pressed, not functional yet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Settings butten was pressed, not functional yet",
+                    Toast.LENGTH_SHORT).show();
             // TODO: what do we want to do in the settings?!
             return true;
         } else if (id == R.id.action_logout) {
@@ -182,17 +139,9 @@ public class TeacherMainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         displayView(item.getItemId());
         return true;
-    }
-
-    protected void initDbVariables() {
-        Log.d(TAG, "get current firebase user");
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-        assert mUser != null;
-        db = FirebaseFirestore.getInstance();
     }
 
     public void displayView(int viewId) {
@@ -203,21 +152,27 @@ public class TeacherMainActivity extends AppCompatActivity
 
         switch (viewId) {
             case R.id.teacher_nav_home:
-                fragment = TeacherHomeFragment.newInstance(mTeacher);
+                fragment = TeacherHomeFragment.newInstance();
                 isAtHome = true;
                 break;
+
+            case R.id.teacher_nav_schedule:
+                intent = new Intent(this, TeacherSchedulerActivity.class);
+                isAtHome = false;
+                break;
+
+            case R.id.teacher_nav_students:
+                fragment =  TeacherStudentsFragment.newInstance();
+                isAtHome = false;
+                break;
+
             case R.id.teacher_nav_profile:
                 fragment = TeacherProfileFragment.newInstance(mTeacher);
                 isAtHome = false;
                 break;
 
-            case R.id.teacher_nav_students:
-                fragment =  TeacherStudentsFragment.newInstance(mTeacher);
-                isAtHome = false;
-                break;
-
             case R.id.teacher_nav_connection_requests:
-                fragment =  TeacherConnectionRequestsFragment.newInstance(mTeacher);
+                fragment =  TeacherConnectionRequestsFragment.newInstance();
                 isAtHome = false;
                 break;
 
@@ -229,7 +184,8 @@ public class TeacherMainActivity extends AppCompatActivity
 
             default:
                 // TODO: add to the following isAtHome = false for back pressed.
-                Toast.makeText(this, "this teacher_home_navigation item was not implemented yet", Toast.LENGTH_LONG).show();
+                promptUserWithDialog(getString(R.string.no_content),
+                        getString(R.string.not_ready_yet));
                 break;
         }
 
@@ -246,15 +202,15 @@ public class TeacherMainActivity extends AppCompatActivity
             getSupportActionBar().setTitle(title);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
     }
 
     private void status(String status) {
-        db.collection(getString(R.string.DB_Teachers))
-                .document(mTeacher.getID())
-                .update("status", status);
+        mTeacher.setStatus(status);
+        getTeacherDoc().update("status", status);
+        writeTeacherToSharedPreferences();
     }
 
     @Override

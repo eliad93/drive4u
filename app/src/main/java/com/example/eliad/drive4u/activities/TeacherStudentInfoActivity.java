@@ -54,7 +54,7 @@ public class TeacherStudentInfoActivity extends TeacherBaseActivity {
 
         // teacher is initialized by the base class
         // we get the student here
-        mStudent = parcelablesIntent.getParcelableExtra(StudentBaseActivity.ARG_STUDENT);
+//        mStudent = parcelablesIntent.getParcelableExtra(StudentBaseActivity.ARG_STUDENT);
 
         // get all their common lessons
         initMutualLessons();

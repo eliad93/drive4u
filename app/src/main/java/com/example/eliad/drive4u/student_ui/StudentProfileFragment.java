@@ -34,6 +34,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
+import org.jetbrains.annotations.Contract;
+
 import javax.annotation.Nullable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -64,11 +66,10 @@ public class StudentProfileFragment extends StudentBaseFragment {
         // Required empty public constructor
     }
 
+    @NonNull
+    @Contract("_ -> new")
     public static StudentProfileFragment newInstance(Student student) {
-        StudentProfileFragment fragment = new StudentProfileFragment();
-        Bundle args = newInstanceBaseArgs(student);
-        fragment.setArguments(args);
-        return fragment;
+        return new StudentProfileFragment();
     }
 
     @Override
@@ -77,12 +78,11 @@ public class StudentProfileFragment extends StudentBaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_student_profile,
                 container, false);
-
         // init text views
         image_profile           = view.findViewById(R.id.profile_image);
         username                = view.findViewById(R.id.profile_username);
@@ -91,15 +91,12 @@ public class StudentProfileFragment extends StudentBaseFragment {
         textViewPhoneNumber     = view.findViewById(R.id.StudentProfilePhone);
         textViewEmail           = view.findViewById(R.id.StudentProfileEmail);
         textViewCity            = view.findViewById(R.id.StudentProfileCity);
-
         // get ready for loading pictures
         storageReference        = FirebaseStorage.getInstance().getReference(User.UPLOADS);
 
         initEditProfile(view);
-
         // set the content
         updateInfo();
-
 
         image_profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,7 +134,6 @@ public class StudentProfileFragment extends StudentBaseFragment {
                         }
                     }
                 });
-
         return view;
     }
 

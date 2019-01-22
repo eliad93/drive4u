@@ -50,9 +50,10 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         String receiverId = remoteMessage.getData().get("receiverId");
         String sourceId = remoteMessage.getData().get("sourceId");
 
-        SharedPreferences preferences = getSharedPreferences(ChatMessageActivity.PREFS, MODE_PRIVATE);
-        String currentUser = preferences.getString(ChatMessageActivity.CURRENT_USER, ChatMessageActivity.NO_CURRENT_USER);
-
+        SharedPreferences preferences = getSharedPreferences(ChatMessageActivity.PREFS,
+                MODE_PRIVATE);
+        String currentUser = preferences.getString(ChatMessageActivity.CURRENT_USER,
+                ChatMessageActivity.NO_CURRENT_USER);
 
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();

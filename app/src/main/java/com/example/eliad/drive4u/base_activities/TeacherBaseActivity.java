@@ -1,32 +1,36 @@
 package com.example.eliad.drive4u.base_activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.WindowManager;
 
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.activities.LoginActivity;
-import com.example.eliad.drive4u.activities.TeacherMyStudentsActivity;
-import com.example.eliad.drive4u.activities.TeacherProfileActivity;
-import com.example.eliad.drive4u.activities.TeacherSchedulerActivity;
+import com.example.eliad.drive4u.fragments.PromptUserDialog;
+import com.example.eliad.drive4u.fragments.UnexpectedErrorDialog;
+import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.Teacher;
+import com.example.eliad.drive4u.teacher_ui.TeacherMainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 
 @SuppressLint("Registered")
-public class TeacherBaseActivity extends AppCompatActivity {
+abstract public class TeacherBaseActivity extends AppCompatActivity {
     // Tag for the Log
     private static final String TAG = TeacherBaseActivity.class.getName();
-
+    // shared preferences
+    SharedPreferences sharedPreferences;
     // key for passing the teacher between activities
-    public static final String ARG_TEACHER = "com.android.eliad.base_activities.StudentBaseActivity.teacher_key";
-    // Intent for Parcelables
-    protected Intent parcelablesIntent;
+    public static final String ARG_TEACHER = Teacher.class.getName();
     // the user
     protected Teacher mTeacher;
     // Firebase
@@ -38,8 +42,21 @@ public class TeacherBaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initDbVariables();
-        parcelablesIntent = getIntent();
-        mTeacher = parcelablesIntent.getParcelableExtra(ARG_TEACHER);
+        sharedPreferences = getSharedPreferences(getString(R.string.app_name)
+                + mUser.getUid(), Context.MODE_PRIVATE);
+        initData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateData();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveData();
     }
 
     protected void initDbVariables() {
@@ -50,15 +67,57 @@ public class TeacherBaseActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
     }
 
-    /*
-        all teacher activities should send an updated teacher to the prev activity
-     */
-    @Override
-    public void onBackPressed(){
-        Intent intent = new Intent();
-        intent.putExtra(ARG_TEACHER, mTeacher);
-        setResult(RESULT_OK, intent);
-        super.onBackPressed();
+    private void initData() {
+        getTeacherFromSharedPreferences();
+    }
+
+    protected void updateData() {
+        getTeacherFromSharedPreferences();
+    }
+
+    protected void saveData() {
+        writeTeacherToSharedPreferences();
+    }
+
+    @SuppressLint("ApplySharedPref")
+    @SuppressWarnings("UnusedReturnValue")
+    protected Boolean writeTeacherToSharedPreferences() {
+        if(mTeacher != null){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(mTeacher);
+            editor.putString(ARG_TEACHER, json);
+            editor.commit();
+            return true;
+        }
+        return false;
+    }
+
+
+    @NonNull
+    @SuppressWarnings("UnusedReturnValue")
+    private Boolean getTeacherFromSharedPreferences() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(ARG_TEACHER, "");
+        if(json != null &&!json.equals("")){
+            mTeacher = gson.fromJson(json, Teacher.class);
+            return true;
+        }
+        return false;
+    }
+
+    protected void disableUserInteraction() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    protected void enableUserInteraction() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    protected void unexpectedError(){
+        UnexpectedErrorDialog dialog = new UnexpectedErrorDialog();
+        dialog.show(getSupportFragmentManager(), "dialog");
     }
 
     /*
@@ -86,42 +145,28 @@ public class TeacherBaseActivity extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.teacher_home_menu, menu);
-        return true;
+    protected void promptUserWithDialog(String title, String message){
+        PromptUserDialog dialog = new PromptUserDialog();
+        Bundle args = new Bundle();
+        args.putString(PromptUserDialog.ARG_TITLE, title);
+        args.putString(PromptUserDialog.ARG_MESSAGE, message);
+        dialog.setArguments(args);
+        dialog.show(getSupportFragmentManager(), "promptUserWithDialog");
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.schedule){
-            myStartActivity( TeacherSchedulerActivity.class);
-        }
-        if(item.getItemId() == R.id.students_requests){
-            //students requests activity
-        }
-        if(item.getItemId() == R.id.profile){
-            //profile activity
-            myStartActivity(TeacherProfileActivity.class);
-        }
-        if(item.getItemId() == R.id.my_students){
-            //all students info activity
-            myStartActivity(TeacherMyStudentsActivity.class);
-        }
-//        if(item.getItemId() == R.id.budget_management){
-//            //budget management activity
-        if (item.getItemId() == R.id.teacher_home) {
-           // myStartActivity(TeacherHomeActivity.class);
-        }
-        if(item.getItemId() == R.id.logout){
-            finish();
-            logoutUser();
-        }
-        return super.onOptionsItemSelected(item);
+    protected CollectionReference getTeachersDb(){
+        return db.collection(getString(R.string.DB_Teachers));
     }
 
-    public void logoutUser(){
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getBaseContext(), LoginActivity.class));
+    protected CollectionReference getStudentsDb(){
+        return db.collection(getString(R.string.DB_Students));
+    }
+
+    protected DocumentReference getTeacherDoc(){
+        return getTeachersDb().document(mTeacher.getID());
+    }
+
+    protected DocumentReference getStudentDoc(Student student){
+        return getStudentsDb().document(student.getID());
     }
 }

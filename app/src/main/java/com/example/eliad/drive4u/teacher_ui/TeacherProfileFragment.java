@@ -71,16 +71,13 @@ public class TeacherProfileFragment extends TeacherBaseFragment
     }
 
     public static TeacherProfileFragment newInstance(Teacher teacher) {
-        TeacherProfileFragment fragment = new TeacherProfileFragment();
-        Bundle args = newInstanceBaseArgs(teacher);
-        fragment.setArguments(args);
-        return fragment;
+        return new TeacherProfileFragment();
     }
 
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_teacher_profile, container, false);

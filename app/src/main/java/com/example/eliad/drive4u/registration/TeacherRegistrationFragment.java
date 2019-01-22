@@ -1,7 +1,10 @@
 package com.example.eliad.drive4u.registration;
 
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -20,6 +23,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.base_activities.TeacherBaseActivity;
+import com.example.eliad.drive4u.models.Student;
+import com.example.eliad.drive4u.student_ui.StudentMainActivity;
 import com.example.eliad.drive4u.teacher_ui.TeacherMainActivity;
 import com.example.eliad.drive4u.models.Teacher;
 import com.example.eliad.drive4u.models.User;
@@ -31,6 +37,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
@@ -39,22 +46,14 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
  */
 public class TeacherRegistrationFragment extends Fragment
         implements AdapterView.OnItemSelectedListener {
-
     // Tag for the Log
     private static final String TAG = TeacherRegistrationFragment.class.getName();
-
     // Firebase
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-
+    // widgets
     private EditText editTextCarModel, editTextPrice, editTextLessonLen;
     private Spinner spinnerGearType;
-
-    private String gearType,name, firstName="", lastName="",
-            phone, city,email, password, passwordRepeat,
-            carModel, priceString, lessonLenString;
-    Integer price, lessonLen;
-
     private Button btn;
     protected EditText editTextName;
     protected EditText editTextPhone;
@@ -64,14 +63,19 @@ public class TeacherRegistrationFragment extends Fragment
     protected EditText editTextPasswordRepeat;
     protected ProgressBar progressBar;
 
+    private String gearType,name, firstName="", lastName="",
+            phone, city,email, password, passwordRepeat,
+            carModel, priceString, lessonLenString;
+    Integer price, lessonLen;
+    private SharedPreferences sharedPreferences;
+
     public TeacherRegistrationFragment() {
         Log.d(TAG, "empty constructor");
         // Required empty public constructor
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
         View view =  inflater.inflate(R.layout.fragment_teacher_registration, container, false);
@@ -104,7 +108,6 @@ public class TeacherRegistrationFragment extends Fragment
                 signUp(v);
             }
         });
-
         return view;
     }
 
@@ -221,7 +224,8 @@ public class TeacherRegistrationFragment extends Fragment
 
     private void createNewTeacher(FirebaseUser newUser) {
         Log.d(TAG, "in createNewTeacher");
-        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager)getActivity()
+                .getSystemService(INPUT_METHOD_SERVICE);
         try{
             imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         } catch (NullPointerException ignored){
@@ -230,6 +234,7 @@ public class TeacherRegistrationFragment extends Fragment
         String uId = newUser.getUid();
         final Teacher newTeacher = new Teacher(uId, firstName, lastName, phone, city, email,
                 carModel, price, gearType,lessonLen, User.DEFAULT_IMAGE_KEY, User.ONLINE);
+        writeTeacherToSharedPreferences(newTeacher);
         db.collection(getResources().getString(R.string.DB_Teachers)).document(uId).set(newTeacher)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -262,4 +267,21 @@ public class TeacherRegistrationFragment extends Fragment
         gearType = null;
     }
 
+    @SuppressLint("ApplySharedPref")
+    @SuppressWarnings("UnusedReturnValue")
+    protected Boolean writeTeacherToSharedPreferences(Teacher teacher) {
+        if(sharedPreferences == null){
+            sharedPreferences = getContext().getSharedPreferences(getString(R.string.app_name)
+                    + teacher.getID(), Context.MODE_PRIVATE);
+        }
+        if(teacher != null){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(teacher);
+            editor.putString(TeacherBaseActivity.ARG_TEACHER, json);
+            editor.commit();
+            return true;
+        }
+        return false;
+    }
 }

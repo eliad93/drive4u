@@ -252,5 +252,10 @@
     <string name="reset_instructions">By clicking Reset, you will receive an email with instruction to reset your password</string>
     <string name="reset">Reset</string>
     <string name="reset_password_header">Reset Password</string>
+    <string name="no_teacher_dialog_title">Not connected to teacher</string>
+    <string name="no_teacher_dialog_message"><![CDATA[You need a teacher to schedule a lesson, connect to a teacher first. menu -> Teachers]]></string>
+    <string name="no_teacher_dialog">no teacher dialog</string>
+    <string name="no_content">No content</string>
+    <string name="not_ready_yet">Sorry this section is not ready yet</string>
 
 </resources>

@@ -39,6 +39,15 @@
             android:name=".activities.TeacherStudentInfoActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+        <activity android:name=".teacher_ui.TeacherSchedulerActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity android:name=".student_ui.StudentSchedulerLessonActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity android:name=".registration.RegistrationMainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="preloaded_fonts"
@@ -79,10 +88,6 @@
         <activity
             android:name=".chat.MainChatActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".registration.RegistrationMainActivity"
-            android:label="@string/title_activity_registration_main"
             android:screenOrientation="portrait" />
 
         <activity android:name=".activities.ResetPasswordActivity"

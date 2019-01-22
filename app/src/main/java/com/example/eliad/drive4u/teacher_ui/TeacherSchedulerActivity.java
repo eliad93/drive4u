@@ -1,4 +1,4 @@
-package com.example.eliad.drive4u.activities;
+package com.example.eliad.drive4u.teacher_ui;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -9,26 +9,20 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.adapters.StudentScheduleAdapter;
 import com.example.eliad.drive4u.adapters.TeacherChooseStudentLessonAdapter;
 import com.example.eliad.drive4u.base_activities.TeacherBaseActivity;
 import com.example.eliad.drive4u.built_in_utils.BorderLineDividerItemDecoration;
-import com.example.eliad.drive4u.fragments.TimePickerFragment;
 import com.example.eliad.drive4u.models.Lesson;
 import com.example.eliad.drive4u.models.Student;
-import com.example.eliad.drive4u.models.Teacher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
 import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -42,24 +36,22 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 
-public class TeacherSchedulerActivity extends TeacherBaseActivity implements TeacherChooseStudentLessonAdapter.OnItemClickListener{
+public class TeacherSchedulerActivity extends TeacherBaseActivity
+        implements TeacherChooseStudentLessonAdapter.OnItemClickListener{
     private static final String TAG = TeacherSchedulerActivity.class.getSimpleName();
     private RelativeLayout mLayout;
     private RelativeLayout.LayoutParams lParam;
     private ScrollView mScroll;
     private float dpi;
     boolean canAdd;
-
 
     //for updating lesson time (location on screen)
     private float yMove;
@@ -72,12 +64,11 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity implements Tea
     TextView prev = null;
 
     //select date
-    private TextView selecteDate;
+    private TextView selectedDate;
     private TextView dateSelected;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private Calendar cal;
     private String date;
-
 
     //students requests for hour
     private Dialog studentsRequests;
@@ -131,11 +122,11 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity implements Tea
         cal = Calendar.getInstance();
 
         dateSelected = (TextView) findViewById(R.id.date_selected);
-        selecteDate = (TextView) findViewById(R.id.selecte_date);
+        selectedDate = (TextView) findViewById(R.id.selecte_date);
 
         setCurrentDay();
 
-        selecteDate.setOnClickListener(new View.OnClickListener() {
+        selectedDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int year = cal.get(Calendar.YEAR);
@@ -162,10 +153,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity implements Tea
             }
         };
 
-
     }
-
-
 
     private void updateDayView(){
         moved = false;

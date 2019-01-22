@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +14,8 @@ import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.ViewPagerAdapter;
-import com.example.eliad.drive4u.models.Student;
+
+import org.jetbrains.annotations.Contract;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,7 +47,6 @@ public class StudentHomeFragment extends StudentBaseFragment {
                 msg = "notifications selected";
                 break;
         }
-
         Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
     }
 
@@ -64,42 +63,31 @@ public class StudentHomeFragment extends StudentBaseFragment {
         // Required empty public constructor
     }
 
-    public static StudentHomeFragment newInstance(Student student) {
-        StudentHomeFragment fragment = new StudentHomeFragment();
-        Bundle args = newInstanceBaseArgs(student);
-        fragment.setArguments(args);
-        return fragment;
+    @NonNull
+    @Contract(" -> new")
+    public static StudentHomeFragment newInstance() {
+        return new StudentHomeFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mStudent = getArguments().getParcelable(ARG_STUDENT);
-        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_student_home, container, false);
-
-        if (mStudent == null && getArguments() == null) {
-            Log.d(TAG, "Got a Null teacher and no arguments");
-            return view;
-        } else if (mStudent == null) {
-            mStudent = getArguments().getParcelable(ARG_STUDENT);
-        }
 
         mNavigation = view.findViewById(R.id.student_home_navigation);
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         mViewPager = view.findViewById(R.id.student_home_container);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-        viewPagerAdapter.addFragment(StudentSummaryFragment.newInstance(mStudent));
-        viewPagerAdapter.addFragment(StudentDashboardFragment.newInstance(mStudent));
-        viewPagerAdapter.addFragment(StudentSummaryFragment.newInstance(mStudent));
+        viewPagerAdapter.addFragment(StudentSummaryFragment.newInstance());
+        viewPagerAdapter.addFragment(StudentDashboardFragment.newInstance());
+        viewPagerAdapter.addFragment(StudentSummaryFragment.newInstance());
         mViewPager.setAdapter(viewPagerAdapter);
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

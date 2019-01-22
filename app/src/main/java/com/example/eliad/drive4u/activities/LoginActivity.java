@@ -1,13 +1,16 @@
 package com.example.eliad.drive4u.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -15,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.fragments.UnexpectedErrorDialog;
 import com.example.eliad.drive4u.registration.RegistrationMainActivity;
 import com.example.eliad.drive4u.student_ui.StudentMainActivity;
 import com.example.eliad.drive4u.teacher_ui.TeacherMainActivity;
@@ -28,12 +32,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 
 
 public class LoginActivity extends AppCompatActivity {
     // Tag for the Log
     private final static String TAG = LoginActivity.class.getName();
-
+    // shared preferences
+    SharedPreferences sharedPreferences;
     // Firebase
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -115,12 +121,9 @@ public class LoginActivity extends AppCompatActivity {
 
         // let the user know there is progress
         progressBar.setVisibility(View.VISIBLE);
-
         String userEmail     = editTextUserEmail.getText().toString();
         String userPassword = editTextPassword.getText().toString();
-
         Log.d(TAG, "userName=" + userEmail + " userPassword=" + userPassword);
-
         Log.d(TAG, "checking if the user name is in the data base with the password");
         mAuth.signInWithEmailAndPassword(userEmail, userPassword)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -151,16 +154,24 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login (){
+        disableUserInteraction();
         progressBar.setVisibility(View.VISIBLE);
         FirebaseUser user = mAuth.getCurrentUser();
-        assert user != null;
-        tryStudentLogin(user);
+        if(user != null){
+            sharedPreferences = getSharedPreferences(getString(R.string.app_name)
+                    + user.getUid(), Context.MODE_PRIVATE);
+            tryStudentLogin(user);
+        } else {
+            unexpectedError();
+            finish();
+        }
     }
 
     private void tryStudentLogin(final FirebaseUser user) {
         DocumentReference userDoc = db.collection("Students")
                 .document(user.getUid());
         userDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @SuppressLint("ApplySharedPref")
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
@@ -170,7 +181,13 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(),
                                 StudentMainActivity.class);
                         Student student = document.toObject(Student.class);
-                        intent.putExtra(StudentMainActivity.ARG_STUDENT, student);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        Gson gson = new Gson();
+                        String json = gson.toJson(student);
+                        editor.putString(StudentMainActivity.ARG_STUDENT, json);
+                        editor.commit();
+//                        intent.putExtra(StudentMainActivity.ARG_STUDENT, student);
+                        enableUserInteraction();
                         finish();
                         startActivity(intent);
                     } else {
@@ -188,6 +205,7 @@ public class LoginActivity extends AppCompatActivity {
         DocumentReference userDoc = db.collection("Teachers")
                 .document(user.getUid());
         userDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @SuppressLint("ApplySharedPref")
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
@@ -197,7 +215,13 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(),
                                 TeacherMainActivity.class);
                         Teacher teacher = document.toObject(Teacher.class);
-                        intent.putExtra(TeacherMainActivity.ARG_TEACHER, teacher);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        Gson gson = new Gson();
+                        String json = gson.toJson(teacher);
+                        editor.putString(TeacherMainActivity.ARG_TEACHER, json);
+                        editor.commit();
+                        enableUserInteraction();
+//                        intent.putExtra(TeacherMainActivity.ARG_TEACHER, teacher);
                         finish();
                         startActivity(intent);
                     } else {
@@ -208,5 +232,18 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    protected void unexpectedError(){
+        UnexpectedErrorDialog dialog = new UnexpectedErrorDialog();
+        dialog.show(getSupportFragmentManager(), "dialog");
+    }
+
+    protected void disableUserInteraction() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    protected void enableUserInteraction() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 }

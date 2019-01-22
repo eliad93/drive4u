@@ -2,13 +2,14 @@ package com.example.eliad.drive4u.teacher_ui;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.models.Teacher;
+
+import org.jetbrains.annotations.Contract;
 
 
 public class TeacherSummaryFragment extends TeacherBaseFragment {
@@ -18,15 +19,14 @@ public class TeacherSummaryFragment extends TeacherBaseFragment {
         // Required empty public constructor
     }
 
-    public static TeacherSummaryFragment newInstance(Teacher teacher) {
-        TeacherSummaryFragment fragment = new TeacherSummaryFragment();
-        Bundle args = newInstanceBaseArgs(teacher);
-        fragment.setArguments(args);
-        return fragment;
+    @NonNull
+    @Contract(" -> new")
+    public static TeacherSummaryFragment newInstance() {
+        return new TeacherSummaryFragment();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_teacher_summary, container, false);

@@ -1,15 +1,15 @@
 package com.example.eliad.drive4u.student_ui;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.models.Student;
+
+import org.jetbrains.annotations.Contract;
 
 
 public class StudentDashboardFragment extends StudentBaseFragment {
@@ -19,11 +19,10 @@ public class StudentDashboardFragment extends StudentBaseFragment {
     }
 
 
-    public static StudentDashboardFragment newInstance(Student student) {
-        StudentDashboardFragment fragment = new StudentDashboardFragment();
-        Bundle args = newInstanceBaseArgs(student);
-        fragment.setArguments(args);
-        return fragment;
+    @NonNull
+    @Contract(" -> new")
+    public static StudentDashboardFragment newInstance() {
+        return new StudentDashboardFragment();
     }
 
     @Override
@@ -32,7 +31,7 @@ public class StudentDashboardFragment extends StudentBaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_student_dashboard, container, false);

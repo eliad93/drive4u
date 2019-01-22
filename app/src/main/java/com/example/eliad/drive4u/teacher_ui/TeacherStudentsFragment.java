@@ -21,6 +21,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.jetbrains.annotations.Contract;
+
 import java.util.LinkedList;
 
 /**
@@ -41,11 +43,10 @@ public class TeacherStudentsFragment extends TeacherBaseFragment {
         // Required empty public constructor
     }
 
-    public static TeacherStudentsFragment newInstance(Teacher teacher) {
-        TeacherStudentsFragment fragment = new TeacherStudentsFragment();
-        Bundle args = newInstanceBaseArgs(teacher);
-        fragment.setArguments(args);
-        return fragment;
+    @NonNull
+    @Contract(" -> new")
+    public static TeacherStudentsFragment newInstance() {
+        return new TeacherStudentsFragment();
     }
 
     private void presentStudents(View view) {
@@ -58,18 +59,20 @@ public class TeacherStudentsFragment extends TeacherBaseFragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         Log.d(TAG, "presentStudents.onComplete");
                         if (task.isSuccessful()) {
-                            LinkedList<Student> students = new LinkedList<>(); // task.getResult().toObjects(Student.class); -> List<Student>
-                            Log.d(TAG, "presentStudents.onComplete with result size " + task.getResult().size());
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Student student = document.toObject(Student.class);
-                                Log.d(TAG, "current student by email: " + student.getEmail());
-                                students.addLast(student);
+                            LinkedList<Student> students = new LinkedList<>();
+                            QuerySnapshot snapshots = task.getResult();
+                            if(snapshots != null){
+                                for (QueryDocumentSnapshot document : snapshots) {
+                                    Student student = document.toObject(Student.class);
+                                    Log.d(TAG, "current student by email: " + student.getEmail());
+                                    students.addLast(student);
+                                }
                             }
                             if (students.size() > 0) {
                                 mAdapter = new StudentPluralInfoAdapter(students, mTeacher);
                                 mRecyclerView.setAdapter(mAdapter);
                             } else {
+                                //TODO: set textView with message "No students
                                 Log.d(TAG, "This Teacher has no students");
                             }
                         } else {
@@ -77,22 +80,20 @@ public class TeacherStudentsFragment extends TeacherBaseFragment {
                         }
                     }
                 });
-
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: set recycler view here?
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_teacher_students, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_teacher_students,
+                container, false);
         initializeRecyclerView(view);
         presentStudents(view);
         return view;

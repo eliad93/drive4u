@@ -1,4 +1,4 @@
-package com.example.eliad.drive4u.activities;
+package com.example.eliad.drive4u.student_ui;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,16 +21,16 @@ import com.example.eliad.drive4u.base_activities.StudentBaseActivity;
 import com.example.eliad.drive4u.built_in_utils.BorderLineDividerItemDecoration;
 import com.example.eliad.drive4u.models.Lesson;
 import com.example.eliad.drive4u.models.Teacher;
-import com.example.eliad.drive4u.student_ui.StudentMainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class StudentSchedulerLessonActivity extends StudentBaseActivity
         implements StudentScheduleAdapter.OnItemClickListener {
 
     //select date
-    private TextView selecteDate;
+    private TextView selectedDate;
     private TextView dateSelected;
     private TextView previousDay;
     private TextView nextDay;
@@ -79,62 +78,59 @@ public class StudentSchedulerLessonActivity extends StudentBaseActivity
         setContentView(R.layout.activity_student_scheduler_lesson);
         cal = Calendar.getInstance();
 
-        db.collection("Teachers").whereEqualTo("id", mStudent.getTeacherId())
+        db.collection("Teachers")
+                .document(mStudent.getTeacherId())
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                mTeacher = document.toObject(Teacher.class);
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        mTeacher = documentSnapshot.toObject(Teacher.class);
+
+                        initializeRecyclerView();
+
+                        dateSelected = findViewById(R.id.date_selected);
+                        selectedDate = findViewById(R.id.selecte_date);
+                        previousDay = findViewById(R.id.previous_date);
+                        nextDay = findViewById(R.id.next_date);
+                        setCurrentDay();
+                        selectedDate.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                int year = cal.get(Calendar.YEAR);
+                                int month = cal.get(Calendar.MONTH);
+                                int day = cal.get(Calendar.DAY_OF_MONTH);
+                                DatePickerDialog dialog = new DatePickerDialog(
+                                        StudentSchedulerLessonActivity.this,
+                                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                                        mDateSetListener,
+                                        year, month, day);
+                                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                dialog.show();
                             }
-
-
-
-        initializeRecyclerView();
-
-        dateSelected = (TextView) findViewById(R.id.date_selected);
-        selecteDate = (TextView) findViewById(R.id.selecte_date);
-        previousDay = (TextView) findViewById(R.id.previous_date);
-        nextDay = (TextView) findViewById(R.id.next_date);
-        setCurrentDay();
-
-        selecteDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dialog = new DatePickerDialog(
-                        StudentSchedulerLessonActivity.this,
-                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                        mDateSetListener,
-                        year, month, day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-            }
-        });
-
-        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                month = month + 1;
-                date = day + "/" + month + "/" + year;
-                dateSelected.setText(date);
-                updateDayView();
-            }
-        };
-
-                        }else{
-                            Toast.makeText(StudentSchedulerLessonActivity.this,"Cant find teacher",Toast.LENGTH_SHORT).show();
-                            myStartActivity(StudentMainActivity.class);
-                        }
+                        });
+                        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                                month = month + 1;
+                                date = day + "/" + month + "/" + year;
+                                dateSelected.setText(date);
+                                updateDayView();
+                            }
+                        };
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(StudentSchedulerLessonActivity.this,"Cant find teacher",Toast.LENGTH_SHORT).show();
+                        myStartActivity(StudentMainActivity.class);
                     }
                 });
     }
 
+
     private void initializeRecyclerView() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.lessons_list);
+        mRecyclerView = findViewById(R.id.lessons_list);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -263,12 +259,12 @@ public class StudentSchedulerLessonActivity extends StudentBaseActivity
                 lessonCreate = new Dialog(this);
                 lessonCreate.setContentView(R.layout.student_schedule_lesson_dialog);
 
-                lessonStartingTime = (TextView) lessonCreate.findViewById(R.id.starting_time);
-                lessonEndingTime = (TextView) lessonCreate.findViewById(R.id.ending_time);
-                lessonStartingLocation = (TextView) lessonCreate.findViewById(R.id.starting_location);
-                lessonEndingLocation = (TextView) lessonCreate.findViewById(R.id.ending_location);
-                lessonDate = (TextView) lessonCreate.findViewById(R.id.lesson_date);
-                submit = (Button) lessonCreate.findViewById(R.id.add_lesson);
+                lessonStartingTime = lessonCreate.findViewById(R.id.starting_time);
+                lessonEndingTime = lessonCreate.findViewById(R.id.ending_time);
+                lessonStartingLocation = lessonCreate.findViewById(R.id.starting_location);
+                lessonEndingLocation = lessonCreate.findViewById(R.id.ending_location);
+                lessonDate = lessonCreate.findViewById(R.id.lesson_date);
+                submit = lessonCreate.findViewById(R.id.add_lesson);
 
                 lessonStartingTime.setText(relevantHours.get(position));
                 lessonEndingTime.setText(calculateTime(relevantHours.get(position), mTeacher.getLessonLength()));
@@ -331,10 +327,7 @@ public class StudentSchedulerLessonActivity extends StudentBaseActivity
         int time1 = Integer.valueOf(hour1.split(":")[0]) * 60 + Integer.valueOf(hour1.split(":")[1]);
         int time2 = Integer.valueOf(hour2.split(":")[0]) * 60 + Integer.valueOf(hour2.split(":")[1]);
 
-        if(time1<=time2){
-            return true;
-        }
-        return false;
+        return time1 <= time2;
     }
 
 }

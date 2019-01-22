@@ -1,37 +1,41 @@
 package com.example.eliad.drive4u.base_activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.WindowManager;
 
+import com.bumptech.glide.Glide;
 import com.example.eliad.drive4u.R;
-import com.example.eliad.drive4u.activities.LoginActivity;
-import com.example.eliad.drive4u.activities.StudentLessonsArchiveActivity;
-import com.example.eliad.drive4u.activities.StudentSchedulerLessonActivity;
+import com.example.eliad.drive4u.fragments.PromptUserDialog;
+import com.example.eliad.drive4u.fragments.UnexpectedErrorDialog;
 import com.example.eliad.drive4u.models.Student;
+import com.example.eliad.drive4u.models.Teacher;
+import com.example.eliad.drive4u.models.User;
+import com.example.eliad.drive4u.student_ui.StudentMainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 @SuppressLint("Registered")
-public class StudentBaseActivity extends AppCompatActivity {
+abstract public class StudentBaseActivity extends AppCompatActivity {
     // Tag for the Log
     private static final String TAG = StudentBaseActivity.class.getName();
-
+    // shared preferences
+    SharedPreferences sharedPreferences;
     // Bundle arguments
     public static String ARG_STUDENT = Student.class.getName();
-
-    // Intent for Parcelables
-    protected Intent parcelablesIntent;
-
     // the user
     protected Student mStudent;
-
     // Firebase
     protected FirebaseAuth mAuth;
     protected FirebaseUser mUser;
@@ -42,8 +46,21 @@ public class StudentBaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "in onCreate");
         initDbVariables();
-        parcelablesIntent = getIntent();
-        mStudent = parcelablesIntent.getParcelableExtra(ARG_STUDENT);
+        sharedPreferences = getSharedPreferences(getString(R.string.app_name)
+                + mUser.getUid(), Context.MODE_PRIVATE);
+        initData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateData();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveData();
     }
 
     protected void initDbVariables() {
@@ -54,95 +71,95 @@ public class StudentBaseActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
     }
 
-    /*
-        all student activities should send an updated student to the prev activity
-     */
-    @Override
-    public void onBackPressed(){
-        Log.d(TAG, "in onBackPressed");
-        Intent intent = new Intent();
-        intent.putExtra(ARG_STUDENT, mStudent);
-        setResult(RESULT_OK, intent);
-        super.onBackPressed();
+    protected void initData() {
+        Log.d(TAG, "initData");
+        getStudentFromSharedPreferences();
     }
-    /*
-        all student activities should update their student
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "in onActivityResult");
-        if (requestCode == 1) {
-            if(resultCode == RESULT_OK) {
-                mStudent = data.getParcelableExtra(ARG_STUDENT);
-            }
+
+    protected Boolean getStudentFromSharedPreferences() {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(StudentMainActivity.ARG_STUDENT, "");
+        if(json != null &&!json.equals("")){
+            mStudent = gson.fromJson(json, Student.class);
+            return true;
         }
+        return false;
+    }
+
+    @SuppressLint("ApplySharedPref")
+    protected Boolean writeStudentToSharedPreferences() {
+        if(mStudent != null){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(mStudent);
+            editor.putString(StudentMainActivity.ARG_STUDENT, json);
+            editor.commit();
+            return true;
+        }
+        return false;
+    }
+
+    protected void disableUserInteraction() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    protected void enableUserInteraction() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
     protected void myStartActivity(Class<? extends  AppCompatActivity> activity) {
         Log.d(TAG, "in myStartActivity");
+        writeStudentToSharedPreferences();
         Intent intent = new Intent(this, activity);
-        intent.putExtra(ARG_STUDENT, mStudent);
         startActivity(intent);
     }
 
-    protected void myStartActivityForResult(Class<? extends  AppCompatActivity> activity) {
-        Log.d(TAG, "in myStartActivityForResult");
-        Intent intent = new Intent(this, activity);
-        intent.putExtra(ARG_STUDENT, mStudent);
-        startActivityForResult(intent, 1);
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(TAG, "onCreateOptionMenu");
-        getMenuInflater().inflate(R.menu.student_home_menu, menu);
-        return true;
+    protected void updateData() {
+        getStudentFromSharedPreferences();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "onOptionsItemSelected");
-        if(item.getItemId() == R.id.scheduleLesson){
-            if(mStudent.getTeacherId().equals("")){
-                Toast.makeText(this, "You have no teacher. Choose a teacher " +
-                                "to schedule a lesson.",
-                        Toast.LENGTH_LONG).show();
-            }else {
-                myStartActivity(StudentSchedulerLessonActivity.class);
+    protected void saveData() {
+        writeStudentToSharedPreferences();
+    }
+
+    protected void unexpectedError(){
+        UnexpectedErrorDialog dialog = new UnexpectedErrorDialog();
+        dialog.show(getSupportFragmentManager(), "dialog");
+    }
+
+    protected void setStudentImage(CircleImageView drawerImage){
+        if(mStudent != null){
+            if (mStudent.getImageUrl() == null || mStudent.getImageUrl().equals(User.DEFAULT_IMAGE_KEY)) {
+                drawerImage.setImageResource(R.mipmap.ic_launcher);
+            } else {
+                Glide.with(getApplicationContext()).load(mStudent.getImageUrl()).into(drawerImage);
             }
         }
-        if(item.getItemId() == R.id.searchTeacher){
-            //myStartActivityForResult(StudentSearchTeacherActivity.class);
-        }
-        if(item.getItemId() == R.id.pastLessons){
-            myStartActivity(StudentLessonsArchiveActivity.class);
-        }
-        if(item.getItemId() == R.id.profile){
-           // myStartActivity(StudentProfileActivity.class);
-        }
-
-        if (item.getItemId() == R.id.student_home) {
-           // myStartActivity(StudentHomeActivity.class);
-        }
-
-//        if(item.getItemId() == R.id.recentActivities){
-//            //Recent activities activity
-//        }
-//        if(item.getItemId() == R.id.showProgress){
-//            //Show progress activity
-//        }
-
-        if(item.getItemId() == R.id.logout){
-            finish();
-            logoutUser();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
-    public void logoutUser(){
-        Log.d(TAG, "logoutUser");
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getBaseContext(), LoginActivity.class));
+    protected void promptUserWithDialog(String title, String message){
+        PromptUserDialog dialog = new PromptUserDialog();
+        Bundle args = new Bundle();
+        args.putString(PromptUserDialog.ARG_TITLE, title);
+        args.putString(PromptUserDialog.ARG_MESSAGE, message);
+        dialog.setArguments(args);
+        dialog.show(getSupportFragmentManager(), "promptUserWithDialog");
     }
 
+    protected CollectionReference getTeachersDb(){
+        return db.collection(getString(R.string.DB_Teachers));
+    }
+
+    protected CollectionReference getStudentsDb(){
+        return db.collection(getString(R.string.DB_Students));
+    }
+
+    protected DocumentReference getTeacherDoc(Teacher teacher){
+        return getTeachersDb().document(teacher.getID());
+    }
+
+    protected DocumentReference getStudentDoc(){
+        return getStudentsDb().document(mStudent.getID());
+    }
 }

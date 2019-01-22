@@ -59,11 +59,8 @@ public class TeacherConnectionRequestsFragment extends TeacherBaseFragment
         // Required empty public constructor
     }
 
-    public static TeacherConnectionRequestsFragment newInstance(Teacher teacher) {
-        TeacherConnectionRequestsFragment fragment = new TeacherConnectionRequestsFragment();
-        Bundle args = newInstanceBaseArgs(teacher);
-        fragment.setArguments(args);
-        return fragment;
+    public static TeacherConnectionRequestsFragment newInstance() {
+        return new TeacherConnectionRequestsFragment();
     }
 
     @Override
@@ -119,12 +116,10 @@ public class TeacherConnectionRequestsFragment extends TeacherBaseFragment
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
     }
 
     @Override

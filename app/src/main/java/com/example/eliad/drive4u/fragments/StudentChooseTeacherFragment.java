@@ -57,7 +57,7 @@ public class StudentChooseTeacherFragment extends StudentBaseFragment
     public static StudentChooseTeacherFragment newInstance(Student student, Teacher teacher) {
         Log.d(TAG, "in newInstance");
         StudentChooseTeacherFragment fragment = new StudentChooseTeacherFragment();
-        Bundle args = newInstanceBaseArgs(student);
+        Bundle args = new Bundle();
         args.putParcelable(ARG_TEACHER, teacher);
         fragment.setArguments(args);
         return fragment;

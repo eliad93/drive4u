@@ -1,96 +1,58 @@
 package com.example.eliad.drive4u.student_ui;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.fragments.UnexpectedErrorDialog;
 import com.example.eliad.drive4u.models.Student;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.eliad.drive4u.models.Teacher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.gson.Gson;
 
-import javax.annotation.Nullable;
-
-public class StudentBaseFragment extends Fragment {
+abstract public class StudentBaseFragment extends Fragment {
     private static final String TAG = StudentBaseFragment.class.getName();
 
     public static final String ARG_STUDENT = TAG + ".arg_student";
     public static final String ARG_TEACHER = TAG + ".arg_teacher";
-
+    // shared preferences
+    protected SharedPreferences sharedPreferences;
+    // models
     protected Student mStudent;
-
     // Firebase
     protected FirebaseAuth mAuth;
     protected FirebaseUser mUser;
     protected FirebaseFirestore db;
 
-    public static Bundle newInstanceBaseArgs(Student student) {
-        Bundle args = new Bundle();
-        args.putParcelable(ARG_STUDENT, student);
-        return args;
-    }
+    public StudentBaseFragment(){}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         initDbVariables();
-
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            mStudent = arguments.getParcelable(ARG_STUDENT);
-            db.collection("Students")
-                    .document(mStudent.getID())
-                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                            if (e != null) {
-                                Log.d(TAG, "Listen failed: " + e);
-                                return;
-                            }
-
-                            if (documentSnapshot != null && documentSnapshot.exists()) {
-                                mStudent = documentSnapshot.toObject(Student.class);
-                            }
-                        }
-                    });
-        } else {
-            Log.d(TAG, "Created a StudentBaseFragment with no student!");
-        }
+        sharedPreferences = getContext().getSharedPreferences(getString(R.string.app_name)
+                + mUser.getUid(), Context.MODE_PRIVATE);
+        initData();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        updateStudent();
+        updateData();
     }
 
-
-    protected void updateStudent(){
-        Log.d(TAG, "updateStudent");
-        db.collection("Students").document(mUser.getUid()).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()){
-                            DocumentSnapshot document = task.getResult();
-                            assert document != null;
-                            if(document.exists()){
-                                mStudent = document.toObject(Student.class);
-                                Log.d(TAG, "updated student");
-                            }
-                        } else {
-                            Log.d(TAG, "failed to update student");
-                        }
-                    }
-                });
+    @Override
+    public void onPause(){
+        super.onPause();
+        saveData();
     }
 
     protected void initDbVariables() {
@@ -101,8 +63,78 @@ public class StudentBaseFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
     }
 
+    private void initData() {
+        getStudentFromSharedPreferences();
+    }
+
+    protected void updateData(){
+        Log.d(TAG, "updateData");
+        getStudentFromSharedPreferences();
+    }
+
+    protected void saveData() {
+        writeStudentToSharedPreferences();
+    }
+
     protected void unexpectedError(){
+        Log.d(TAG, "unexpectedError");
         UnexpectedErrorDialog dialog = new UnexpectedErrorDialog();
         dialog.show(getChildFragmentManager(), "dialog");
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
+    protected Boolean getStudentFromSharedPreferences() {
+        Log.d(TAG, "getStudentFromSharedPreferences");
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(ARG_STUDENT, "");
+        if(json != null &&!json.equals("")){
+            mStudent = gson.fromJson(json, Student.class);
+            return true;
+        }
+        return false;
+    }
+
+    @SuppressLint("ApplySharedPref")
+    @SuppressWarnings("UnusedReturnValue")
+    protected Boolean writeStudentToSharedPreferences() {
+        if(mStudent != null){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(mStudent);
+            editor.putString(ARG_STUDENT, json);
+            editor.commit();
+            return true;
+        }
+        return false;
+    }
+
+    @SuppressLint("ApplySharedPref")
+    @SuppressWarnings("UnusedReturnValue")
+    protected Boolean writeStudentTeacherToSharedPreferences(Teacher teacher) {
+        if(teacher != null){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(teacher);
+            editor.putString(ARG_STUDENT, json);
+            editor.commit();
+            return true;
+        }
+        return false;
+    }
+
+    protected CollectionReference getTeachersDb(){
+        return db.collection(getString(R.string.DB_Teachers));
+    }
+
+    protected CollectionReference getStudentsDb(){
+        return db.collection(getString(R.string.DB_Students));
+    }
+
+    protected DocumentReference getTeacherDoc(Teacher teacher){
+        return getTeachersDb().document(teacher.getID());
+    }
+
+    protected DocumentReference getStudentDoc(){
+        return getStudentsDb().document(mStudent.getID());
     }
 }

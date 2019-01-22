@@ -57,10 +57,7 @@ public class StudentLessonsArchiveFragment extends StudentBaseFragment
         // Required empty public constructor
     }
     public static StudentLessonsArchiveFragment newInstance(Student student) {
-        StudentLessonsArchiveFragment fragment = new StudentLessonsArchiveFragment();
-        Bundle args = newInstanceBaseArgs(student);
-        fragment.setArguments(args);
-        return fragment;
+        return new StudentLessonsArchiveFragment();
     }
 
     @Override
