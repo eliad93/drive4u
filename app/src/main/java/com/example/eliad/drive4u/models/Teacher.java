@@ -61,6 +61,10 @@ public class Teacher extends User {
         connectionRequests.add(studentId);
     }
 
+    public void removeConnectionRequest(String studentId){
+        connectionRequests.remove(studentId);
+    }
+
     public Double worth(){
         return Double.valueOf(this.lessonLength)
                 / Double.valueOf(this.price);

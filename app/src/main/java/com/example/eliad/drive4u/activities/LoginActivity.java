@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.base_activities.TeacherBaseActivity;
 import com.example.eliad.drive4u.fragments.UnexpectedErrorDialog;
 import com.example.eliad.drive4u.registration.RegistrationMainActivity;
 import com.example.eliad.drive4u.student_ui.StudentMainActivity;
@@ -218,7 +219,7 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         Gson gson = new Gson();
                         String json = gson.toJson(teacher);
-                        editor.putString(TeacherMainActivity.ARG_TEACHER, json);
+                        editor.putString(TeacherBaseActivity.ARG_TEACHER, json);
                         editor.commit();
                         enableUserInteraction();
 //                        intent.putExtra(TeacherMainActivity.ARG_TEACHER, teacher);

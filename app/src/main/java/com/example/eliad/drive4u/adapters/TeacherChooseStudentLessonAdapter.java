@@ -24,7 +24,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TeacherChooseStudentLessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TeacherChooseStudentLessonAdapter
+        extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private List<Lesson> lessons;
     // Firebase

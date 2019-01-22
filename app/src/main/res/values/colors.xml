@@ -17,6 +17,9 @@
     <color name="lessonUnvalid">#999999</color>
     <color name="lessonUnsaved">#c5518ff4</color>
 
+    <color name="cancel">#ff5656</color>
+    <color name="approve">#79ff82</color>
+
     <color name="colorBlack">#000000</color>
     <color name="colorDivider">#aaaaaa</color>
 

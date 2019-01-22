@@ -1,13 +1,16 @@
 package com.example.eliad.drive4u.student_ui;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.base_activities.StudentBaseActivity;
 import com.example.eliad.drive4u.fragments.UnexpectedErrorDialog;
 import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.Teacher;
@@ -20,9 +23,7 @@ import com.google.gson.Gson;
 
 abstract public class StudentBaseFragment extends Fragment {
     private static final String TAG = StudentBaseFragment.class.getName();
-
-    public static final String ARG_STUDENT = TAG + ".arg_student";
-    public static final String ARG_TEACHER = TAG + ".arg_teacher";
+    public static final String ARG_STUDENT = "student";
     // shared preferences
     protected SharedPreferences sharedPreferences;
     // models
@@ -86,7 +87,7 @@ abstract public class StudentBaseFragment extends Fragment {
     protected Boolean getStudentFromSharedPreferences() {
         Log.d(TAG, "getStudentFromSharedPreferences");
         Gson gson = new Gson();
-        String json = sharedPreferences.getString(ARG_STUDENT, "");
+        String json = sharedPreferences.getString(StudentBaseActivity.ARG_STUDENT, "");
         if(json != null &&!json.equals("")){
             mStudent = gson.fromJson(json, Student.class);
             return true;
@@ -115,7 +116,7 @@ abstract public class StudentBaseFragment extends Fragment {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             Gson gson = new Gson();
             String json = gson.toJson(teacher);
-            editor.putString(ARG_STUDENT, json);
+            editor.putString(StudentBaseActivity.ARG_STUDENT, json);
             editor.commit();
             return true;
         }
@@ -136,5 +137,20 @@ abstract public class StudentBaseFragment extends Fragment {
 
     protected DocumentReference getStudentDoc(){
         return getStudentsDb().document(mStudent.getID());
+    }
+
+    protected void disableUserInteraction() {
+        Activity activity = getActivity();
+        if(activity != null){
+            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        }
+    }
+
+    protected void enableUserInteraction() {
+        Activity activity = getActivity();
+        if(activity != null){
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        }
     }
 }

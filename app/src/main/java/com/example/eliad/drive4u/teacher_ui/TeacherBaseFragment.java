@@ -1,6 +1,7 @@
 package com.example.eliad.drive4u.teacher_ui;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.base_activities.TeacherBaseActivity;
 import com.example.eliad.drive4u.fragments.UnexpectedErrorDialog;
 import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.Teacher;
@@ -60,9 +62,23 @@ abstract public class TeacherBaseFragment extends Fragment {
     protected Boolean getTeacherFromSharedPreferences() {
         Log.d(TAG, "getTeacherFromSharedPreferences");
         Gson gson = new Gson();
-        String json = sharedPreferences.getString(TeacherMainActivity.ARG_TEACHER, "");
+        String json = sharedPreferences.getString(TeacherBaseActivity.ARG_TEACHER, "");
         if(json != null &&!json.equals("")){
             mTeacher = gson.fromJson(json, Teacher.class);
+            return true;
+        }
+        return false;
+    }
+
+    @SuppressLint("ApplySharedPref")
+    @SuppressWarnings("UnusedReturnValue")
+    protected Boolean writeTeacherToSharedPreferences() {
+        if(mTeacher != null){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(mTeacher);
+            editor.putString(TeacherBaseActivity.ARG_TEACHER, json);
+            editor.commit();
             return true;
         }
         return false;

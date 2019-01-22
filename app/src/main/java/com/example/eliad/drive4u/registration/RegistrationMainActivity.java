@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.activities.LoginActivity;
@@ -39,7 +38,7 @@ public class RegistrationMainActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate");
 
-        mNavigation = (BottomNavigationView) findViewById(R.id.registration_bottom_navigation);
+        mNavigation = findViewById(R.id.registration_bottom_navigation);
         mViewPager = findViewById(R.id.main_registration_frame);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(new StudentRegistrationFragment());

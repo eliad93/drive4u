@@ -257,5 +257,7 @@
     <string name="no_teacher_dialog">no teacher dialog</string>
     <string name="no_content">No content</string>
     <string name="not_ready_yet">Sorry this section is not ready yet</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
 
 </resources>

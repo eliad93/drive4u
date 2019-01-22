@@ -1,7 +1,9 @@
 package com.example.eliad.drive4u.student_ui;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -31,12 +33,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
+import com.google.gson.Gson;
 
 import org.jetbrains.annotations.Contract;
 
@@ -44,8 +46,8 @@ import java.util.LinkedList;
 
 public class StudentSearchTeacherFragment extends StudentBaseFragment
         implements TeacherSearchAdapter.OnItemClickListener,
-        StudentChooseTeacherFragment.PerformUserAction,
-        AdapterView.OnItemSelectedListener, View.OnClickListener {
+        AdapterView.OnItemSelectedListener, View.OnClickListener,
+        StudentChooseTeacherFragment.ResultListener {
     // Tag for the Log
     private static final String TAG = StudentSearchTeacherFragment.class.getName();
     // RecyclerView items
@@ -292,40 +294,27 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
     public void onItemClick(int position) {
         Log.d(TAG, "in onItemClick");
         currentTeacher = presentedTeachers.get(position);
-        Fragment teacherFragment = StudentChooseTeacherFragment.newInstance(mStudent, currentTeacher);
-        startFragmentForResult(teacherFragment);
-    }
-
-    private void startFragmentForResult(Fragment fragment) {
-        Log.d(TAG, "in startFragmentForResult");
+        StudentChooseTeacherFragment teacherFragment = StudentChooseTeacherFragment.newInstance();
+        teacherFragment.setResultListener(this);
+        setTeacherFragmentSharedPreferences();
         FragmentManager fm = getFragmentManager();
-        assert fm != null;
-        fragment.setTargetFragment(this, 0);
-        fm.beginTransaction()
-                .replace(R.id.frameStudentChooseTeacher, fragment)
-                .commit();
-    }
-
-    private void updateDataAfterRequest() {
-        Log.d(TAG, "in updateDataAfterRequest");
-        mStudent.setTeacherId(currentTeacher.getID());
-        mStudent.setRequest(Student.ConnectionRequestStatus.SENT.getUserMessage());
-        currentTeacher.addConnectionRequest(mStudent.getID());
-        writeStudentToSharedPreferences();
-        writeStudentTeacherToSharedPreferences(currentTeacher);
-        FragmentManager fm = getFragmentManager();
-        if(fm != null){
-            for(Fragment f: fm.getFragments()){
-                if(f instanceof StudentChooseTeacherFragment){
-                    fm.beginTransaction().remove(f).commit();
-                }
-            }
+        if (fm != null) {
+            fm.beginTransaction()
+                    .replace(R.id.frameStudentChooseTeacher, teacherFragment)
+                    .commitNow();
         }
     }
 
     @Override
-    public void performUserAction() {
-        Log.d(TAG, "in performUserAction");
+    public void onResult(boolean b) {
+        updateData();
+        if (getFragmentManager() != null) {
+            getFragmentManager().popBackStackImmediate();
+        }
+    }
+
+    private void sendConnectionRequest() {
+        Log.d(TAG, "in sendConnectionRequest");
         DocumentReference mStudentDoc = getStudentDoc();
         // batch writes together
         WriteBatch batch = db.batch();
@@ -349,5 +338,39 @@ public class StudentSearchTeacherFragment extends StudentBaseFragment
                 Log.d(TAG, "connection request to teacher failed");
             }
         });
+    }
+
+    @SuppressLint("ApplySharedPref")
+    @SuppressWarnings("UnusedReturnValue")
+    private boolean setTeacherFragmentSharedPreferences() {
+        if(currentTeacher != null){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(currentTeacher);
+            editor.putString(StudentChooseTeacherFragment.ARG_TEACHER, json);
+            editor.commit();
+            return true;
+        }
+        return false;
+    }
+
+    private void updateDataAfterRequest() {
+        Log.d(TAG, "in updateDataAfterRequest");
+        mStudent.setTeacherId(currentTeacher.getID());
+        mStudent.setRequest(Student.ConnectionRequestStatus.SENT.getUserMessage());
+        currentTeacher.addConnectionRequest(mStudent.getID());
+        writeStudentToSharedPreferences();
+        writeStudentTeacherToSharedPreferences(currentTeacher);
+        if (getFragmentManager() != null) {
+            getFragmentManager().popBackStackImmediate();
+        }
+        FragmentManager fm = getFragmentManager();
+        if(fm != null){
+            for(Fragment f: fm.getFragments()){
+                if(f instanceof StudentChooseTeacherFragment){
+                    fm.beginTransaction().remove(f).commit();
+                }
+            }
+        }
     }
 }

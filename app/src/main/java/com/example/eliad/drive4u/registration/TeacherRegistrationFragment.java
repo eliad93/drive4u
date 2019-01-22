@@ -224,13 +224,6 @@ public class TeacherRegistrationFragment extends Fragment
 
     private void createNewTeacher(FirebaseUser newUser) {
         Log.d(TAG, "in createNewTeacher");
-        InputMethodManager imm = (InputMethodManager)getActivity()
-                .getSystemService(INPUT_METHOD_SERVICE);
-        try{
-            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-        } catch (NullPointerException ignored){
-            Log.d(TAG, "unsafe user input state");
-        }
         String uId = newUser.getUid();
         final Teacher newTeacher = new Teacher(uId, firstName, lastName, phone, city, email,
                 carModel, price, gearType,lessonLen, User.DEFAULT_IMAGE_KEY, User.ONLINE);

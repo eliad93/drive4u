@@ -5,7 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +18,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.adapters.TeacherConnectionRequestsAdapter;
 import com.example.eliad.drive4u.models.Student;
-import com.example.eliad.drive4u.models.Teacher;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.LinkedList;
 
@@ -30,7 +36,8 @@ import java.util.LinkedList;
  * create an instance of this fragment.
  */
 public class TeacherConnectionRequestsFragment extends TeacherBaseFragment
-        implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+        implements AdapterView.OnItemSelectedListener, View.OnClickListener,
+        TeacherConnectionRequestsAdapter.OnRequestClickListener {
     // Tag for the Log
     private static final String TAG = TeacherConnectionRequestsFragment.class.getName();
     // RecyclerView items
@@ -54,6 +61,7 @@ public class TeacherConnectionRequestsFragment extends TeacherBaseFragment
     private String mSortSelectedStr;
     private String mFilterSelectedStr;
     private String mFilterSelectedValueStr;
+    private LinkedList<Student> presentedRequests;
 
     public TeacherConnectionRequestsFragment() {
         // Required empty public constructor
@@ -74,6 +82,7 @@ public class TeacherConnectionRequestsFragment extends TeacherBaseFragment
         View view = inflater.inflate(R.layout.fragment_teacher_connection_requests,
                 container, false);
         initWidgets(view);
+        presentAllRequests();
         return view;
     }
 
@@ -81,6 +90,7 @@ public class TeacherConnectionRequestsFragment extends TeacherBaseFragment
         textViewNoRequests = view.findViewById(R.id.textViewTeacherConnectionRequestsNoRequests);
         textViewNoRequests.setVisibility(View.GONE);
         initSpinners(view);
+        initRecyclerView(view);
     }
 
     private void initSpinners(View view) {
@@ -112,6 +122,34 @@ public class TeacherConnectionRequestsFragment extends TeacherBaseFragment
         } else {
             unexpectedError();
         }
+    }
+
+    private void presentAllRequests() {
+        Log.d(TAG, "in presentAllRequests");
+        getStudentsDb()
+                .whereEqualTo("teacherId", mTeacher.getID())
+                .whereEqualTo("request",
+                        Student.ConnectionRequestStatus.SENT.getUserMessage())
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot document : queryDocumentSnapshots){
+                    Student student = document.toObject(Student.class);
+                    studentsRequests.addLast(student);
+                }
+                if (studentsRequests.size() == 0) {
+                    textViewNoRequests.setVisibility(View.VISIBLE);
+                } else {
+                    presentedRequests = new LinkedList<>();
+                    presentedRequests.addAll(studentsRequests);
+                    mAdapter = new TeacherConnectionRequestsAdapter(presentedRequests,
+                            getContext());
+                    ((TeacherConnectionRequestsAdapter) mAdapter)
+                            .setOnRequestListener(TeacherConnectionRequestsFragment.this);
+                    mRecyclerView.setAdapter(mAdapter);
+                }
+            }
+        });
     }
 
     @Override
@@ -155,5 +193,53 @@ public class TeacherConnectionRequestsFragment extends TeacherBaseFragment
 //                }
 //                break;
 //        }
+    }
+
+    private void initRecyclerView(View view) {
+        Log.d(TAG, "in initializeRecyclerView");
+        mRecyclerView = view.findViewById(R.id.recyclerViewTeacherConnectionRequests);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+    }
+
+    @Override
+    public void onRequestClick(int position,
+                               final Student.ConnectionRequestStatus connectionRequestStatus) {
+        final Student selectedStudent = presentedRequests.get(position);
+        WriteBatch batch = db.batch();
+        batch.update(getStudentDoc(selectedStudent),
+                "request", connectionRequestStatus.getUserMessage());
+        batch.update(getTeacherDoc(),
+                "connectionRequests", FieldValue.arrayRemove(selectedStudent.getID()));
+        if(connectionRequestStatus == Student.ConnectionRequestStatus.ACCEPTED){
+            batch.update(getTeacherDoc(),
+                    "students", FieldValue.arrayUnion(selectedStudent.getID()));
+            batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    selectedStudent.setRequest(connectionRequestStatus.getUserMessage());
+                    presentedRequests.remove(selectedStudent);
+                    mTeacher.removeConnectionRequest(selectedStudent.getID());
+                    mTeacher.addStudent(selectedStudent.getID());
+                    mAdapter.notifyDataSetChanged();
+                    writeTeacherToSharedPreferences();
+                }
+            });
+        } else{
+            batch.update(getStudentDoc(selectedStudent),
+                    "teacherId", null);
+            batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            selectedStudent.setRequest(connectionRequestStatus.getUserMessage());
+                            selectedStudent.setTeacherId(null);
+                            presentedRequests.remove(selectedStudent);
+                            mTeacher.removeConnectionRequest(selectedStudent.getID());
+                            mAdapter.notifyDataSetChanged();
+                            writeTeacherToSharedPreferences();
+                        }
+                    });
+        }
     }
 }

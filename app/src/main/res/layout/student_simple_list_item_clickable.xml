@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/list_item_padding"
+    android:clickable="true"
+    android:background="@color/colorRegistrationFormFieldBorder"
+    android:focusable="true">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/teacherItemCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/list_item_padding">
+
+            <ImageView
+                android:id="@+id/imageViewStudentSimpleListItemPicture"
+                android:layout_width="@dimen/list_item_image_size"
+                android:layout_height="@dimen/list_item_image_size"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:src="@mipmap/ic_user_foreground"
+                android:layout_alignParentStart="true"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/textViewStudentSimpleListItemName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="@dimen/list_item_margin_small_02"
+                android:layout_marginLeft="@dimen/list_item_margin_small_02"
+                android:layout_toRightOf="@+id/imageViewStudentSimpleListItemPicture"
+                android:fontFamily="@font/amaranth_bold_italic"
+                android:text="@string/name"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/list_item_text_size_big"
+                android:layout_toEndOf="@+id/imageViewStudentSimpleListItemPicture" />
+
+            <TextView
+                android:id="@+id/textViewStudentSimpleListItemCity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewStudentSimpleListItemName"
+                android:layout_marginStart="@dimen/list_item_margin_small_03"
+                android:layout_marginLeft="@dimen/list_item_margin_small_03"
+                android:layout_marginTop="@dimen/list_item_margin_small_05"
+                android:layout_toRightOf="@+id/imageViewStudentSimpleListItemPicture"
+                android:fontFamily="@font/amaranth_italic"
+                android:text="@string/city"
+                android:textSize="@dimen/list_item_text_size_medium"
+                android:layout_toEndOf="@+id/imageViewStudentSimpleListItemPicture" />
+
+            <Button
+                android:id="@+id/buttonStudentSimpleListItemAccept"
+                android:layout_width="@dimen/small_button_width"
+                android:layout_height="@dimen/small_button_height"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/horizontal_margin_small"
+                android:text="@string/accept"
+                android:background="@color/approve"
+                android:gravity="center"
+                android:layout_alignParentEnd="true"
+                android:textSize="@dimen/text_size_small"
+                android:layout_marginEnd="@dimen/horizontal_margin_small" />
+            <Button
+                android:id="@+id/buttonStudentSimpleListItemDecline"
+                android:layout_width="@dimen/small_button_width"
+                android:layout_height="@dimen/small_button_height"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:layout_toLeftOf="@id/buttonStudentSimpleListItemAccept"
+                android:layout_marginRight="@dimen/horizontal_margin_medium"
+                android:background="@color/cancel"
+                android:textSize="@dimen/text_size_small"
+                android:text="@string/decline"
+                android:layout_toStartOf="@id/buttonStudentSimpleListItemAccept"
+                android:layout_marginEnd="@dimen/horizontal_margin_medium" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

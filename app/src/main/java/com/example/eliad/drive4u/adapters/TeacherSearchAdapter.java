@@ -49,14 +49,14 @@ public class TeacherSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         Log.d(TAG, "in onBindViewHolder");
         Resources res = viewHolder.itemView.getResources();
-        final TeacherSearchViewHolder holder = (TeacherSearchViewHolder) viewHolder;
-        final Teacher teacher = this.teachers.get(position);
+        TeacherSearchViewHolder holder = (TeacherSearchViewHolder) viewHolder;
+        Teacher teacher = this.teachers.get(position);
         holder.setIsRecyclable(false);
-        holder.mName.setText(teacher.getFirstName() + " " + teacher.getLastName());
-        holder.mCity.setText("City: " + teacher.getCity());
+        holder.mName.setText(teacher.getFullName());
+        holder.mCity.setText(String.format("City: %s", teacher.getCity()));
         String numberOfStudentsText = res
                 .getString(R.string.number_of_students, teacher.numberOfStudents());
         holder.mNumStudents.setText(numberOfStudentsText);
@@ -69,11 +69,11 @@ public class TeacherSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     public class TeacherSearchViewHolder extends RecyclerView.ViewHolder{
-        public TextView mName;
-        public TextView mCity;
-        public TextView mNumStudents;
+        TextView mName;
+        TextView mCity;
+        TextView mNumStudents;
 
-        public TeacherSearchViewHolder(View v){
+        TeacherSearchViewHolder(View v){
             super(v);
             mName = (TextView)v.findViewById(R.id.textViewTeacherName);
             mCity = (TextView)v.findViewById(R.id.textViewTeacherCity);

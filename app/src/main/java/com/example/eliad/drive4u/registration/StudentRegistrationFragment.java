@@ -2,6 +2,7 @@ package com.example.eliad.drive4u.registration;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
+import com.example.eliad.drive4u.base_activities.StudentBaseActivity;
 import com.example.eliad.drive4u.models.Student;
 import com.example.eliad.drive4u.models.User;
 import com.example.eliad.drive4u.student_ui.StudentMainActivity;
@@ -176,12 +178,9 @@ public class StudentRegistrationFragment extends Fragment
         return isValid;
     }
 
-    private void createNewStudent(FirebaseUser newUser, String firstName, String lastName,
+    private void createNewStudent(@NonNull FirebaseUser newUser, String firstName, String lastName,
                                   String phone, String city, String email, String gearType) {
         Log.d(TAG, "in createNewStudent");
-        InputMethodManager imm = (InputMethodManager)getActivity()
-                .getSystemService(getActivity().INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         String uId = newUser.getUid();
         final Student newStudent = new Student(uId, firstName, lastName, phone, city,
                 email, "", 0, 0, gearType,
@@ -238,7 +237,7 @@ public class StudentRegistrationFragment extends Fragment
             SharedPreferences.Editor editor = sharedPreferences.edit();
             Gson gson = new Gson();
             String json = gson.toJson(student);
-            editor.putString(StudentMainActivity.ARG_STUDENT, json);
+            editor.putString(StudentBaseActivity.ARG_STUDENT, json);
             editor.commit();
             return true;
         }

@@ -21,15 +21,13 @@ public class PositiveNegativeDialog extends BaseDialogFragment {
         void onNegativeClick();
     }
 
+    public void setOnClickListener(OnClickDialogButton onClickListener){
+        callBack = onClickListener;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fragment f = getTargetFragment();
-        if(f instanceof OnClickDialogButton){
-            callBack = (OnClickDialogButton) f;
-        } else {
-            Log.d(TAG, "activity does not implement OnClickDialogButton");
-        }
     }
 
     public PositiveNegativeDialog(){
