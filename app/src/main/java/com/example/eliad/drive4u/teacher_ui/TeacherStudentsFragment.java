@@ -1,8 +1,13 @@
 package com.example.eliad.drive4u.teacher_ui;
 
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.StudentPluralInfoAdapter;
@@ -38,6 +44,7 @@ public class TeacherStudentsFragment extends TeacherBaseFragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private TextView textViewNoStudents;
 
     public TeacherStudentsFragment() {
         // Required empty public constructor
@@ -51,6 +58,7 @@ public class TeacherStudentsFragment extends TeacherBaseFragment {
 
     private void presentStudents(View view) {
         Log.d(TAG, "presentStudents");
+        textViewNoStudents.setVisibility(View.GONE);
         db.collection(getString(R.string.DB_Students))
                 .whereEqualTo("teacherId", mTeacher.getID())
                 .get()
@@ -69,10 +77,10 @@ public class TeacherStudentsFragment extends TeacherBaseFragment {
                                 }
                             }
                             if (students.size() > 0) {
-                                mAdapter = new StudentPluralInfoAdapter(students, mTeacher);
+                                mAdapter = new StudentPluralInfoAdapter(students, mTeacher, getActivity());
                                 mRecyclerView.setAdapter(mAdapter);
                             } else {
-                                //TODO: set textView with message "No students
+                                textViewNoStudents.setVisibility(View.VISIBLE);
                                 Log.d(TAG, "This Teacher has no students");
                             }
                         } else {
@@ -94,6 +102,8 @@ public class TeacherStudentsFragment extends TeacherBaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_teacher_students,
                 container, false);
+
+        textViewNoStudents = view.findViewById(R.id.textView18);
         initializeRecyclerView(view);
         presentStudents(view);
         return view;

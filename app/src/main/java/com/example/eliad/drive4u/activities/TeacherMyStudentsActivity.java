@@ -56,7 +56,7 @@ public class TeacherMyStudentsActivity extends TeacherBaseActivity {
                                 students.addLast(student);
                             }
                             if (students.size() > 0) {
-                                mAdapter = new StudentPluralInfoAdapter(students, mTeacher);
+                                mAdapter = new StudentPluralInfoAdapter(students, mTeacher, TeacherMyStudentsActivity.this);
                                 mRecyclerView.setAdapter(mAdapter);
                             }
                         } else {
