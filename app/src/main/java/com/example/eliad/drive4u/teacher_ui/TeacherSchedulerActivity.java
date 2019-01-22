@@ -45,8 +45,9 @@ import java.util.List;
 
 
 public class TeacherSchedulerActivity extends TeacherBaseActivity
-        implements TeacherChooseStudentLessonAdapter.OnItemClickListener{
+        implements TeacherChooseStudentLessonAdapter.OnItemClickListener {
     private static final String TAG = TeacherSchedulerActivity.class.getSimpleName();
+    public static final String ARG_STUDENT = TAG + ".ARG_STUDENT";
     private RelativeLayout mLayout;
     private RelativeLayout.LayoutParams lParam;
     private ScrollView mScroll;
@@ -58,7 +59,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
     private float yStart;
     private int marginStart;
     private boolean moved = false;
-    String prevStarting="";
+    String prevStarting = "";
     int prevMargin = 0;
     int prevColor;
     TextView prev = null;
@@ -110,6 +111,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
     private String[] freeLessonsSorted;
     private List<String> lessonsTemp;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,16 +157,16 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
 
     }
 
-    private void updateDayView(){
+    private void updateDayView() {
         moved = false;
         canAdd = false;
         oneRequestApprove = false;
         //delete added views
-        for(int i=0;i<addedViews.size();i++){
+        for (int i = 0; i < addedViews.size(); i++) {
             mLayout.removeView(addedViews.get(i));
         }
         resetTags();
-        prevStarting="";
+        prevStarting = "";
         prevMargin = 0;
         prev = null;
         oneRequestApprove = false;
@@ -176,9 +178,9 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
 
     }
 
-    private void setCurrentDay(){
+    private void setCurrentDay() {
         int currentYear = cal.get(Calendar.YEAR);
-        int currentMonth = cal.get(Calendar.MONTH) +1;
+        int currentMonth = cal.get(Calendar.MONTH) + 1;
         int currentDay = cal.get(Calendar.DAY_OF_MONTH);
         date = currentDay + "/" + currentMonth + "/" + currentYear;
         dateSelected.setText(date);
@@ -188,7 +190,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
 
     @SuppressLint("ClickableViewAccessibility")
     public void addNewLesson(View v) {
-        if(!canAdd){
+        if (!canAdd) {
             return;
         }
         //new lesson parameters
@@ -218,14 +220,13 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
         newLessonView.setHeight(newLessonHeight - 2); //saving space between lessons textViews
         newLessonView.setWidth(newLessonWidth);
         newLessonView.setGravity(Gravity.LEFT);
-        newLessonView.setText(startingTime +"-"+ endingTime +", " + "press again for saving");
+        newLessonView.setText(startingTime + "-" + endingTime + ", " + "press again for saving");
         newLessonView.setTextColor(this.getResources().getColor(R.color.colorBlack));
         newLessonView.setTextSize(10);
         newLessonView.setTag("unsaved");
         newLessonView.setBackgroundColor(this.getResources().getColor(R.color.lessonUnsaved));
         newLessonView.setClickable(true);
         mLayout.addView(newLessonView);
-        freeLessons.add(startingTime);
         addedViews.add(newLessonView);
         prev = newLessonView;
         prevStarting = startingTime;
@@ -235,7 +236,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
         newLessonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!moved) {
+                if (!moved) {
                     //entering to update mode
                     final RelativeLayout.LayoutParams lParam = (RelativeLayout.LayoutParams) newLessonView.getLayoutParams();
                     if (!newLessonView.getText().toString().contains(",")) {
@@ -245,7 +246,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                         alertDialog.setMessage(getString(R.string.update_or_delete_message));
                         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.update), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                removeFromTag(findViewById(getRowIdFromMargin(lParam.topMargin)),newLessonView.getText().toString().split("-")[0],newLessonView.getText().toString().split("-")[1]);
+                                removeFromTag(findViewById(getRowIdFromMargin(lParam.topMargin)), newLessonView.getText().toString().split("-")[0], newLessonView.getText().toString().split("-")[1]);
                                 freeLessons.remove(newLessonView.getText().toString().split("-")[0]);
                                 newLessonView.setText(newLessonView.getText() + ", press again for saving");
                                 newLessonView.setTag("update");
@@ -259,12 +260,12 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.delete), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 //delete from database
-                                removeFromTag(findViewById(getRowIdFromMargin(lParam.topMargin)),newLessonView.getText().toString().split("-")[0],newLessonView.getText().toString().split("-")[1]);
+                                removeFromTag(findViewById(getRowIdFromMargin(lParam.topMargin)), newLessonView.getText().toString().split("-")[0], newLessonView.getText().toString().split("-")[1]);
                                 deleteLessonInDB(newLessonView.getText().toString().split("-")[0], "");
                                 freeLessons.remove(newLessonView.getText().toString().split("-")[0]);
                                 mLayout.removeView(newLessonView);
                                 addedViews.remove(newLessonView);
-                                Toast.makeText(TeacherSchedulerActivity.this,R.string.lesson_deleted, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(TeacherSchedulerActivity.this, R.string.lesson_deleted, Toast.LENGTH_SHORT).show();
                             }
                         });
                         alertDialog.show();
@@ -292,7 +293,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                         newLessonView.setBackgroundColor(TeacherSchedulerActivity.this.getResources().getColor(R.color.lessonFree));
                         prev = newLessonView;
                     }
-                }else{
+                } else {
                     moved = false;
                 }
             }
@@ -308,11 +309,11 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
             TextView prevHour;
             //parameters for updating
             int addition;
-            String newStartingHour="", newEndingHour="";
+            String newStartingHour = "", newEndingHour = "";
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(!newLessonView.getText().toString().contains(",")){
+                if (!newLessonView.getText().toString().contains(",")) {
                     return false;
                 }
                 switch (motionEvent.getAction()) {
@@ -331,9 +332,9 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                         break;
                     case MotionEvent.ACTION_MOVE:
                         moved = true;
-                        int prevMargin =  lParam.topMargin;
+                        int prevMargin = lParam.topMargin;
                         yMove = motionEvent.getY();
-                        if(lParam.topMargin+((yMove - yStart) / dpi)>=0 && lParam.topMargin+((yMove - yStart) / dpi)<=1100*dpi) {
+                        if (lParam.topMargin + ((yMove - yStart) / dpi) >= 0 && lParam.topMargin + ((yMove - yStart) / dpi) <= 1100 * dpi) {
                             lParam.topMargin += ((yMove - yStart) / dpi);
                             newLessonView.setLayoutParams(lParam);
                         }
@@ -342,13 +343,13 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                             newStartingHour = calculateTime(starting, addition);
                             newEndingHour = calculateTime(ending, addition);
                             newLessonView.setText(String.format("%s%s%s", newStartingHour, "-", newEndingHour + ", " + "press again for saving"));
-                        }else{
+                        } else {
                             lParam.topMargin = prevMargin;
                         }
                         newLessonView.setLayoutParams(lParam);
                         break;
                     case MotionEvent.ACTION_UP:
-                        if(!starting.equals(newStartingHour) && !newStartingHour.equals("")) {
+                        if (!starting.equals(newStartingHour) && !newStartingHour.equals("")) {
                             //removeFromTag(prevHour, starting, ending);
                             lParam.topMargin = (int) (marginStart + addition * dpi);
                             id = getRowIdFromMargin(lParam.topMargin);
@@ -374,12 +375,11 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
         });
 
 
-
     }
 
 
     @SuppressLint("ClickableViewAccessibility")
-    private void CreateFreeLesson(View v, String startingTime){
+    private void CreateFreeLesson(View v, String startingTime) {
         int lessonLen = mTeacher.getLessonLength();
         int hours = Integer.valueOf(startingTime.split(":")[0]);
         int minutes = Integer.valueOf(startingTime.split(":")[1]);
@@ -398,7 +398,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
         newLessonView.setHeight(newLessonHeight - 2); //saving space between lessons textViews
         newLessonView.setWidth(newLessonWidth);
         newLessonView.setGravity(Gravity.LEFT);
-        newLessonView.setText(startingTime +"-"+ endingTime);
+        newLessonView.setText(startingTime + "-" + endingTime);
         newLessonView.setTextColor(this.getResources().getColor(R.color.colorBlack));
         newLessonView.setTextSize(10);
         newLessonView.setTag("saved");
@@ -415,7 +415,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
         newLessonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!moved) {
+                if (!moved) {
                     //entering to update mode
                     final RelativeLayout.LayoutParams lParam = (RelativeLayout.LayoutParams) newLessonView.getLayoutParams();
                     if (!newLessonView.getText().toString().contains(",")) {
@@ -429,6 +429,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                                 newLessonView.setTag("update");
                                 prev = newLessonView;
                                 prevStarting = newLessonView.getText().toString().split("-")[0];
+                                freeLessons.remove(prevStarting);
                                 prevMargin = lParam.topMargin;
                                 prevColor = R.color.lessonFree;
                                 newLessonView.setBackgroundColor(TeacherSchedulerActivity.this.getResources().getColor(R.color.lessonUnsaved));
@@ -438,12 +439,12 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.delete), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 //delete from database
-                                removeFromTag(findViewById(getRowIdFromMargin(lParam.topMargin)),newLessonView.getText().toString().split("-")[0],newLessonView.getText().toString().split("-")[1]);
+                                removeFromTag(findViewById(getRowIdFromMargin(lParam.topMargin)), newLessonView.getText().toString().split("-")[0], newLessonView.getText().toString().split("-")[1]);
                                 deleteLessonInDB(newLessonView.getText().toString().split("-")[0], "");
                                 mLayout.removeView(newLessonView);
                                 addedViews.remove(newLessonView);
                                 freeLessons.remove(newLessonView.getText().toString().split("-")[0]);
-                                Toast.makeText(TeacherSchedulerActivity.this,R.string.lesson_deleted, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(TeacherSchedulerActivity.this, R.string.lesson_deleted, Toast.LENGTH_SHORT).show();
                             }
                         });
                         alertDialog.show();
@@ -453,16 +454,15 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                         if (newLessonView.getTag().toString().equals("update")) {
                             //update in database
                             updateLessonInDB(prevStarting, time.split("-")[0], "");
-                            freeLessons.remove(prevStarting);
                             freeLessons.add(time.split("-")[0]);
-                            addingToTag(findViewById(getRowIdFromMargin(lParam.topMargin)),time.split("-")[0],time.split("-")[1] );
+                            addingToTag(findViewById(getRowIdFromMargin(lParam.topMargin)), time.split("-")[0], time.split("-")[1]);
                             newLessonView.setText(time);
                             newLessonView.setTag("saved");
                             newLessonView.setBackgroundColor(TeacherSchedulerActivity.this.getResources().getColor(R.color.lessonFree));
                             prev = newLessonView;
                         }
                     }
-                }else{
+                } else {
                     moved = false;
                 }
             }
@@ -478,11 +478,11 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
             TextView prevHour;
             //parameters for updating
             int addition;
-            String newStartingHour="", newEndingHour="";
+            String newStartingHour = "", newEndingHour = "";
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(!newLessonView.getText().toString().contains(",")){
+                if (!newLessonView.getText().toString().contains(",")) {
                     return false;
                 }
                 switch (motionEvent.getAction()) {
@@ -501,9 +501,9 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                         break;
                     case MotionEvent.ACTION_MOVE:
                         moved = true;
-                        int prevMargin =  lParam.topMargin;
+                        int prevMargin = lParam.topMargin;
                         yMove = motionEvent.getY();
-                        if(lParam.topMargin+((yMove - yStart) / dpi)>=0 && lParam.topMargin+((yMove - yStart) / dpi)<=1100*dpi) {
+                        if (lParam.topMargin + ((yMove - yStart) / dpi) >= 0 && lParam.topMargin + ((yMove - yStart) / dpi) <= 1100 * dpi) {
                             lParam.topMargin += ((yMove - yStart) / dpi);
                             newLessonView.setLayoutParams(lParam);
                         }
@@ -512,13 +512,13 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                             newStartingHour = calculateTime(starting, addition);
                             newEndingHour = calculateTime(ending, addition);
                             newLessonView.setText(String.format("%s%s%s", newStartingHour, "-", newEndingHour + ", " + "press again for saving"));
-                        }else{
+                        } else {
                             lParam.topMargin = prevMargin;
                         }
                         newLessonView.setLayoutParams(lParam);
                         break;
                     case MotionEvent.ACTION_UP:
-                        if(!starting.equals(newStartingHour) && !newStartingHour.equals("")) {
+                        if (!starting.equals(newStartingHour) && !newStartingHour.equals("")) {
                             removeFromTag(prevHour, starting, ending);
                             lParam.topMargin = (int) (marginStart + addition * dpi);
                             id = getRowIdFromMargin(lParam.topMargin);
@@ -548,20 +548,20 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
 
     private void handlePreviousView() {
         int lessonLen = mTeacher.getLessonLength();
-        if(prev!=null){
+        if (prev != null) {
             moved = false;
-            if(!prev.getTag().equals("saved")){
-                if(prev.getTag().equals("unsaved")){
+            if (!prev.getTag().equals("saved")) {
+                if (prev.getTag().equals("unsaved")) {
                     final RelativeLayout.LayoutParams lParam = (RelativeLayout.LayoutParams) prev.getLayoutParams();
                     //removeFromTag(findViewById(getRowIdFromMargin(lParam.topMargin)),prev.getText().toString().split("-")[0],prev.getText().toString().split("-")[1]);
                     mLayout.removeView(prev);
                     addedViews.remove(prev);
-                }else{
+                } else {
                     final RelativeLayout.LayoutParams lParam = (RelativeLayout.LayoutParams) prev.getLayoutParams();
                     lParam.topMargin = prevMargin;
                     addingToTag(findViewById(getRowIdFromMargin(prevMargin)), prevStarting, prevStarting);
                     prev.setLayoutParams(lParam);
-                    prev.setText(prevStarting+"-"+calculateTime(prevStarting,lessonLen));
+                    prev.setText(prevStarting + "-" + calculateTime(prevStarting, lessonLen));
                     prev.setBackgroundColor(TeacherSchedulerActivity.this.getResources().getColor(prevColor));
                 }
             }
@@ -569,14 +569,14 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
     }
 
     private void addLessonToDB(String starting) {
-        Lesson lesson = new Lesson(mTeacher.getID(), "", date,starting,
-                "","", Lesson.Status.T_OPTION);
+        Lesson lesson = new Lesson(mTeacher.getID(), "", date, starting,
+                "", "", Lesson.Status.T_OPTION);
         db.collection("lessons").add(lesson).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     String id = task.getResult().getId();
-                    db.collection("lessons").document(id).update("lessonID",id);
+                    db.collection("lessons").document(id).update("lessonID", id);
                     Toast.makeText(TeacherSchedulerActivity.this, getString(R.string.new_lesson_added), Toast.LENGTH_SHORT).show();
                 }
 
@@ -599,6 +599,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                     }
                 });
     }
+
     private void deleteLessonInDB(String startingHour, String studentID) {
         db.collection("lessons").whereEqualTo("date", date).whereEqualTo("hour", startingHour).whereEqualTo("studentUID", studentID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -637,9 +638,9 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
         String Tag = "";
         String newStart, newEnd;
         String[] free;
-        if(row.getTag().toString().equals("")){
+        if (row.getTag().toString().equals("")) {
             free = new String[0];
-        }else{
+        } else {
             free = row.getTag().toString().split(",");
         }
         //check if the lesson split between hours
@@ -715,9 +716,9 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
             String TagNext = "";
             TextView next = (TextView) findViewById(row.getNextFocusDownId());
             String[] freeNext;
-            if(next.getTag().toString().equals("")){
+            if (next.getTag().toString().equals("")) {
                 freeNext = new String[0];
-            }else{
+            } else {
                 freeNext = next.getTag().toString().split(",");
             }
             String endNext = freeNext[0].split("-")[1];
@@ -853,9 +854,9 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                             Tag = Tag + "," + free[i];
                         }
                     }
-                    if(Tag.equals("")){
+                    if (Tag.equals("")) {
                         Tag = free[free.length - 1].split("-")[0] + "-" + baseEndingHour;
-                    }else{
+                    } else {
                         Tag = Tag + "," + free[free.length - 1].split("-")[0] + "-" + baseEndingHour;
                     }
                 } else {
@@ -867,9 +868,9 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                             Tag = Tag + "," + free[i];
                         }
                     }
-                    if(Tag.equals("")){
+                    if (Tag.equals("")) {
                         Tag = starting + "-" + baseEndingHour;
-                    }else{
+                    } else {
                         Tag = Tag + "," + starting + "-" + baseEndingHour;
                     }
 
@@ -908,9 +909,9 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
             String[] free = row.getTag().toString().split(",");
             TextView next = (TextView) findViewById(row.getNextFocusDownId());
             String[] freeNext;
-            if(next.getTag().toString().equals("")){
+            if (next.getTag().toString().equals("")) {
                 freeNext = new String[0];
-            }else{
+            } else {
                 freeNext = next.getTag().toString().split(",");
             }
             for (int i = 0; i < free.length; i++) {
@@ -923,7 +924,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
             }
             if (freeNext.length != 0) {
                 //the next hour must start in the beginning and the previous hour must ends in round hour
-                if(freeNext[0].split("-")[0].split(":")[1].equals("00") && free[free.length - 1].split("-")[1].split(":")[1].equals("00")){
+                if (freeNext[0].split("-")[0].split(":")[1].equals("00") && free[free.length - 1].split("-")[1].split(":")[1].equals("00")) {
                     String start = free[free.length - 1].split("-")[0];
                     String end = freeNext[0].split("-")[1];
                     String checkingEnd = calculateTime(start, len);
@@ -971,9 +972,9 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
         //parameters of current hour
         String Tag = current.getTag().toString();
         String[] free;
-        if(Tag.equals("")){
+        if (Tag.equals("")) {
             free = new String[0];
-        }else{
+        } else {
             free = Tag.split(",");
         }
         //check if the lesson is splitting on two hours
@@ -985,31 +986,31 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                     return true;
                 }
             }
-        }else{
+        } else {
             //parameters of next hour
             TextView next = (TextView) findViewById(current.getNextFocusDownId());
             String TagNext = next.getTag().toString();
             String[] freeNext;
-            if(TagNext.equals("")){
+            if (TagNext.equals("")) {
                 //need to split but the next hour is full
                 return false;
-            }else{
+            } else {
                 freeNext = TagNext.split(",");
             }
-            if(!freeNext[0].split("-")[0].split(":")[1].equals("00") || !free[free.length-1].split("-")[1].split(":")[1].equals("00")){
+            if (!freeNext[0].split("-")[0].split(":")[1].equals("00") || !free[free.length - 1].split("-")[1].split(":")[1].equals("00")) {
                 //the free space in the next hour does not starting from the beginning of the hour or the free
                 //space in the previous hour does not reach to the end of the hour
                 return false;
             }
-            if(isBetweenHours(free[free.length-1].split("-")[0], freeNext[0].split("-")[1], end) &&
-                    isBetweenHours(free[free.length-1].split("-")[0], freeNext[0].split("-")[1], start)){
+            if (isBetweenHours(free[free.length - 1].split("-")[0], freeNext[0].split("-")[1], end) &&
+                    isBetweenHours(free[free.length - 1].split("-")[0], freeNext[0].split("-")[1], start)) {
                 return true;
             }
         }
         return false;
     }
 
-    private void showingSchedulsLessons(){
+    private void showingSchedulsLessons() {
         lessons = new LinkedList<>();
         takenHours = new LinkedList<>();
         freeLessons = new LinkedList<>();
@@ -1020,7 +1021,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Lesson lesson = document.toObject(Lesson.class);
-                        if(lesson.getConformationStatus() == Lesson.Status.S_CANCELED || lesson.getConformationStatus() == Lesson.Status.T_CANCELED){
+                        if (lesson.getConformationStatus() == Lesson.Status.S_CANCELED || lesson.getConformationStatus() == Lesson.Status.T_CANCELED) {
                             continue;
                         }
                         lessons.add(lesson);
@@ -1041,12 +1042,12 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                     }
 
                     //iteration on all the hours that have lessons
-                    for(int j = 0; j < takenHours.size(); j++){
+                    for (int j = 0; j < takenHours.size(); j++) {
                         //create TextView for every hour
                         List<Lesson> lessonsInHour = new LinkedList<>();
-                        for(int i=0; i<lessons.size();i++){
+                        for (int i = 0; i < lessons.size(); i++) {
                             //create a list of lessons in current hour
-                            if(lessons.get(i).getHour().equals(takenHours.get(j))){
+                            if (lessons.get(i).getHour().equals(takenHours.get(j))) {
                                 lessonsInHour.add(lessons.get(i));
                             }
                         }
@@ -1058,37 +1059,36 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
         });
     }
 
-    private void addViewForCurrentHour(String hour, List<Lesson> lessonsInHour){
+    private void addViewForCurrentHour(String hour, List<Lesson> lessonsInHour) {
         //if the lesson in this hour is only an optional lesson
-        if(lessonsInHour.get(0).getConformationStatus() == Lesson.Status.T_OPTION){
+        if (lessonsInHour.get(0).getConformationStatus() == Lesson.Status.T_OPTION) {
             int hours = Integer.valueOf(hour.split(":")[0]);
             int minutes = Integer.valueOf(hour.split(":")[1]);
-            int margin = (int)(((hours-5)*60 + minutes)*dpi);
-            CreateFreeLesson(findViewById(getRowIdFromMargin(margin)),hour);
+            int margin = (int) (((hours - 5) * 60 + minutes) * dpi);
+            CreateFreeLesson(findViewById(getRowIdFromMargin(margin)), hour);
         }
         //if the lesson in this hour had approve
-        if(lessonsInHour.get(0).getConformationStatus() == Lesson.Status.T_CONFIRMED){
+        if (lessonsInHour.get(0).getConformationStatus() == Lesson.Status.T_CONFIRMED) {
             int hours = Integer.valueOf(hour.split(":")[0]);
             int minutes = Integer.valueOf(hour.split(":")[1]);
-            int margin = (int)(((hours-5)*60 + minutes)*dpi);
-            CreateApproveLesson(findViewById(getRowIdFromMargin(margin)),hour, lessonsInHour.get(0));
+            int margin = (int) (((hours - 5) * 60 + minutes) * dpi);
+            CreateApproveLesson(findViewById(getRowIdFromMargin(margin)), hour, lessonsInHour.get(0));
         }
         //if this hour has requests
-        if(lessonsInHour.get(0).getConformationStatus() == Lesson.Status.T_UPDATE ||
+        if (lessonsInHour.get(0).getConformationStatus() == Lesson.Status.T_UPDATE ||
                 lessonsInHour.get(0).getConformationStatus() == Lesson.Status.S_CONFIRMED ||
-                lessonsInHour.get(0).getConformationStatus() == Lesson.Status.S_REQUEST||
-                lessonsInHour.get(0).getConformationStatus() == Lesson.Status.S_UPDATE){
+                lessonsInHour.get(0).getConformationStatus() == Lesson.Status.S_REQUEST ||
+                lessonsInHour.get(0).getConformationStatus() == Lesson.Status.S_UPDATE) {
             int hours = Integer.valueOf(hour.split(":")[0]);
             int minutes = Integer.valueOf(hour.split(":")[1]);
-            int margin = (int)(((hours-5)*60 + minutes)*dpi);
-            CreateRequestsView(findViewById(getRowIdFromMargin(margin)),hour,lessonsInHour);
+            int margin = (int) (((hours - 5) * 60 + minutes) * dpi);
+            CreateRequestsView(findViewById(getRowIdFromMargin(margin)), hour, lessonsInHour);
         }
 
     }
 
 
-
-    private void CreateApproveLesson(View v, String startingTime, final Lesson lesson){
+    private void CreateApproveLesson(View v, String startingTime, final Lesson lesson) {
         int lessonLen = mTeacher.getLessonLength();
         int hours = Integer.valueOf(startingTime.split(":")[0]);
         int minutes = Integer.valueOf(startingTime.split(":")[1]);
@@ -1107,7 +1107,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
         newLessonView.setHeight(newLessonHeight - 2); //saving space between lessons textViews
         newLessonView.setWidth(newLessonWidth);
         newLessonView.setGravity(Gravity.LEFT);
-        newLessonView.setText(startingTime +"-"+ endingTime);
+        newLessonView.setText(startingTime + "-" + endingTime);
         newLessonView.setTextColor(this.getResources().getColor(R.color.colorBlack));
         newLessonView.setTextSize(10);
         newLessonView.setTag("saved");
@@ -1160,7 +1160,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                             mLayout.removeView(newLessonView);
                             addedViews.remove(newLessonView);
                             Lesson l = db.collection("lessons").document(lesson.getLessonID()).get().getResult().toObject(Lesson.class);
-                            if(l!=null){
+                            if (l != null) {
                                 List<Lesson> list = new LinkedList<>();
                                 list.add(l);
                                 CreateRequestsView(findViewById(getRowIdFromMargin(lParam.topMargin)), l.getHour(), list);
@@ -1171,7 +1171,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
 
                     }
 
-                }else{
+                } else {
                     moved = false;
                 }
             }
@@ -1187,11 +1187,11 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
             TextView prevHour;
             //parameters for updating
             int addition;
-            String newStartingHour="", newEndingHour="";
+            String newStartingHour = "", newEndingHour = "";
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(!newLessonView.getText().toString().contains(",")){
+                if (!newLessonView.getText().toString().contains(",")) {
                     return false;
                 }
                 switch (motionEvent.getAction()) {
@@ -1210,9 +1210,9 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                         break;
                     case MotionEvent.ACTION_MOVE:
                         moved = true;
-                        int prevMargin =  lParam.topMargin;
+                        int prevMargin = lParam.topMargin;
                         yMove = motionEvent.getY();
-                        if(lParam.topMargin+((yMove - yStart) / dpi)>=0 && lParam.topMargin+((yMove - yStart) / dpi)<=1100*dpi) {
+                        if (lParam.topMargin + ((yMove - yStart) / dpi) >= 0 && lParam.topMargin + ((yMove - yStart) / dpi) <= 1100 * dpi) {
                             lParam.topMargin += ((yMove - yStart) / dpi);
                             newLessonView.setLayoutParams(lParam);
                         }
@@ -1221,13 +1221,13 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                             newStartingHour = calculateTime(starting, addition);
                             newEndingHour = calculateTime(ending, addition);
                             newLessonView.setText(String.format("%s%s%s", newStartingHour, "-", newEndingHour + ", " + "press again for saving"));
-                        }else{
+                        } else {
                             lParam.topMargin = prevMargin;
                         }
                         newLessonView.setLayoutParams(lParam);
                         break;
                     case MotionEvent.ACTION_UP:
-                        if(!starting.equals(newStartingHour) && !newStartingHour.equals("")) {
+                        if (!starting.equals(newStartingHour) && !newStartingHour.equals("")) {
                             //removeFromTag(prevHour, starting, ending);
                             lParam.topMargin = (int) (marginStart + addition * dpi);
                             id = getRowIdFromMargin(lParam.topMargin);
@@ -1254,8 +1254,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
     }
 
 
-
-    private void CreateRequestsView(View v, String startingTime, final List<Lesson> lessonsList){
+    private void CreateRequestsView(View v, String startingTime, final List<Lesson> lessonsList) {
         final int lessonLen = mTeacher.getLessonLength();
         int hours = Integer.valueOf(startingTime.split(":")[0]);
         int minutes = Integer.valueOf(startingTime.split(":")[1]);
@@ -1274,7 +1273,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
         newLessonView.setHeight(newLessonHeight - 2); //saving space between lessons textViews
         newLessonView.setWidth(newLessonWidth);
         newLessonView.setGravity(Gravity.LEFT);
-        newLessonView.setText(startingTime +"-"+ endingTime);
+        newLessonView.setText(startingTime + "-" + endingTime);
         newLessonView.setTextColor(this.getResources().getColor(R.color.colorBlack));
         newLessonView.setTextSize(10);
         newLessonView.setTag("saved");
@@ -1313,7 +1312,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.delete), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 //delete from database
-                                for(int i=0; i<lessonsList.size();i++){
+                                for (int i = 0; i < lessonsList.size(); i++) {
                                     updateLessonStatusInDB(lessonsList.get(i), Lesson.Status.T_CANCELED);
                                 }
                                 removeFromTag(findViewById(getRowIdFromMargin(lParam.topMargin)), newLessonView.getText().toString().split("-")[0], newLessonView.getText().toString().split("-")[1]);
@@ -1337,8 +1336,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                                 finishButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-
-                                        closingStudentsRequestsDialog(updatedLessons);
+                                        closingStudentsRequestsDialog(updatedLessons, date, newLessonView.getText().toString().split("-")[0]);
                                     }
                                 });
 
@@ -1349,14 +1347,15 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                                 initializerequestsRecyclerView();
                                 studentsRequests.show();
                                 studentsRequests.setOnKeyListener(new DialogInterface.OnKeyListener() {
-                                                                      @Override
-                                                                      public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
-                                                                          if (i == KeyEvent.KEYCODE_BACK) {}
-                                                                          return false;
-                                                                      }
-                                                                  });
+                                    @Override
+                                    public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
+                                        if (i == KeyEvent.KEYCODE_BACK) {
+                                        }
+                                        return false;
+                                    }
+                                });
 
-                                        requestsAdapter = new TeacherChooseStudentLessonAdapter(TeacherSchedulerActivity.this, lessonsList);
+                                requestsAdapter = new TeacherChooseStudentLessonAdapter(TeacherSchedulerActivity.this, lessonsList);
                                 ((TeacherChooseStudentLessonAdapter) requestsAdapter)
                                         .setOnItemClickListener(TeacherSchedulerActivity.this);
                                 requestsRecyclerView.setAdapter(requestsAdapter);
@@ -1367,8 +1366,8 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                     } else {
                         String time = newLessonView.getText().toString().split(", ")[0];
                         if (newLessonView.getTag().toString().equals("update")) {
-                            for(Lesson l:lessonsList){
-                                updateLessonInDB(prevStarting, time.split("-")[0],l.getStudentUID());
+                            for (Lesson l : lessonsList) {
+                                updateLessonInDB(prevStarting, time.split("-")[0], l.getStudentUID());
                                 l.setHour(time.split("-")[0]);
                                 updateLessonStatusInDB(l, Lesson.Status.T_UPDATE);
                                 l.setConformationStatus(Lesson.Status.T_UPDATE);
@@ -1383,7 +1382,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
 
                     }
 
-                }else{
+                } else {
                     moved = false;
                 }
             }
@@ -1399,11 +1398,11 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
             TextView prevHour;
             //parameters for updating
             int addition;
-            String newStartingHour="", newEndingHour="";
+            String newStartingHour = "", newEndingHour = "";
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(!newLessonView.getText().toString().contains(",")){
+                if (!newLessonView.getText().toString().contains(",")) {
                     return false;
                 }
                 switch (motionEvent.getAction()) {
@@ -1422,9 +1421,9 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                         break;
                     case MotionEvent.ACTION_MOVE:
                         moved = true;
-                        int prevMargin =  lParam.topMargin;
+                        int prevMargin = lParam.topMargin;
                         yMove = motionEvent.getY();
-                        if(lParam.topMargin+((yMove - yStart) / dpi)>=0 && lParam.topMargin+((yMove - yStart) / dpi)<=1100*dpi) {
+                        if (lParam.topMargin + ((yMove - yStart) / dpi) >= 0 && lParam.topMargin + ((yMove - yStart) / dpi) <= 1100 * dpi) {
                             lParam.topMargin += ((yMove - yStart) / dpi);
                             newLessonView.setLayoutParams(lParam);
                         }
@@ -1433,13 +1432,13 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                             newStartingHour = calculateTime(starting, addition);
                             newEndingHour = calculateTime(ending, addition);
                             newLessonView.setText(String.format("%s%s%s", newStartingHour, "-", newEndingHour + ", " + "press again for saving"));
-                        }else{
+                        } else {
                             lParam.topMargin = prevMargin;
                         }
                         newLessonView.setLayoutParams(lParam);
                         break;
                     case MotionEvent.ACTION_UP:
-                        if(!starting.equals(newStartingHour) && !newStartingHour.equals("")) {
+                        if (!starting.equals(newStartingHour) && !newStartingHour.equals("")) {
                             //removeFromTag(prevHour, starting, ending);
                             lParam.topMargin = (int) (marginStart + addition * dpi);
                             id = getRowIdFromMargin(lParam.topMargin);
@@ -1466,65 +1465,66 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
     }
 
 
-    private int getRowIdFromMargin(int margin){
-        margin = (int)(margin/dpi);
-        if(margin>=0 && margin<60){
+    private int getRowIdFromMargin(int margin) {
+        margin = (int) (margin / dpi);
+        if (margin >= 0 && margin < 60) {
             return R.id.time_5;
         }
-        if(margin>=60 && margin<120){
+        if (margin >= 60 && margin < 120) {
             return R.id.time_6;
         }
-        if(margin>=120 && margin<180){
+        if (margin >= 120 && margin < 180) {
             return R.id.time_7;
         }
-        if(margin>=180 && margin<240){
+        if (margin >= 180 && margin < 240) {
             return R.id.time_8;
         }
-        if(margin>=240 && margin<300){
+        if (margin >= 240 && margin < 300) {
             return R.id.time_9;
         }
-        if(margin>=300 && margin<360){
+        if (margin >= 300 && margin < 360) {
             return R.id.time_10;
         }
-        if(margin>=360 && margin<420){
+        if (margin >= 360 && margin < 420) {
             return R.id.time_11;
         }
-        if(margin>=420 && margin<480){
+        if (margin >= 420 && margin < 480) {
             return R.id.time_12;
         }
-        if(margin>=480 && margin<540){
+        if (margin >= 480 && margin < 540) {
             return R.id.time_13;
         }
-        if(margin>=540 && margin<600){
+        if (margin >= 540 && margin < 600) {
             return R.id.time_14;
         }
-        if(margin>=600 && margin<660){
+        if (margin >= 600 && margin < 660) {
             return R.id.time_15;
         }
-        if(margin>=660 && margin<720){
+        if (margin >= 660 && margin < 720) {
             return R.id.time_16;
         }
-        if(margin>=720 && margin<780){
+        if (margin >= 720 && margin < 780) {
             return R.id.time_17;
         }
-        if(margin>=780 && margin<840){
+        if (margin >= 780 && margin < 840) {
             return R.id.time_18;
         }
-        if(margin>=840 && margin<900){
+        if (margin >= 840 && margin < 900) {
             return R.id.time_19;
         }
-        if(margin>=900 && margin<960){
+        if (margin >= 900 && margin < 960) {
             return R.id.time_20;
         }
-        if(margin>=960 && margin<1020){
+        if (margin >= 960 && margin < 1020) {
             return R.id.time_21;
         }
-        if(margin>=1020 && margin<1080){
+        if (margin >= 1020 && margin < 1080) {
             return R.id.time_22;
         }
         return R.id.time_23;
     }
-    private void resetTags(){
+
+    private void resetTags() {
         findViewById(R.id.time_5).setTag("5:00-6:00");
         findViewById(R.id.time_6).setTag("6:00-7:00");
         findViewById(R.id.time_7).setTag("7:00-8:00");
@@ -1545,6 +1545,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
         findViewById(R.id.time_22).setTag("2200-23:00");
         findViewById(R.id.time_23).setTag("23:00-24:00");
     }
+
     private void initializerequestsRecyclerView() {
         requestsRecyclerView = (RecyclerView) studentsRequests.findViewById(R.id.hours_list_requests_dialog);
         requestsRecyclerView.setHasFixedSize(true);
@@ -1554,31 +1555,34 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
     }
 
     @Override
-    public void onItemClickRequestsList(List<Lesson>lessonsList, final int position) {
+    public void onItemClickRequestsList(List<Lesson> lessonsList, final int position) {
         updateLesson = lessonsList.get(position);
+        updatedLessons.remove(updateLesson);
         AlertDialog alertDialog = new AlertDialog.Builder(TeacherSchedulerActivity.this).create();
         alertDialog.setTitle(getString(R.string.alert_dialog_request_lesson_title));
         alertDialog.setMessage(getString(R.string.alert_dialog_request_lesson_message));
-        if(updateLesson.getConformationStatus() != Lesson.Status.T_CONFIRMED) {
+        if (updateLesson.getConformationStatus() != Lesson.Status.T_CONFIRMED) {
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.confirm_lesson), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     if (oneRequestApprove) {
                         Toast.makeText(getApplicationContext(), getString(R.string.cant_approve_more_than_one_request), Toast.LENGTH_SHORT).show();
-                    }else{
-                        if(updateLesson.getConformationStatus() == Lesson.Status.T_UPDATE){
-                            Toast.makeText(getApplicationContext(),getString(R.string.wait_for_student_response), Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (updateLesson.getConformationStatus() == Lesson.Status.T_UPDATE) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.wait_for_student_response), Toast.LENGTH_SHORT).show();
                         } else {
                             updateStatus = Lesson.Status.T_CONFIRMED;
                             oneRequestApprove = true;
                             requestsRecyclerView.findViewHolderForLayoutPosition(position).itemView.setBackgroundColor(Color.GREEN);
                             updateLessonStatusInDB(updateLesson, updateStatus);
+                            updateLesson.setConformationStatus(updateStatus);
+                            updatedLessons.add(updateLesson);
                             Toast.makeText(getApplicationContext(), getString(R.string.lesson_confirmed), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
             });
         }
-        if(updateLesson.getConformationStatus() != Lesson.Status.T_CANCELED) {
+        if (updateLesson.getConformationStatus() != Lesson.Status.T_CANCELED) {
             alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.reject_lesson), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     if (updateLesson.getConformationStatus() == Lesson.Status.T_CONFIRMED) {
@@ -1587,6 +1591,8 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                     updateStatus = Lesson.Status.T_CANCELED;
                     requestsRecyclerView.findViewHolderForLayoutPosition(position).itemView.setBackgroundColor(Color.RED);
                     updateLessonStatusInDB(updateLesson, updateStatus);
+                    updateLesson.setConformationStatus(updateStatus);
+                    updatedLessons.add(updateLesson);
                     Toast.makeText(getApplicationContext(), getString(R.string.lesson_reject), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -1596,12 +1602,13 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
 
     }
 
-    private void closingStudentsRequestsDialog(List<Lesson> lessonsList){
-        if(oneRequestApprove){
-            for(Lesson l: lessonsList){
-                if(l.getConformationStatus() == Lesson.Status.S_REQUEST || l.getConformationStatus() == Lesson.Status.S_UPDATE ||
-                        l.getConformationStatus() == Lesson.Status.S_CONFIRMED || l.getConformationStatus() == Lesson.Status.T_UPDATE ){
-                    Toast.makeText(TeacherSchedulerActivity.this,getString(R.string.need_to_delete_or_update), Toast.LENGTH_SHORT).show();
+    private void closingStudentsRequestsDialog(List<Lesson> lessonsList, String currDate, String currTime) {
+        if (oneRequestApprove) {
+            for (Lesson l : lessonsList) {
+                if (l.getConformationStatus() == Lesson.Status.S_REQUEST || l.getConformationStatus() == Lesson.Status.S_UPDATE ||
+                        l.getConformationStatus() == Lesson.Status.S_CONFIRMED ||
+                        (l.getConformationStatus() == Lesson.Status.T_UPDATE && l.getHour().equals(currTime) && l.getDate().equals(currDate))) {
+                    Toast.makeText(TeacherSchedulerActivity.this, getString(R.string.need_to_delete_or_update), Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
@@ -1625,8 +1632,8 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
         datePicker = (Button) updateRequests.findViewById(R.id.date_picker);
 
         spinner = updateRequests.findViewById(R.id.hoursSpinner);
-        if(freeLessons!=null){
-            freeLessonsSorted = new String[freeLessons.size()+1];
+        if (freeLessons != null) {
+            freeLessonsSorted = new String[freeLessons.size() + 1];
             freeLessonsSorted[0] = updateLesson.getHour();
             lessonsTemp = new LinkedList<>();
             lessonsTemp.addAll(freeLessons);
@@ -1641,7 +1648,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                 lessonsTemp.remove(min);
                 freeLessonsSorted[i + 1] = min;
             }
-        }else{
+        } else {
             freeLessonsSorted = new String[1];
             freeLessonsSorted[0] = updateLesson.getHour();
         }
@@ -1707,25 +1714,24 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                                 if (lesson.getConformationStatus() == Lesson.Status.S_CANCELED || lesson.getConformationStatus() == Lesson.Status.T_CANCELED) {
                                     toRemove.add(lesson);
                                 }
-                                if(lesson.getConformationStatus() == Lesson.Status.T_OPTION){
+                                if (lesson.getConformationStatus() == Lesson.Status.T_OPTION) {
                                     freeLessonsInDate.add(lesson.getHour());
                                 }
                             }
 
-                            for(Lesson l:toRemove){
-                                if(freeLessonsInDate.contains(l.getHour())){
+                            for (Lesson l : toRemove) {
+                                if (freeLessonsInDate.contains(l.getHour())) {
                                     freeLessonsInDate.remove(l.getHour());
                                 }
                             }
 
                         }
-                    }
-                });
 
-                if(updateDate.equals(date)){
+
+                if (updateDate.equals(date)) {
                     freeLessonsSortedInDate = freeLessonsSorted;
-                }else{
-                    if(freeLessonsInDate !=null) {
+                } else {
+                    if (freeLessonsInDate != null) {
                         freeLessonsSortedInDate = new String[freeLessonsInDate.size()];
                         lessonsTemp = new LinkedList<>();
                         lessonsTemp.addAll(freeLessonsInDate);
@@ -1740,7 +1746,7 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                             lessonsTemp.remove(min);
                             freeLessonsSortedInDate[i] = min;
                         }
-                    }else{
+                    } else {
                         freeLessonsSortedInDate = new String[0];
                     }
                 }
@@ -1749,6 +1755,8 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
                         android.R.layout.simple_spinner_item, freeLessonsSortedInDate);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(adapter);
+                    }
+                });
             }
         };
 
@@ -1768,21 +1776,50 @@ public class TeacherSchedulerActivity extends TeacherBaseActivity
 
                         newHour = spinner.getSelectedItem().toString();
                         newDate = dateUpdateDialog.getText().toString();
-                        db.collection("lessons").document(updateLesson.getLessonID()).delete();
-                        updateLesson.setHour(newHour);
-                        updateLesson.setDate(newDate);
-                        updateLesson.setConformationStatus(Lesson.Status.T_UPDATE);
-                        db.collection("lessons").add(updateLesson);
+                        db.collection("lessons").document(updateLesson.getLessonID()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                updateLesson.setHour(newHour);
+                                updateLesson.setDate(newDate);
+                                updateLesson.setConformationStatus(Lesson.Status.T_UPDATE);
+                                db.collection("lessons").whereEqualTo("date", newDate).whereEqualTo("hour", newHour)
+                                        .whereEqualTo("teacherUID", mTeacher.getID()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            String id = "";
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                id = document.getId();
+                                            }
+                                            db.collection("lessons").document(id).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    db.collection("lessons").add(updateLesson).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                            updatedLessons.add(updateLesson);
+                                                            requestsRecyclerView.findViewHolderForLayoutPosition(position).itemView.setBackgroundColor(Color.YELLOW);
+                                                            updateRequests.hide();
+                                                        }
+                                                    });
+                                                }
+                                            });
 
-                        updatedLessons.add(updateLesson);
-                        requestsRecyclerView.findViewHolderForLayoutPosition(position).itemView.setBackgroundColor(Color.YELLOW);
-                        updateRequests.hide();
+
+                                        }
+                                    }
+                                });
+
+                            }
+
+                        });
                     }
                 }
             }
-
         });
     }
+
+
 
     private boolean hourLowerThan(String hour1, String hour2){
         //return true if hour1 is before hour2
