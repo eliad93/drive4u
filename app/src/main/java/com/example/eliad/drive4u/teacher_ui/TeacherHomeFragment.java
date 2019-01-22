@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.ViewPagerAdapter;
+import com.example.eliad.drive4u.fragments.UserNotificationsFragment;
 
 public class TeacherHomeFragment extends TeacherBaseFragment  {
 
@@ -37,8 +38,10 @@ public class TeacherHomeFragment extends TeacherBaseFragment  {
                 msg = "notifications selected";
                 break;
         }
-        Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+//        Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+        Log.d(TAG, msg);
     }
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -71,7 +74,7 @@ public class TeacherHomeFragment extends TeacherBaseFragment  {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPagerAdapter.addFragment(TeacherSummaryFragment.newInstance());
         viewPagerAdapter.addFragment(TeacherDashboardFragment.newInstance());
-        viewPagerAdapter.addFragment(TeacherSummaryFragment.newInstance());
+        viewPagerAdapter.addFragment(UserNotificationsFragment.newInstance(mTeacher));
         mViewPager.setAdapter(viewPagerAdapter);
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

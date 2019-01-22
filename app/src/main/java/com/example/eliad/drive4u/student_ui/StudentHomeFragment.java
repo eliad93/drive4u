@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.ViewPagerAdapter;
+import com.example.eliad.drive4u.fragments.UserNotificationsFragment;
 
 import org.jetbrains.annotations.Contract;
 
@@ -47,7 +49,8 @@ public class StudentHomeFragment extends StudentBaseFragment {
                 msg = "notifications selected";
                 break;
         }
-        Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+//        Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+        Log.d(TAG, msg);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -87,7 +90,7 @@ public class StudentHomeFragment extends StudentBaseFragment {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPagerAdapter.addFragment(StudentSummaryFragment.newInstance());
         viewPagerAdapter.addFragment(StudentDashboardFragment.newInstance());
-        viewPagerAdapter.addFragment(StudentSummaryFragment.newInstance());
+        viewPagerAdapter.addFragment(UserNotificationsFragment.newInstance(mStudent));
         mViewPager.setAdapter(viewPagerAdapter);
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
