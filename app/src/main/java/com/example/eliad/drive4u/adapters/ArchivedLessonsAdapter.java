@@ -16,7 +16,7 @@ import com.example.eliad.drive4u.models.Lesson;
 
 import java.util.List;
 
-public class StudentPastLessonsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ArchivedLessonsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     // Tag for the Log
     private final static String TAG = TeacherSearchAdapter.class.getName();
     private Context mContext;
@@ -33,8 +33,8 @@ public class StudentPastLessonsAdapter extends RecyclerView.Adapter<RecyclerView
         mListener = listener;
     }
 
-    public StudentPastLessonsAdapter(List<Lesson> items, Context context){
-        Log.d(TAG, "in StudentPastLessonsAdapter");
+    public ArchivedLessonsAdapter(List<Lesson> items, Context context){
+        Log.d(TAG, "in ArchivedLessonsAdapter");
         lessons = items;
         mContext = context;
     }

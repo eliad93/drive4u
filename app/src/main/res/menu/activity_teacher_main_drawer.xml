@@ -21,6 +21,10 @@
             android:icon="@mipmap/ic_new_user_foreground"
             android:title="@string/connection_requests" />
         <item
+            android:id="@+id/teacher_nav_lessons_archive"
+            android:icon="@mipmap/ic_user_foreground"
+            android:title="@string/lessons_archive" />
+        <item
             android:id="@+id/teacher_nav_profile"
             android:icon="@mipmap/ic_user_foreground"
             android:title="@string/profile" />

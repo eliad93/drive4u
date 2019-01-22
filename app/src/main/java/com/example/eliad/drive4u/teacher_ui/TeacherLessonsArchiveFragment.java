@@ -1,4 +1,4 @@
-package com.example.eliad.drive4u.student_ui;
+package com.example.eliad.drive4u.teacher_ui;
 
 
 import android.app.Activity;
@@ -19,10 +19,8 @@ import android.widget.TextView;
 
 import com.example.eliad.drive4u.R;
 import com.example.eliad.drive4u.adapters.ArchivedLessonsAdapter;
-import com.example.eliad.drive4u.built_in_utils.BorderLineDividerItemDecoration;
-import com.example.eliad.drive4u.fragments.StudentArchiveLessonSummaryFragment;
 import com.example.eliad.drive4u.models.Lesson;
-import com.example.eliad.drive4u.models.Student;
+import com.example.eliad.drive4u.student_ui.StudentLessonsArchiveFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -30,11 +28,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.LinkedList;
 
-public class StudentLessonsArchiveFragment extends StudentBaseFragment
-        implements ArchivedLessonsAdapter.StudentPastLessonsItemClickListener,
-        StudentArchiveLessonSummaryFragment.StudentLessonSummaryFragmentListener {
+public class TeacherLessonsArchiveFragment extends TeacherBaseFragment
+        implements ArchivedLessonsAdapter.StudentPastLessonsItemClickListener {
     // Tag for the Log
-    private static final String TAG = StudentLessonsArchiveFragment.class.getName();
+    private static final String TAG = TeacherLessonsArchiveFragment.class.getName();
     // arguments
     private static final double LESSON_FRAGMENT_WIDTH_PERCENT = 0.8;
     private static final double LESSON_FRAGMENT_HEIGHT_PERCENT = 0.8;
@@ -48,11 +45,12 @@ public class StudentLessonsArchiveFragment extends StudentBaseFragment
     // widgets
     private TextView noLessonsMsg;
 
-    public StudentLessonsArchiveFragment() {
+    public TeacherLessonsArchiveFragment() {
         // Required empty public constructor
     }
-    public static StudentLessonsArchiveFragment newInstance(Student student) {
-        return new StudentLessonsArchiveFragment();
+
+    public static TeacherLessonsArchiveFragment newInstance() {
+        return new TeacherLessonsArchiveFragment();
     }
 
     @Override
@@ -64,12 +62,11 @@ public class StudentLessonsArchiveFragment extends StudentBaseFragment
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.lessons_archive,
-                container, false);
+        View view = inflater.inflate(R.layout.lessons_archive, container, false);
         initWidgets(view);
         initFragmentObjects();
         initRecyclerView(view);
-        presentAllStudentPastLessons();
+        presentAllTeacherPastLessons();
         return view;
     }
 
@@ -90,10 +87,10 @@ public class StudentLessonsArchiveFragment extends StudentBaseFragment
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
-    private void presentAllStudentPastLessons() {
+    private void presentAllTeacherPastLessons() {
         Log.d(TAG, "in presentAllStudentPastLessons");
         db.collection("lessons")
-                .whereEqualTo("studentUID", mStudent.getID())
+                .whereEqualTo("teacherUID", mTeacher.getID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -113,7 +110,7 @@ public class StudentLessonsArchiveFragment extends StudentBaseFragment
                             } else {
                                 mAdapter = new ArchivedLessonsAdapter(lessons, getContext());
                                 ((ArchivedLessonsAdapter) mAdapter)
-                                        .setOnItemClickListener(StudentLessonsArchiveFragment.this);
+                                        .setOnItemClickListener(TeacherLessonsArchiveFragment.this);
                                 mRecyclerView.setAdapter(mAdapter);
                             }
                         } else {
@@ -126,11 +123,9 @@ public class StudentLessonsArchiveFragment extends StudentBaseFragment
     @Override
     public void onItemClick(int position) {
         Lesson lesson = lessons.get(position);
-        Fragment lessonSummaryFragment = StudentArchiveLessonSummaryFragment.newInstance();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.frameStudentLessonsArchive,
-                lessonSummaryFragment, "Fragment");
-        fragmentTransaction.addToBackStack("Fragment")
+        Fragment lessonSummaryFragment = TeacherLessonsArchiveFragment.newInstance();
+        fragmentManager.beginTransaction().add(R.id.frameStudentLessonsArchive,
+                lessonSummaryFragment, "Fragment").addToBackStack("Fragment")
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
         fragmentManager.executePendingTransactions();
@@ -159,8 +154,5 @@ public class StudentLessonsArchiveFragment extends StudentBaseFragment
             params.width = width;
             params.height = height;
         }
-    }
-    @Override
-    public void onFragmentInteraction(Lesson lesson) {
     }
 }

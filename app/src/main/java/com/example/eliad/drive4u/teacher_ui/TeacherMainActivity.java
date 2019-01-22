@@ -166,13 +166,13 @@ public class TeacherMainActivity extends TeacherBaseActivity
                 isAtHome = false;
                 break;
 
-            case R.id.teacher_nav_profile:
-                fragment = TeacherProfileFragment.newInstance(mTeacher);
+            case R.id.teacher_nav_connection_requests:
+                fragment =  TeacherConnectionRequestsFragment.newInstance();
                 isAtHome = false;
                 break;
 
-            case R.id.teacher_nav_connection_requests:
-                fragment =  TeacherConnectionRequestsFragment.newInstance();
+            case R.id.teacher_nav_profile:
+                fragment = TeacherProfileFragment.newInstance(mTeacher);
                 isAtHome = false;
                 break;
 

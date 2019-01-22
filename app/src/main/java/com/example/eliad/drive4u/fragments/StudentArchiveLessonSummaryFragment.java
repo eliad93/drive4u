@@ -23,8 +23,6 @@ public class StudentArchiveLessonSummaryFragment extends Fragment {
     private DocumentReference lessonDoc;
     // widgets
     private Button buttonClose;
-    // models
-    private Lesson lesson;
 
     private StudentLessonSummaryFragmentListener mListener;
 
@@ -32,11 +30,9 @@ public class StudentArchiveLessonSummaryFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static StudentArchiveLessonSummaryFragment newInstance(Lesson lesson) {
+    public static StudentArchiveLessonSummaryFragment newInstance() {
         Log.d(TAG,"in StudentArchiveLessonSummaryFragment");
-        StudentArchiveLessonSummaryFragment fragment = new StudentArchiveLessonSummaryFragment();
-        fragment.lesson = lesson;
-        return fragment;
+        return new StudentArchiveLessonSummaryFragment();
     }
 
     @Override

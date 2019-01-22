@@ -173,7 +173,7 @@
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
     android:gravity="center"
-    android:text="@string/no_teachers_found"
+    android:text="@string/you_had_no_lessons_yet"
     android:textSize="32sp" />
 
 <FrameLayout
