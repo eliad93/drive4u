@@ -1,6 +1,7 @@
 package com.base.eliad.drive4u.activities.student_activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -163,6 +164,10 @@ public class StudentSearchTeacherActivity extends StudentBaseActivity implements
     public void onItemClick(int position) {
         Log.d(TAG, "in onItemClick");
         currentTeacher = presentedTeachers.get(position);
-        // todo: START student choose teacher activity
+        Intent intent = new Intent(this, StudentChooseTeacherActivity.class);
+        Bundle args = new Bundle();
+        args.putParcelable(StudentChooseTeacherActivity.ARG_TEACHER, currentTeacher);
+        intent.putExtras(args);
+        startActivity(intent);
     }
 }

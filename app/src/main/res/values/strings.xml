@@ -260,5 +260,6 @@
     <string name="decline">Decline</string>
     <string name="enter_value">Enter value</string>
     <string name="no_notifications_msg">You have no notifications to show</string>
+    <string name="choose_teacher">choose teacher</string>
 
 </resources>

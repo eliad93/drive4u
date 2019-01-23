@@ -76,6 +76,7 @@ abstract public class StudentBaseActivity extends AppCompatActivity {
         getStudentFromSharedPreferences();
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     protected Boolean getStudentFromSharedPreferences() {
         Gson gson = new Gson();
         String json = sharedPreferences.getString(StudentMainActivity.ARG_STUDENT, "");
@@ -87,12 +88,27 @@ abstract public class StudentBaseActivity extends AppCompatActivity {
     }
 
     @SuppressLint("ApplySharedPref")
+    @SuppressWarnings("UnusedReturnValue")
     protected Boolean writeStudentToSharedPreferences() {
         if(mStudent != null){
             SharedPreferences.Editor editor = sharedPreferences.edit();
             Gson gson = new Gson();
             String json = gson.toJson(mStudent);
             editor.putString(StudentMainActivity.ARG_STUDENT, json);
+            editor.commit();
+            return true;
+        }
+        return false;
+    }
+
+    @SuppressLint("ApplySharedPref")
+    @SuppressWarnings("UnusedReturnValue")
+    protected Boolean writeStudentTeacherToSharedPreferences(Teacher teacher) {
+        if(teacher != null){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(teacher);
+            editor.putString(StudentBaseActivity.ARG_STUDENT, json);
             editor.commit();
             return true;
         }
@@ -130,7 +146,8 @@ abstract public class StudentBaseActivity extends AppCompatActivity {
 
     protected void setStudentImage(CircleImageView drawerImage){
         if(mStudent != null){
-            if (mStudent.getImageUrl() == null || mStudent.getImageUrl().equals(User.DEFAULT_IMAGE_KEY)) {
+            if (mStudent.getImageUrl() == null ||
+                    mStudent.getImageUrl().equals(User.DEFAULT_IMAGE_KEY)) {
                 drawerImage.setImageResource(R.mipmap.ic_launcher);
             } else {
                 Glide.with(getApplicationContext()).load(mStudent.getImageUrl()).into(drawerImage);
