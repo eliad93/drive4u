@@ -162,6 +162,12 @@ public abstract class User implements Parcelable{
     }
 
     public String getFullName() {
+        if(firstName == null){
+            return lastName != null ? lastName : "";
+        }
+        if(lastName == null){
+            return firstName;
+        }
         return getFirstName() + " " + getLastName();
     }
 }

@@ -29,6 +29,8 @@ import com.base.eliad.drive4u.built_in_utils.BorderLineDividerItemDecoration;
 import com.base.eliad.drive4u.fragments.TimePickerFragment;
 import com.base.eliad.drive4u.models.Lesson;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -45,7 +47,6 @@ public class TeacherSummaryFragment extends TeacherBaseFragment
     // widgets
     private TextView textViewLessonsRemainingToday;
     private TextView textViewNoLessons;
-
     // RecyclerView items
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -66,7 +67,6 @@ public class TeacherSummaryFragment extends TeacherBaseFragment
     private Button timePicker;
     private Button datePicker;
     private DatePickerDialog.OnDateSetListener updateRequestsDateSetListener;
-    private String dateUpdated;
 
     public TeacherSummaryFragment() {
         // Required empty public constructor
@@ -74,9 +74,8 @@ public class TeacherSummaryFragment extends TeacherBaseFragment
 
     @NonNull
     public static TeacherSummaryFragment newInstance() {
-        TeacherSummaryFragment fragment = new TeacherSummaryFragment();
 
-        return fragment;
+        return new TeacherSummaryFragment();
     }
 
     @Override
@@ -107,38 +106,38 @@ public class TeacherSummaryFragment extends TeacherBaseFragment
                 .whereEqualTo("teacherUID", mTeacher.getID())
                 .whereEqualTo("date", date)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, "received document " + document.getId());
-                                Lesson lesson = document.toObject(Lesson.class);
-                                if(lesson.getConformationStatus() == Lesson.Status.T_CONFIRMED || lesson.getConformationStatus() == Lesson.Status.S_CANCELED){
-                                    lessons.addLast(lesson);
-                                }
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            Log.d(TAG, "received document " + document.getId());
+                            Lesson lesson = document.toObject(Lesson.class);
+                            if(lesson.getConformationStatus() == Lesson.Status.T_CONFIRMED || lesson.getConformationStatus() == Lesson.Status.S_CANCELED){
+                                lessons.addLast(lesson);
                             }
+                        }
 
-                            mAdapter = new TeacherHomeLessonsAdapter(getContext(), lessons);
-                            ((TeacherHomeLessonsAdapter) mAdapter)
-                                    .setOnItemClickListener(TeacherSummaryFragment.this);
-                            mRecyclerView.setAdapter(mAdapter);
-                            textViewLessonsRemainingToday.setText(String.valueOf(mAdapter.getItemCount()));
-                            if (lessons.size() == 0 ) {
-                                Log.d(TAG, "Teacher " + mTeacher.getEmail() + " has no lessons to present");
-                                textViewNoLessons.setVisibility(View.VISIBLE);
-                                textViewNoLessons.setText(R.string.you_have_no_lessons);
-                            } else {
-                                textViewLessonsRemainingToday.setText(Integer.toString(lessons.size()));
-                                textViewNoLessons.setVisibility(View.GONE);
-                                textViewLessonsRemainingToday.setVisibility(View.VISIBLE);
-                            }
+                        mAdapter = new TeacherHomeLessonsAdapter(lessons);
+                        ((TeacherHomeLessonsAdapter) mAdapter)
+                                .setOnItemClickListener(TeacherSummaryFragment.this);
+                        mRecyclerView.setAdapter(mAdapter);
+                        textViewLessonsRemainingToday.setText(String.valueOf(mAdapter.getItemCount()));
+                        if (lessons.size() == 0 ) {
+                            Log.d(TAG, "Teacher " + mTeacher.getEmail() + " has no lessons to present");
+                            textViewNoLessons.setVisibility(View.VISIBLE);
+                            textViewNoLessons.setText(R.string.you_have_no_lessons);
                         } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
+                            textViewLessonsRemainingToday.setText(Integer.toString(lessons.size()));
+                            textViewNoLessons.setVisibility(View.GONE);
+                            textViewLessonsRemainingToday.setVisibility(View.VISIBLE);
                         }
                     }
-                });
-
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Error getting documents: ", e);
+            }
+        });
     }
 
     private String get2daysDate() {

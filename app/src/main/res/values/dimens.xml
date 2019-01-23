@@ -36,4 +36,5 @@
     <dimen name="vertical_margin_X_small">4dp</dimen>
     <dimen name="list_item_image_size_medium">65dp</dimen>
     <dimen name="vertical_margin_small">8dp</dimen>
+    <dimen name="text_size_small_medium">16sp</dimen>
 </resources>

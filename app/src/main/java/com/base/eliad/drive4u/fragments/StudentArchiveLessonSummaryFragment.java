@@ -1,30 +1,36 @@
 package com.base.eliad.drive4u.fragments;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TextView;
 
 import com.base.eliad.drive4u.R;
 import com.base.eliad.drive4u.models.Lesson;
+import com.base.eliad.drive4u.models.Teacher;
+import com.base.eliad.drive4u.student_ui.StudentBaseFragment;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 
-public class StudentArchiveLessonSummaryFragment extends Fragment {
+public class StudentArchiveLessonSummaryFragment extends StudentBaseFragment {
 
     // Tag for the Log
     private static final String TAG = StudentArchiveLessonSummaryFragment.class.getName();
+    public static final String ARG_LESSON = TAG + "lesson";
     // Firebase
-    private DocumentReference lessonDoc;
+    private Lesson lesson;
     // widgets
-    private Button buttonClose;
-
-    private StudentLessonSummaryFragmentListener mListener;
+    private TextView textViewDate;
+    private TextView textViewTeacher;
+    private TextView textViewStartLocation;
+    private TextView textViewEndLocation;
+    private TextView textViewGrade;
+    private TextView textViewSummary;
 
     public StudentArchiveLessonSummaryFragment() {
         // Required empty public constructor
@@ -42,68 +48,55 @@ public class StudentArchiveLessonSummaryFragment extends Fragment {
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG,"in onCreateView");
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_student_lesson_arcive_summary,
+        final View view = inflater.inflate(R.layout.fragment_student_lesson_arcive_summary,
                 container, false);
-        buttonClose = view.findViewById(R.id.buttonArchiveLessonClose);
-        buttonClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Activity activity = getActivity();
-                if(activity != null){
-                    getActivity().onBackPressed(); // TODO: how can we avoid it?
-                }
-            }
-        });
+        lesson = getArguments().getParcelable(ARG_LESSON);
+        if(lesson == null){
+            unexpectedError();
+            getActivity().onBackPressed();
+        }
+        initWidgets(view);
         return view;
     }
 
-//    // TODO: Rename method, update argument and hook method into UI event
-//    public void onSubmit(View view) {
-//        String paragraph = ""; // TODO: add edit texts and retrieve data
-//        int grade = 0;
-//        lesson.summarize(paragraph, grade);
-//        lessonDoc.update("summary", lesson.getSummary())
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        if(task.isSuccessful()){
-//                            if (mListener != null) {
-//                                mListener.onFragmentInteraction(lesson);
-//                            }
-//                        } else {
-//                            Log.d(TAG, "lesson summary update failed");
-//                        }
-//                    }
-//                });
-//    }
+    private void initWidgets(View view) {
+        textViewDate = view.findViewById(R.id.textViewArchiveLessonDate);
+        textViewTeacher = view.findViewById(R.id.textViewArchiveLessonTeacher);
+        textViewStartLocation = view.findViewById(R.id.textViewArchiveLessonLocationStart);
+        textViewEndLocation = view.findViewById(R.id.textViewArchiveLessonLocationEnd);
+        textViewGrade = view.findViewById(R.id.textViewArchiveLessonGrade);
+        textViewSummary = view.findViewById(R.id.textViewArchiveLessonSummary);
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Log.d(TAG,"in onAttach");
-        if (context instanceof StudentLessonSummaryFragmentListener) {
-            mListener = (StudentLessonSummaryFragmentListener) context;
-        } else {
-            Log.e(TAG,"calling activity/fragment does not implement " +
-                    "StudentLessonSummaryFragmentListener");
-            Activity activity = getActivity();
-            if(activity != null){
-                getActivity().onBackPressed();
-            }
+        textViewDate.setText(lesson.getDate());
+        getTeacherDoc(lesson.getTeacherUID()).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Teacher teacher = documentSnapshot.toObject(Teacher.class);
+                        if(teacher != null){
+                            if(teacher.getFullName() != null)
+                                textViewTeacher.setText(teacher.getFullName());
+                        }
+                    }
+                });
+        if(lesson.getStartingLocation() != null && !lesson.getStartingLocation().isEmpty()){
+            textViewStartLocation.setText(lesson.getStartingLocation());
+        }
+        if(lesson.getEndingLocation() != null && !lesson.getEndingLocation().isEmpty()){
+            textViewEndLocation.setText(lesson.getEndingLocation());
+        }
+        if(lesson.getSummary().getGrade() != null){
+            textViewGrade.setText(String.format("Grade: %s", lesson.getSummary().getGrade()));
+        }
+        if(lesson.getSummary().getParagraph() != null
+                && !lesson.getSummary().getParagraph().isEmpty()){
+            textViewSummary.setText(lesson.getSummary().getParagraph());
         }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface StudentLessonSummaryFragmentListener {
-        void onFragmentInteraction(Lesson lesson);
-    }
 }

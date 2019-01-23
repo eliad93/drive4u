@@ -27,7 +27,6 @@ import com.base.eliad.drive4u.chat.MainChatActivity;
 import com.base.eliad.drive4u.fragments.UserNotificationsFragment;
 import com.base.eliad.drive4u.models.User;
 import com.base.eliad.drive4u.student_ui.StudentDashboardFragment;
-import com.base.eliad.drive4u.student_ui.StudentLessonsArchiveFragment;
 import com.base.eliad.drive4u.student_ui.StudentProfileFragment;
 import com.base.eliad.drive4u.student_ui.StudentSummaryFragment;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,7 +43,7 @@ public class StudentMainActivity extends StudentBaseActivity
     private ViewPager mViewPager;
     private BottomNavigationView mNavigation;
 
-    private boolean isAtHome;
+    private boolean isAtHome = true;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -156,7 +155,7 @@ public class StudentMainActivity extends StudentBaseActivity
                 break;
             case R.id.student_nav_lessons_archive:
                 // TODO: change small icon
-                fragment = StudentLessonsArchiveFragment.newInstance(mStudent);
+                intent = new Intent(this, StudentLessonsArchiveActivity.class);
                 isAtHome = false;
                 break;
             case R.id.student_nav_teachers:

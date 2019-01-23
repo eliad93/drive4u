@@ -132,7 +132,11 @@ abstract public class StudentBaseFragment extends Fragment {
     }
 
     protected DocumentReference getTeacherDoc(Teacher teacher){
-        return getTeachersDb().document(teacher.getID());
+        return getTeacherDoc(teacher.getID());
+    }
+
+    protected DocumentReference getTeacherDoc(String teacherId){
+        return getTeachersDb().document(teacherId);
     }
 
     protected DocumentReference getStudentDoc(){

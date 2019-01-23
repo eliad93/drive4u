@@ -24,7 +24,6 @@ public class TeacherHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView
     private static final String TAG = TeacherHomeLessonsAdapter.class.getName();
 
     private List<Lesson> lessonList;
-    private Context mContext;
 
     // Firebase
     private FirebaseFirestore db;
@@ -39,9 +38,8 @@ public class TeacherHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
 
-    public TeacherHomeLessonsAdapter(Context context, List<Lesson> item) {
+    public TeacherHomeLessonsAdapter(List<Lesson> item) {
         lessonList = item;
-        mContext = context;
         db = FirebaseFirestore.getInstance();
     }
 
@@ -50,7 +48,7 @@ public class TeacherHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.recycler_view_lesson_item, viewGroup, false);
+        View view = inflater.inflate(R.layout.list_item_teacher_lesson, viewGroup, false);
         return new LessonViewHolder(view);
     }
 
@@ -102,11 +100,11 @@ public class TeacherHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     public class LessonViewHolder extends RecyclerView.ViewHolder {
-        public TextView textViewName;
-        public TextView textViewWhen;
-        public TextView textViewWhere;
+        TextView textViewName;
+        TextView textViewWhen;
+        TextView textViewWhere;
 
-        public LessonViewHolder(@NonNull View itemView) {
+        LessonViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewName = itemView.findViewById(R.id.textViewListItemTeacherLessonName);
             textViewWhen   = itemView.findViewById(R.id.textViewListItemTeacherLessonWhen);

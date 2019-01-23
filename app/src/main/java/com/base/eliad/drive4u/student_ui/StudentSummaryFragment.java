@@ -28,8 +28,8 @@ import com.base.eliad.drive4u.adapters.StudentHomeLessonsAdapter;
 import com.base.eliad.drive4u.built_in_utils.BorderLineDividerItemDecoration;
 import com.base.eliad.drive4u.fragments.TimePickerFragment;
 import com.base.eliad.drive4u.models.Lesson;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -112,32 +112,33 @@ public class StudentSummaryFragment extends StudentBaseFragment implements
         db.collection(getString(R.string.DB_Lessons))
                 .whereEqualTo("studentUID", mStudent.getID())
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, "received document " + document.getId());
-                                Lesson lesson = document.toObject(Lesson.class);
-                                if (lesson.getConformationStatus() != Lesson.Status.S_CANCELED) {
-                                    lessons.addLast(lesson);
-                                }
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            Log.d(TAG, "received document " + document.getId());
+                            Lesson lesson = document.toObject(Lesson.class);
+                            if (lesson.getConformationStatus() != Lesson.Status.S_CANCELED) {
+                                lessons.addLast(lesson);
                             }
-                            if (lessons.size() > 0) {
-                                mAdapter = new StudentHomeLessonsAdapter(getContext(), lessons);
-                                ((StudentHomeLessonsAdapter) mAdapter)
-                                        .setOnItemClickListener(StudentSummaryFragment.this);
-                                mRecyclerView.setAdapter(mAdapter);
-                            } else {
-                                Log.d(TAG, "Student " + mStudent.getEmail() + " has no lessons to present");
-                                textViewNoLessons.setVisibility(View.VISIBLE);
-                                textViewNoLessons.setText(R.string.you_have_no_lessons);
-                            }
+                        }
+                        if (lessons.size() > 0) {
+                            mAdapter = new StudentHomeLessonsAdapter(lessons);
+                            ((StudentHomeLessonsAdapter) mAdapter)
+                                    .setOnItemClickListener(StudentSummaryFragment.this);
+                            mRecyclerView.setAdapter(mAdapter);
                         } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
+                            Log.d(TAG, "Student " + mStudent.getEmail() + " has no lessons to present");
+                            textViewNoLessons.setVisibility(View.VISIBLE);
+                            textViewNoLessons.setText(R.string.you_have_no_lessons);
                         }
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Error getting documents: ", e);
+            }
+        });
     }
 
     private void initLessonsRecyclerView() {

@@ -22,7 +22,6 @@ show lessons ordered by date
  */
 public class StudentHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Lesson> lessonList;
-    private Context mContext;
 
     // Firebase
     private FirebaseFirestore db;
@@ -37,9 +36,8 @@ public class StudentHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView
         mListener = onItemClickListener;
     }
 
-    public StudentHomeLessonsAdapter(Context context, List<Lesson> item) {
+    public StudentHomeLessonsAdapter(List<Lesson> item) {
         lessonList = item;
-        mContext = context;
     }
 
     @NonNull
@@ -72,8 +70,6 @@ public class StudentHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView
                 viewHolder.itemView.setBackgroundColor(Color.YELLOW);
             }
         }
-
-
     }
 
     @Override
@@ -82,17 +78,17 @@ public class StudentHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     public class LessonViewHolder extends RecyclerView.ViewHolder {
-        private TextView textViewWhere;
         private TextView textViewWhen;
+        private TextView textViewWhere;
         private TextView textViewStatus;
         private ImageButton editButton;
 
         public LessonViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewStatus = itemView.findViewById(R.id.LessonStatus);
-            textViewWhen   = itemView.findViewById(R.id.LessonWhen);
-            textViewWhere  = itemView.findViewById(R.id.LessonWhere);
-            editButton = itemView.findViewById(R.id.editButton);
+            textViewWhen = itemView.findViewById(R.id.textViewRecyclerViewLessonItemWhen);
+            textViewWhere   = itemView.findViewById(R.id.textViewRecyclerViewLessonItemWhere);
+            textViewStatus  = itemView.findViewById(R.id.textViewRecyclerViewLessonItemStatus);
+            editButton = itemView.findViewById(R.id.imageButtonRecyclerViewLessonItem);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -1,53 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".fragments.StudentArchiveLessonSummaryFragment"
-    android:background="@color/colorRegistrationFormFieldBackground">
+    android:background="@android:color/background_light">
 
-    <Button
-        android:id="@+id/buttonArchiveLessonClose"
+    <TextView
+        android:id="@+id/textViewArchiveLessonHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="close"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/vertical_margin_medium"
+        android:textSize="@dimen/text_size_medium"
+        android:text="@string/lesson_summary_header" />
+
+    <TextView
+        android:id="@+id/textViewArchiveLessonDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/date"
+        android:textSize="@dimen/text_size_small_medium"
+        android:layout_below="@id/textViewArchiveLessonHeader"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/vertical_margin_medium"
+        android:layout_marginLeft="@dimen/horizontal_margin_large"
+        android:layout_marginStart="@dimen/horizontal_margin_large" />
+
+    <TextView
+        android:id="@+id/textViewArchiveLessonTeacher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/teacher"
+        android:textSize="@dimen/text_size_small_medium"
+        android:layout_below="@id/textViewArchiveLessonHeader"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/vertical_margin_medium"
+        android:layout_marginRight="@dimen/horizontal_margin_large"
+        android:layout_marginEnd="@dimen/horizontal_margin_large" />
+
+    <TextView
+        android:id="@+id/textViewArchiveLessonLocationStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_location"
+        android:textSize="@dimen/text_size_small_medium"
+        android:layout_below="@id/textViewArchiveLessonDate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/vertical_margin_medium"
+        android:layout_marginLeft="@dimen/horizontal_margin_large"
+        android:layout_marginStart="@dimen/horizontal_margin_large"/>
+
+    <TextView
+        android:id="@+id/textViewArchiveLessonLocationEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/end_location"
+        android:textSize="@dimen/text_size_small_medium"
+        android:layout_below="@id/textViewArchiveLessonTeacher"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/vertical_margin_medium"
+        android:layout_marginRight="@dimen/horizontal_margin_large"
+        android:layout_marginEnd="@dimen/horizontal_margin_large" />
 
     <TextView
         android:id="@+id/textViewArchiveLessonGrade"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@color/colorWhite"
-        android:text="Grade: not graded"
-        app:layout_constraintEnd_toStartOf="@+id/buttonArchiveLessonClose"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonArchiveLessonClose" />
+        android:text="@string/grade_not_graded"
+        android:textSize="@dimen/text_size_small_medium"
+        android:layout_below="@id/textViewArchiveLessonLocationStart"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/vertical_margin_medium"
+        android:layout_marginLeft="@dimen/horizontal_margin_large"
+        android:layout_marginStart="@dimen/horizontal_margin_large"/>
 
     <TextView
         android:id="@+id/textViewArchiveLessonSummary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@color/colorWhite"
-        android:text="Summary: not summarized"
-        app:layout_constraintEnd_toStartOf="@+id/buttonArchiveLessonClose"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewArchiveLessonGrade"/>
+        android:layout_below="@id/textViewArchiveLessonGrade"
+        android:text="@string/summary"
+        android:layout_marginTop="@dimen/vertical_margin_medium"
+        android:layout_marginLeft="@dimen/horizontal_margin_large"
+        android:layout_marginStart="@dimen/horizontal_margin_large" />
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

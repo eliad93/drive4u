@@ -1,12 +1,17 @@
 package com.base.eliad.drive4u.base_activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.bumptech.glide.Glide;
@@ -178,5 +183,24 @@ abstract public class StudentBaseActivity extends AppCompatActivity {
 
     protected DocumentReference getStudentDoc(){
         return getStudentsDb().document(mStudent.getID());
+    }
+
+    protected void resizeFragment(Fragment fragment, double widthPercent, double heightPercent) {
+        if (fragment != null) {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            View view = fragment.getView();
+            WindowManager windowManager = getWindowManager();
+            if(windowManager == null){
+                return;
+            }
+            windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+            int screenWidth = displayMetrics.widthPixels;
+            int screenHeight = displayMetrics.heightPixels;
+            int width = (int) (screenWidth * widthPercent);
+            int height = (int) (screenHeight * heightPercent);
+            ViewGroup.LayoutParams params = view.getLayoutParams();
+            params.width = width;
+            params.height = height;
+        }
     }
 }
