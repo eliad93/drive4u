@@ -306,4 +306,8 @@ public class StudentMainActivity extends StudentBaseActivity
         super.updateData();
         Log.d(TAG, "updateData");
     }
+
+    public void onStudentHomeFab(View view) {
+        displayView(R.id.student_nav_schedule);
+    }
 }
