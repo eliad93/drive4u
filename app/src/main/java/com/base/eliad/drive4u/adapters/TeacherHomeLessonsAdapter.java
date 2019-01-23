@@ -50,7 +50,7 @@ public class TeacherHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.teacher_home_lesson_item, viewGroup, false);
+        View view = inflater.inflate(R.layout.recycler_view_lesson_item, viewGroup, false);
         return new LessonViewHolder(view);
     }
 
@@ -71,8 +71,8 @@ public class TeacherHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView
                             assert document != null;
                             if(document.exists()){
                                 Student student = document.toObject(Student.class);
-                                holder.textViewLastName.setText(student.getLastName());
-                                holder.textViewFirsName.setText(student.getFirstName());
+                                assert student != null;
+                                holder.textViewName.setText(student.getFullName());
                             } else {
                                 Log.d(TAG, "No such student");
                             }
@@ -102,17 +102,15 @@ public class TeacherHomeLessonsAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     public class LessonViewHolder extends RecyclerView.ViewHolder {
-        public TextView textViewWhere;
+        public TextView textViewName;
         public TextView textViewWhen;
-        public TextView textViewFirsName;
-        public TextView textViewLastName;
+        public TextView textViewWhere;
 
         public LessonViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewWhen   = itemView.findViewById(R.id.TeacherHomeLessonItemWhen);
-            textViewWhere  = itemView.findViewById(R.id.TeacherHomeLessonItemLocation);
-            textViewFirsName = itemView.findViewById(R.id.TeacherHomeLessonItemFirstName);
-            textViewLastName = itemView.findViewById(R.id.TeacherHomeLessonItemLastName);
+            textViewName = itemView.findViewById(R.id.textViewListItemTeacherLessonName);
+            textViewWhen   = itemView.findViewById(R.id.textViewListItemTeacherLessonWhen);
+            textViewWhere  = itemView.findViewById(R.id.textViewListItemTeacherLessonWhere);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
