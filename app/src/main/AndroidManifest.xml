@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.eliad.drive4u">
+    package="com.base.eliad.drive4u">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -16,32 +16,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activities.student_activities.StudentSearchTeacherActivity"></activity>
         <activity
             android:name=".activities.LoginActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait">
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.TeacherMyStudentsActivity"
+            android:name=".teacher_ui.TeacherSchedulerActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.TeacherStudentInfoActivity"
+            android:name=".student_ui.StudentSchedulerLessonActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <activity android:name=".teacher_ui.TeacherSchedulerActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <activity android:name=".student_ui.StudentSchedulerLessonActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <activity android:name=".registration.RegistrationMainActivity"
+        <activity
+            android:name=".registration.RegistrationMainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
@@ -52,17 +49,17 @@
         <activity
             android:name=".teacher_ui.TeacherMainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".student_ui.StudentMainActivity"
             android:label="@string/title_activity_student_main"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".chat.ChatMessageActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".notifications.MyFirebaseIdService"
@@ -83,11 +80,11 @@
 
         <activity
             android:name=".chat.MainChatActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" />
-
-        <activity android:name=".activities.ResetPasswordActivity"
-            android:parentActivityName=".activities.LoginActivity"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.ResetPasswordActivity"
+            android:parentActivityName=".activities.LoginActivity" />
     </application>
 
 </manifest>
