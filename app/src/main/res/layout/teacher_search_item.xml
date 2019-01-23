@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/list_item_padding"
@@ -16,54 +17,53 @@
             android:padding="@dimen/list_item_padding">
 
             <ImageView
-                android:id="@+id/imageViewTeacher"
+                android:id="@+id/imageViewTeacherSearch"
                 android:layout_width="@dimen/list_item_image_size"
                 android:layout_height="@dimen/list_item_image_size"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:src="@mipmap/ic_user_foreground" />
+                android:src="@mipmap/ic_user_foreground"
+                android:layout_alignParentStart="true"
+                tools:ignore="ContentDescription" />
 
             <TextView
-                android:id="@+id/textViewTeacherName"
+                android:id="@+id/textViewTeacherSearchName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="@dimen/list_item_margin_small_02"
-                android:layout_marginLeft="@dimen/list_item_margin_small_02"
-                android:layout_toRightOf="@+id/imageViewTeacher"
-                android:fontFamily="@font/amaranth_bold_italic"
-                android:text="textViewTeacherName"
+                android:layout_marginTop="@dimen/vertical_margin_X_small"
+                android:layout_marginLeft="@dimen/horizontal_margin_small"
+                android:layout_centerHorizontal="true"
+                android:text="@string/name"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/list_item_text_size_big" />
+                android:textSize="@dimen/list_item_text_size_big"
+                android:layout_marginStart="@dimen/horizontal_margin_small" />
 
             <TextView
-                android:id="@+id/textViewTeacherCity"
+                android:id="@+id/textViewTeacherSearchCity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textViewTeacherName"
-                android:layout_marginStart="@dimen/list_item_margin_small_03"
-                android:layout_marginLeft="@dimen/list_item_margin_small_03"
-                android:layout_marginTop="@dimen/list_item_margin_small_05"
-                android:layout_toRightOf="@+id/imageViewTeacher"
-                android:fontFamily="@font/amaranth_italic"
-                android:text="textViewTeacherCity"
-                android:textSize="@dimen/list_item_text_size_medium" />
+                android:layout_toRightOf="@id/imageViewTeacherSearch"
+                android:layout_below="@id/textViewTeacherSearchName"
+                android:layout_marginLeft="@dimen/horizontal_margin_small"
+                android:text="@string/city"
+                android:textSize="@dimen/list_item_text_size_medium"
+                android:layout_toEndOf="@id/imageViewTeacherSearch"
+                android:layout_marginStart="@dimen/horizontal_margin_small" />
 
             <TextView
-                android:id="@+id/textViewNumberOfStudents"
+                android:id="@+id/textViewTeacherSearchStudents"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginStart="@dimen/list_item_margin_medium_33"
-                android:layout_marginLeft="0dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginRight="0dp"
-                android:layout_toRightOf="@+id/textViewTeacherName"
-                android:fontFamily="@font/amaranth_italic"
-                android:text="textViewNumbe"
-                android:textSize="@dimen/list_item_text_size_medium" />
-
+                android:layout_toLeftOf="@id/textViewTeacherSearchCity"
+                android:layout_marginRight="@dimen/horizontal_margin_small"
+                android:layout_below="@+id/textViewTeacherSearchName"
+                android:text="@string/number_of_students"
+                android:textSize="@dimen/list_item_text_size_medium"
+                android:layout_marginEnd="@dimen/horizontal_margin_small"
+                android:layout_toStartOf="@id/textViewTeacherSearchCity" />
 
         </RelativeLayout>
 

@@ -235,16 +235,22 @@ public class StudentSearchTeacherActivity extends StudentBaseActivity implements
         switch(mSortSelectedStr){
             case "city":
                 Teacher.Sort.name(presentedTeachers, order);
+                break;
             case "number of students":
                 Teacher.Sort.numberOfStudents(presentedTeachers, order);
+                break;
             case "lesson length":
                 Teacher.Sort.lessonLength(presentedTeachers, order);
+                break;
             case "price":
                 Teacher.Sort.price(presentedTeachers, order);
+                break;
             case "worth":
                 Teacher.Sort.worth(presentedTeachers, order);
+                break;
             default:
                 Teacher.Sort.name(presentedTeachers, order);
+                break;
         }
     }
 }

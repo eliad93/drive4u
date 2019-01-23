@@ -8,10 +8,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.base.eliad.drive4u.R;
 import com.base.eliad.drive4u.models.Teacher;
+import com.base.eliad.drive4u.models.User;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -53,10 +56,16 @@ public class TeacherSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
         TeacherSearchViewHolder holder = (TeacherSearchViewHolder) viewHolder;
         Teacher teacher = this.teachers.get(position);
         holder.setIsRecyclable(false);
-        holder.mName.setText(teacher.getFullName());
-        holder.mCity.setText(String.format("City: %s", teacher.getCity()));
-        String numberOfStudentsText = res
-                .getString(R.string.number_of_students, teacher.numberOfStudents());
+        String teacherImageUrl = teacher.getImageUrl();
+        if (teacherImageUrl == null || teacherImageUrl.equals(User.DEFAULT_IMAGE_KEY)) {
+            holder.imageViewTeacher.setImageResource(R.mipmap.ic_launcher);
+        } else {
+            Glide.with(mContext).load(teacherImageUrl).into(holder.imageViewTeacher);
+        }
+        holder.mName.setText(teacher.getFirstName());
+        holder.mCity.setText(teacher.getCity());
+        String numberOfStudentsText = res.getString(R.string.students,
+                teacher.numberOfStudents());
         holder.mNumStudents.setText(numberOfStudentsText);
     }
 
@@ -67,15 +76,17 @@ public class TeacherSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     public class TeacherSearchViewHolder extends RecyclerView.ViewHolder{
+        ImageView imageViewTeacher;
         TextView mName;
         TextView mCity;
         TextView mNumStudents;
 
         TeacherSearchViewHolder(View v){
             super(v);
-            mName = (TextView)v.findViewById(R.id.textViewTeacherName);
-            mCity = (TextView)v.findViewById(R.id.textViewTeacherCity);
-            mNumStudents = (TextView)v.findViewById(R.id.textViewNumberOfStudents);
+            imageViewTeacher = v.findViewById(R.id.imageViewTeacherSearch);
+            mName = v.findViewById(R.id.textViewTeacherSearchName);
+            mCity = v.findViewById(R.id.textViewTeacherSearchCity);
+            mNumStudents = v.findViewById(R.id.textViewTeacherSearchStudents);
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
