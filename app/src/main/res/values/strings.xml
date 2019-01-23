@@ -264,5 +264,8 @@
     <string name="student_pending_connection_request_title">Waiting for teacher response</string>
     <string name="student_pending_connection_request_message">Connection Request to a teacher pending</string>
     <string name="students">students: %1$d</string>
+    <string name="status">Status</string>
+    <string name="when">When</string>
+    <string name="where">Where</string>
 
 </resources>
