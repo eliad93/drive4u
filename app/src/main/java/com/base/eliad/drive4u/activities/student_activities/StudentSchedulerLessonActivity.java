@@ -1,4 +1,4 @@
-package com.base.eliad.drive4u.student_ui;
+package com.base.eliad.drive4u.activities.student_activities;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

@@ -35,7 +35,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".student_ui.StudentSchedulerLessonActivity"
+            android:name=".activities.student_activities.StudentSchedulerLessonActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
@@ -53,7 +53,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".student_ui.StudentMainActivity"
+            android:name=".activities.student_activities.StudentMainActivity"
             android:label="@string/title_activity_student_main"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />

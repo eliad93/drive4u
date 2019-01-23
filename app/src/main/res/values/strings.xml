@@ -261,5 +261,7 @@
     <string name="enter_value">Enter value</string>
     <string name="no_notifications_msg">You have no notifications to show</string>
     <string name="choose_teacher">choose teacher</string>
+    <string name="student_pending_connection_request_title">Waiting for teacher response</string>
+    <string name="student_pending_connection_request_message">Connection Request to a teacher pending</string>
 
 </resources>

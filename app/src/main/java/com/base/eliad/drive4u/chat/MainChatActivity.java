@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.base.eliad.drive4u.R;
 import com.base.eliad.drive4u.activities.LoginActivity;
 import com.base.eliad.drive4u.models.Chat;
-import com.base.eliad.drive4u.student_ui.StudentMainActivity;
+import com.base.eliad.drive4u.activities.student_activities.StudentMainActivity;
 import com.base.eliad.drive4u.teacher_ui.TeacherMainActivity;
 import com.base.eliad.drive4u.adapters.ViewPagerAdapter;
 import com.base.eliad.drive4u.models.Student;

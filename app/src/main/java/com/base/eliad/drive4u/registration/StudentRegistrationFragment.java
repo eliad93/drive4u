@@ -25,7 +25,7 @@ import com.base.eliad.drive4u.R;
 import com.base.eliad.drive4u.base_activities.StudentBaseActivity;
 import com.base.eliad.drive4u.models.Student;
 import com.base.eliad.drive4u.models.User;
-import com.base.eliad.drive4u.student_ui.StudentMainActivity;
+import com.base.eliad.drive4u.activities.student_activities.StudentMainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

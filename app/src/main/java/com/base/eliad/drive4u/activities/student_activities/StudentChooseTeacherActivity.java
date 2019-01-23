@@ -1,10 +1,8 @@
 package com.base.eliad.drive4u.activities.student_activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,7 +14,6 @@ import com.base.eliad.drive4u.base_activities.StudentBaseActivity;
 import com.base.eliad.drive4u.fragments.BaseDialogFragment;
 import com.base.eliad.drive4u.fragments.PositiveNegativeDialog;
 import com.base.eliad.drive4u.fragments.PromptUserDialog;
-import com.base.eliad.drive4u.fragments.StudentChooseTeacherFragment;
 import com.base.eliad.drive4u.helpers.ConditionsHelper;
 import com.base.eliad.drive4u.models.Student;
 import com.base.eliad.drive4u.models.Teacher;
@@ -46,7 +43,6 @@ public class StudentChooseTeacherActivity extends StudentBaseActivity
     private DialogFragment dialogFragment;
     // models
     Teacher mTeacher;
-    StudentChooseTeacherFragment.ResultListener listener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +57,11 @@ public class StudentChooseTeacherActivity extends StudentBaseActivity
         Bundle args = new Bundle();
         args.putString(BaseDialogFragment.ARG_TITLE,
                 getString(R.string.choose_teacher_dialog_title));
-        if(mStudent.hasTeacher()){
+        if(mStudent.hasPendingRequest()){
+            args.putString(BaseDialogFragment.ARG_MESSAGE,
+                    getString(R.string.student_pending_connection_request_message));
+            dialogFragment = new PromptUserDialog();
+        }else if(mStudent.hasTeacher()){
             args.putString(BaseDialogFragment.ARG_MESSAGE,
                     getString(R.string.choose_teacher_dialog_message_no_teacher));
             dialogFragment = new PromptUserDialog();

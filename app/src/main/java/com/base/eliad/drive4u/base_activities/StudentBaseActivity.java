@@ -16,7 +16,7 @@ import com.base.eliad.drive4u.fragments.UnexpectedErrorDialog;
 import com.base.eliad.drive4u.models.Student;
 import com.base.eliad.drive4u.models.Teacher;
 import com.base.eliad.drive4u.models.User;
-import com.base.eliad.drive4u.student_ui.StudentMainActivity;
+import com.base.eliad.drive4u.activities.student_activities.StudentMainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;

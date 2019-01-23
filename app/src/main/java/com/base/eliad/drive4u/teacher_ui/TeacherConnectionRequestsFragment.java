@@ -176,7 +176,7 @@ public class TeacherConnectionRequestsFragment extends TeacherBaseFragment
 //                }
 //                else {
 //                    if((!mFilterSelectedValueStr.isEmpty()) && (!mFilterSelectedStr.isEmpty())){
-//                        TeachersFilter(mFilterSelectedStr,mFilterSelectedValueStr);
+//                        filterTeachers(mFilterSelectedStr,mFilterSelectedValueStr);
 //                    }
 //                    if(mSortSelectedStr.compareTo
 //                            (getString(R.string.all)) != 0){

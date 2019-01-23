@@ -20,7 +20,7 @@ import com.base.eliad.drive4u.R;
 import com.base.eliad.drive4u.base_activities.TeacherBaseActivity;
 import com.base.eliad.drive4u.fragments.UnexpectedErrorDialog;
 import com.base.eliad.drive4u.registration.RegistrationMainActivity;
-import com.base.eliad.drive4u.student_ui.StudentMainActivity;
+import com.base.eliad.drive4u.activities.student_activities.StudentMainActivity;
 import com.base.eliad.drive4u.teacher_ui.TeacherMainActivity;
 import com.base.eliad.drive4u.models.Student;
 import com.base.eliad.drive4u.models.Teacher;

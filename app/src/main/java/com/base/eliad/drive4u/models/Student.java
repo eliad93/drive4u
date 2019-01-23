@@ -117,28 +117,18 @@ public class Student extends User {
     }
 
     public boolean hasTeacher(){
-        // TODO: fix that logic
-        if(ConnectionRequestStatus.SENT.getUserMessage().equals(request)){
-            return true;
-        }
-        if(teacherId != null){
-            return (!teacherId.isEmpty());
+        if(ConnectionRequestStatus.ACCEPTED.getUserMessage().equals(request)
+        && teacherId != null){
+            return !teacherId.isEmpty();
         }
         return false;
     }
 
-//    public Boolean hasPendingRequest(){
-//        if(hasTeacher()){
-//            // make sure we are consistent
-//            // no request if already has a teacher
-//            assert request == null;
-//            return false;
-//        }
-//        if(request != null){
-//            return request.getStatus() == StudentConnectionRequest.Status.SENT;
-//        }
-//        return false;
-//    }
+    public Boolean hasPendingRequest(){
+        // make sure we are consistent
+        // no request if already has a teacher
+        return ConnectionRequestStatus.SENT.getUserMessage().equals(request);
+    }
 
     public static final Parcelable.Creator<Student> CREATOR = new Parcelable.Creator<Student>() {
         public Student createFromParcel(Parcel in) {

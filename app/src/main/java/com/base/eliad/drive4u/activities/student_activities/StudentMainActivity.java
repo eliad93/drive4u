@@ -1,4 +1,4 @@
-package com.base.eliad.drive4u.student_ui;
+package com.base.eliad.drive4u.activities.student_activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,12 +21,15 @@ import android.widget.Toast;
 
 import com.base.eliad.drive4u.R;
 import com.base.eliad.drive4u.activities.LoginActivity;
-import com.base.eliad.drive4u.activities.student_activities.StudentSearchTeacherActivity;
 import com.base.eliad.drive4u.adapters.ViewPagerAdapter;
 import com.base.eliad.drive4u.base_activities.StudentBaseActivity;
 import com.base.eliad.drive4u.chat.MainChatActivity;
 import com.base.eliad.drive4u.fragments.UserNotificationsFragment;
 import com.base.eliad.drive4u.models.User;
+import com.base.eliad.drive4u.student_ui.StudentDashboardFragment;
+import com.base.eliad.drive4u.student_ui.StudentLessonsArchiveFragment;
+import com.base.eliad.drive4u.student_ui.StudentProfileFragment;
+import com.base.eliad.drive4u.student_ui.StudentSummaryFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -137,6 +140,12 @@ public class StudentMainActivity extends StudentBaseActivity
                 isAtHome = true;
                 break;
             case R.id.student_nav_schedule:
+                if(mStudent.hasPendingRequest()){
+                    promptUserWithDialog(
+                            getString(R.string.student_pending_connection_request_title),
+                            getString(R.string.student_pending_connection_request_message));
+                    break;
+                }
                 if(!mStudent.hasTeacher()){
                     promptUserWithDialog(getString(R.string.no_teacher_dialog_title),
                             getString(R.string.no_teacher_dialog_message));
