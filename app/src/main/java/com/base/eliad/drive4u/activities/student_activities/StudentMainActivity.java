@@ -37,7 +37,6 @@ public class StudentMainActivity extends StudentBaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = StudentMainActivity.class.getName();
-    public static final String ARG_NAV = TAG + ".arg_nav";
     // widgets
     Toolbar mToolbar;
     private ViewPager mViewPager;
