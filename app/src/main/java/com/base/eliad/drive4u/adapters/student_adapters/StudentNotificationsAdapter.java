@@ -1,7 +1,6 @@
 package com.base.eliad.drive4u.adapters.student_adapters;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,7 +18,6 @@ import com.base.eliad.drive4u.models.User;
 import com.base.eliad.drive4u.models.UserAction;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,7 +28,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import javax.annotation.Nullable;
 
@@ -40,12 +37,21 @@ public class StudentNotificationsAdapter extends RecyclerView.Adapter<RecyclerVi
     private Context context;
     private ArrayList<UserAction> actions = new ArrayList<>();
     private Student student;
-    private Teacher teacher;
     // firebase
-    private ListenerRegistration registration;
+    private ArrayList<ListenerRegistration> registrations = new ArrayList<>();
     private FirebaseFirestore db;
     // external widgets
-    TextView textViewNoNotifications;
+    private TextView textViewNoNotifications;
+    private OnInteraction callBack;
+
+    public interface OnInteraction{
+        public void onRemove(int i);
+        public void onAdd(int position);
+    }
+
+    public void setListener(OnInteraction onInteraction){
+        callBack = onInteraction;
+    }
 
     public StudentNotificationsAdapter(Context mContext, Student mStudent,
                                        FirebaseFirestore mDb, TextView mTextViewNoNotifications){
@@ -57,17 +63,7 @@ public class StudentNotificationsAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     private void initData() {
-        db.collection(context.getString(R.string.DB_Teachers))
-                .document(student.getTeacherId())
-                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                teacher = documentSnapshot.toObject(Teacher.class);
-                if(teacher != null){
-                    initNotifications();
-                }
-            }
-        });
+        initNotifications();
     }
 
     private void initNotifications() {
@@ -75,27 +71,44 @@ public class StudentNotificationsAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     private void initConnectionRequest() {
-        db.collection(context.getString(R.string.students_actions_history))
-                .whereEqualTo("receiverId", student.getID())
-                .whereEqualTo("senderId", teacher.getID())
-                .whereEqualTo("notice", UserAction.Notice.UNSEEN.getMessage())
-                .whereEqualTo("type", UserAction.Type.CONNECTION_REQUEST.getMessage())
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        final Query query = db.collection(context.getString(R.string.students_actions_history))
+                .whereEqualTo("receiverId", student.getID());
+        final Query query1 = query.whereEqualTo("notice", UserAction.Notice.UNSEEN.getMessage());
+        query1.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                actions.addAll(queryDocumentSnapshots.toObjects(UserAction.class));
-                registerToChanges();
+                for(QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                    UserAction userAction = documentSnapshot.toObject(UserAction.class);
+                    userAction.setActionId(documentSnapshot.getId());
+                    if(!actions.contains(userAction)){
+                        actions.add(userAction);
+                        notifyDataSetChanged();
+//                        callBack.onAdd(actions.indexOf(userAction));
+                    }
+                }
+                registerToChanges(query1);
+            }
+        });
+        final Query query2 = query.whereEqualTo("notice", UserAction.Notice.SEEN.getMessage());
+        query2.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for(QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                    UserAction userAction = documentSnapshot.toObject(UserAction.class);
+                    userAction.setActionId(documentSnapshot.getId());
+                    if(!actions.contains(userAction)){
+                        actions.add(userAction);
+                        notifyDataSetChanged();
+//                        callBack.onAdd(actions.indexOf(userAction));
+                    }
+                }
+                registerToChanges(query1);
             }
         });
     }
 
-    private void registerToChanges() {
-        Query query = db.collection(context.getString(R.string.students_actions_history))
-                .whereEqualTo("receiverId", student.getID())
-                .whereEqualTo("senderId", teacher.getID())
-                .whereEqualTo("notice", UserAction.Notice.UNSEEN.getMessage())
-                .whereEqualTo("type", UserAction.Type.CONNECTION_REQUEST.getMessage());
-        registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+    private void registerToChanges(Query query) {
+        registrations.add(query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
                                 @Nullable FirebaseFirestoreException e) {
@@ -108,13 +121,15 @@ public class StudentNotificationsAdapter extends RecyclerView.Adapter<RecyclerVi
                 }
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots){
                     UserAction userAction = doc.toObject(UserAction.class);
+                    userAction.setActionId(doc.getId());
                     if(!actions.contains(userAction)){
                         actions.add(userAction);
-                        notifyItemInserted(actions.indexOf(userAction));
+                        notifyDataSetChanged();
+//                        callBack.onAdd(actions.indexOf(userAction));
                     }
                 }
             }
-        });
+        }));
     }
 
     @NonNull
@@ -130,8 +145,30 @@ public class StudentNotificationsAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         Log.d(TAG, "in onBindViewHolder");
-        StudentConnectionRequestViewHolder holder = (StudentConnectionRequestViewHolder) viewHolder;
         final UserAction action = this.actions.get(i);
+        if(UserAction.Type.CONNECTION_REQUEST.getMessage().equals(action.getType())){
+            bindConnectionRequest(action,
+                    (StudentConnectionRequestViewHolder)viewHolder);
+        }
+    }
+
+    private void bindConnectionRequest(final UserAction action,
+                                       @NonNull final StudentConnectionRequestViewHolder holder) {
+        db.collection(context.getString(R.string.DB_Teachers))
+                .document(action.getSenderId())
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Teacher teacher = documentSnapshot.toObject(Teacher.class);
+                if(teacher != null){
+                    finalizeConnectionRequestBind(teacher, holder, action);
+                }
+            }
+        });
+    }
+
+    private void finalizeConnectionRequestBind(Teacher teacher, StudentConnectionRequestViewHolder
+            holder, final UserAction action) {
         String teacherImageUrl = teacher.getImageUrl();
         if (teacherImageUrl == null || teacherImageUrl.equals(User.DEFAULT_IMAGE_KEY)) {
             holder.imageViewTeacher.setImageResource(R.mipmap.ic_launcher);
@@ -144,15 +181,15 @@ public class StudentNotificationsAdapter extends RecyclerView.Adapter<RecyclerVi
         holder.buttonDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int index = actions.indexOf(action);
                 db.collection(context.getString(R.string.students_actions_history))
                         .document(action.getActionId())
-                        .update("notice", UserAction.Notice.UNSEEN.getMessage())
+                        .update("notice", UserAction.Notice.RESPONDED.getMessage())
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 actions.remove(action);
-                                notifyItemRemoved(index);
+                                notifyDataSetChanged();
+//                                callBack.onRemove(actions.indexOf(action));
                             }
                         });
             }
@@ -174,7 +211,9 @@ public class StudentNotificationsAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
-        registration.remove();
+        for (ListenerRegistration listenerRegistration: registrations) {
+            listenerRegistration.remove();
+        }
     }
 
     public class StudentConnectionRequestViewHolder extends RecyclerView.ViewHolder{

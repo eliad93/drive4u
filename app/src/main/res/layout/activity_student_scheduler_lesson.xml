@@ -53,7 +53,6 @@
     android:layout_alignParentTop="true"
     android:layout_marginTop="152dp"
     android:layout_alignParentLeft="true"
-    android:background="@drawable/border_line"
     android:layout_marginStart="20dp"
     android:layout_marginLeft="20dp"
     android:layout_marginEnd="20dp"

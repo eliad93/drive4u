@@ -59,7 +59,8 @@
             android:name=".activities.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
@@ -88,11 +89,13 @@
             android:name=".activities.student_activities.StudentMainActivity"
             android:label="@string/title_activity_student_main"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask" />
         <activity
             android:name=".chat.ChatMessageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask" />
 
         <service
             android:name=".notifications.MyFirebaseIdService"
@@ -114,11 +117,13 @@
         <activity
             android:name=".chat.MainChatActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask" />
         <activity
             android:name=".activities.ResetPasswordActivity"
             android:launchMode="singleTask"
-            android:parentActivityName=".activities.LoginActivity" />
+            android:parentActivityName=".activities.LoginActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

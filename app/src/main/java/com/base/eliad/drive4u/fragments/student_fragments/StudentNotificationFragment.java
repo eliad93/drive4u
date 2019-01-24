@@ -19,7 +19,8 @@ import com.base.eliad.drive4u.student_ui.StudentBaseFragment;
 
 import java.util.ArrayList;
 
-public class StudentNotificationFragment extends StudentBaseFragment {
+public class StudentNotificationFragment extends StudentBaseFragment
+        implements StudentNotificationsAdapter.OnInteraction {
     private static final String TAG = StudentNotificationFragment.class.getName();
     // RecyclerView items
     private RecyclerView mRecyclerView;
@@ -69,6 +70,17 @@ public class StudentNotificationFragment extends StudentBaseFragment {
     private void presentNotifications(){
         adapter = new StudentNotificationsAdapter(getContext(), mStudent,
                 db, textViewNoNotifications);
+        ((StudentNotificationsAdapter) adapter).setListener(StudentNotificationFragment.this);
         mRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onRemove(int position) {
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onAdd(int position) {
+        adapter.notifyDataSetChanged();
     }
 }

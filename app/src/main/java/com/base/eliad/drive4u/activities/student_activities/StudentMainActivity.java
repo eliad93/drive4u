@@ -38,8 +38,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 
@@ -56,6 +59,8 @@ public class StudentMainActivity extends StudentBaseActivity
     private View notificationBadge;
     // models
     private ArrayList<UserAction> unseenActions = new ArrayList<>();
+    // firebase
+    private ArrayList<DocumentReference> actionsReferences = new ArrayList<>();
 
     private boolean isAtHome = true;
 
@@ -116,7 +121,6 @@ public class StudentMainActivity extends StudentBaseActivity
 
             }
         });
-
         addNotificationsBadgeView();
     }
 
@@ -145,6 +149,14 @@ public class StudentMainActivity extends StudentBaseActivity
 
             case R.id.student_navigation_notifications:
                 notificationBadge.setVisibility(View.GONE);
+                if(actionsReferences.size() > 0){
+                    WriteBatch writeBatch = db.batch();
+                    for(DocumentReference documentReference: actionsReferences){
+                        writeBatch.update(documentReference, "notice",
+                                UserAction.Notice.SEEN.getMessage());
+                    }
+                    writeBatch.commit();
+                }
                 mViewPager.setCurrentItem(2);
                 msg = "notifications selected";
                 break;
@@ -238,11 +250,7 @@ public class StudentMainActivity extends StudentBaseActivity
                 break;
         }
 
-        if (fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.student_content_frame, fragment);
-            ft.commit();
-        } else if (intent != null) {
+        if (intent != null) {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
@@ -264,6 +272,7 @@ public class StudentMainActivity extends StudentBaseActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
+        super.onBackPressed();
     }
 
     @Override
@@ -345,6 +354,7 @@ public class StudentMainActivity extends StudentBaseActivity
     @Override
     protected void onResume() {
         super.onResume();
+        getUnseenActions();
         status(User.ONLINE);
     }
 
@@ -377,10 +387,16 @@ public class StudentMainActivity extends StudentBaseActivity
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        unseenActions.addAll(queryDocumentSnapshots
-                                .toObjects(UserAction.class));
+                        for(QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                            UserAction userAction = documentSnapshot.toObject(UserAction.class);
+                            userAction.setActionId(documentSnapshot.getId());
+                            unseenActions.add(userAction);
+                            actionsReferences.add(documentSnapshot.getReference());
+                        }
                         if(unseenActions.size() > 0){
                             notificationBadge.setVisibility(View.VISIBLE);
+                        } else {
+                            notificationBadge.setVisibility(View.GONE);
                         }
                         initWidgets();
                     }
