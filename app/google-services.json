@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:299689370433:android:122ac66cd9c805ed",
         "android_client_info": {
-          "package_name": "com.example.eliad.drive4u"
+          "package_name": "com.base.eliad.drive4u"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "299689370433-3au4fr695mmmgmjltvj0505o04plaqj3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.eliad.drive4u",
+            "package_name": "com.base.eliad.drive4u",
             "certificate_hash": "6d5afa5beedf4b793e4de3c71522dec19dafffb8"
           }
         },
@@ -26,7 +26,7 @@
           "client_id": "299689370433-b1dt5u60thoclpr4lkhlf0gh2jptmkba.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.eliad.drive4u",
+            "package_name": "com.base.eliad.drive4u",
             "certificate_hash": "5631f3ad06b3fad65df093e4c360b9ec12477d18"
           }
         },

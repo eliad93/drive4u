@@ -36,7 +36,6 @@
                 android:layout_marginStart="@dimen/list_item_margin_small_02"
                 android:layout_marginLeft="@dimen/list_item_margin_small_02"
                 android:layout_toRightOf="@+id/imageViewStudentSimpleListItemPicture"
-                android:fontFamily="@font/amaranth_bold_italic"
                 android:text="@string/name"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="@dimen/list_item_text_size_big"
@@ -51,7 +50,6 @@
                 android:layout_marginLeft="@dimen/list_item_margin_small_03"
                 android:layout_marginTop="@dimen/list_item_margin_small_05"
                 android:layout_toRightOf="@+id/imageViewStudentSimpleListItemPicture"
-                android:fontFamily="@font/amaranth_italic"
                 android:text="@string/city"
                 android:textSize="@dimen/list_item_text_size_medium"
                 android:layout_toEndOf="@+id/imageViewStudentSimpleListItemPicture" />

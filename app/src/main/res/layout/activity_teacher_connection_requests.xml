@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.teacher_activities.TeacherConnectionRequestsActivity">
+
+    <TextView
+        android:id="@+id/textViewTeacherConnectionRequestsHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="60dp"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:text="@string/connection_requests"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/main_headers" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutTeacherConnectionRequestsFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewTeacherConnectionRequestsHeader"
+        android:layout_marginLeft="0dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/filter_by"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/spinnerTeacherConnectionRequestsFilter"
+            android:layout_width="38dp"
+            android:layout_height="25dp">
+
+        </Spinner>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textViewTeacherConnectionRequestsFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:layout_below="@+id/linearLayoutTeacherConnectionRequestsFilter"
+        android:layout_marginLeft="0dp"
+        android:layout_marginStart="15dp"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="13sp" />
+
+    <EditText
+        android:id="@+id/editTextTeacherConnectionRequestsFilter"
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewTeacherConnectionRequestsFilter"
+        android:layout_marginLeft="0dp"
+        android:layout_marginStart="14dp"
+        android:fontFamily="sans-serif-condensed"
+        android:hint="@string/enter_value"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="13sp" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayoutTeacherConnectionRequestsSort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewTeacherConnectionRequestsHeader"
+        android:layout_marginLeft="0dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@+id/linearLayoutTeacherConnectionRequestsFilter"
+        android:orientation="vertical"
+        android:layout_toEndOf="@+id/linearLayoutTeacherConnectionRequestsFilter">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:text="@string/sort_by"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/spinnerTeacherConnectionRequestsSort"
+                android:layout_width="38dp"
+                android:layout_height="25dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewTeacherConnectionRequestsSort"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="5dp"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="13sp" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linearLayoutTeacherConnectionRequestsSort"
+        android:layout_toRightOf="@+id/editTextTeacherConnectionRequestsFilter"
+        android:layout_marginStart="35dp"
+        android:layout_marginLeft="0dp"
+        android:layout_toEndOf="@+id/editTextTeacherConnectionRequestsFilter">
+
+        <Switch
+            android:id="@+id/switchStudentTeacherConnectionRequestsSortOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="13sp"
+            android:text="@string/sort_ascending" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sort_descending"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="13sp"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonTeacherConnectionRequestsApply"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_below="@id/textViewTeacherConnectionRequestsHeader"
+        android:layout_marginLeft="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/linearLayoutTeacherConnectionRequestsSort"
+        android:text="@string/apply"
+        android:layout_toEndOf="@id/linearLayoutTeacherConnectionRequestsSort"
+        android:background="@drawable/rounded_button"
+        android:textColor="@color/colorButtonText"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/editTextTeacherConnectionRequestsFilter">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewTeacherConnectionRequests"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textViewTeacherConnectionRequestsNoRequests"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:text="@string/no_connection_requests"
+        android:textSize="32sp" />
+
+    <FrameLayout
+        android:id="@+id/frameTeacherConnectionRequests"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" >
+
+    </FrameLayout>
+
+</RelativeLayout>

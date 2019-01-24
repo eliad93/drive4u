@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+tools:context=".activities.student_activities.StudentChooseTeacherActivity"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/colorWhite">
+
+<de.hdodenhof.circleimageview.CircleImageView
+    android:id="@+id/imageStudentChooseTeacher"
+    android:layout_width="85dp"
+    android:layout_height="85dp"
+    android:layout_centerHorizontal="true"
+    android:paddingTop="@dimen/nav_header_vertical_spacing"
+    app:srcCompat="@mipmap/ic_launcher_round"
+    android:src="@mipmap/ic_launcher"
+    android:background="@mipmap/ic_launcher"
+    android:layout_marginTop="@dimen/activity_vertical_margin" />
+
+<TextView
+    android:id="@+id/textViewStudentChooseTeacherName"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/vertical_margin_medium"
+    android:layout_marginStart="@dimen/horizontal_margin_medium"
+    android:layout_below="@id/imageStudentChooseTeacher"
+    android:textSize="@dimen/text_size_medium"
+    android:text="teacher name"
+    android:layout_marginLeft="@dimen/horizontal_margin_medium" />
+
+<TextView
+    android:id="@+id/textViewStudentChooseTeacherCity"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/vertical_margin_medium"
+    android:layout_marginStart="@dimen/horizontal_margin_medium"
+    android:layout_below="@id/textViewStudentChooseTeacherName"
+    android:textSize="@dimen/text_size_medium"
+    android:text="teacher city"
+    android:layout_marginLeft="@dimen/horizontal_margin_medium" />
+
+<TextView
+    android:id="@+id/textViewStudentChooseTeacherNumStudents"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/vertical_margin_medium"
+    android:layout_marginStart="@dimen/horizontal_margin_medium"
+    android:layout_below="@id/textViewStudentChooseTeacherCity"
+    android:textSize="@dimen/text_size_medium"
+    android:text="@string/number_of_students"
+    android:layout_marginLeft="@dimen/horizontal_margin_medium" />
+
+<TextView
+    android:id="@+id/textViewStudentChooseTeacherGear"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/vertical_margin_medium"
+    android:layout_marginStart="@dimen/horizontal_margin_medium"
+    android:layout_below="@id/textViewStudentChooseTeacherNumStudents"
+    android:textSize="@dimen/text_size_medium"
+    android:text="@string/gear_type_title"
+    android:layout_marginLeft="@dimen/horizontal_margin_medium" />
+
+<TextView
+    android:id="@+id/textViewStudentChooseTeacherCar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/vertical_margin_medium"
+    android:layout_marginStart="@dimen/horizontal_margin_medium"
+    android:layout_below="@id/textViewStudentChooseTeacherGear"
+    android:textSize="@dimen/text_size_medium"
+    android:text="car model:"
+    android:layout_marginLeft="@dimen/horizontal_margin_medium" />
+
+<Button
+    android:id="@+id/buttonStudentChooseTeacher"
+    android:layout_width="@dimen/big_buttons_width"
+    android:layout_height="@dimen/big_buttons_height"
+    android:layout_centerHorizontal="true"
+    android:layout_alignParentBottom="true"
+    android:layout_marginBottom="@dimen/vertical_margin_large"
+    android:text="@string/choose_teacher"
+    android:background="@color/colorButtonBackground"
+    android:textColor="@color/colorButtonText"/>
+
+</RelativeLayout>

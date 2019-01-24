@@ -19,6 +19,15 @@
             android:layout_centerHorizontal="true"
             android:src="@mipmap/ic_user_round" />
 
+        <ImageView
+            android:id="@+id/imageViewEditPhoto"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/profile_image"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content"
+            app:srcCompat="@mipmap/ic_edit_photo_round"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

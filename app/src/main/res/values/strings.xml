@@ -260,5 +260,22 @@
     <string name="decline">Decline</string>
     <string name="enter_value">Enter value</string>
     <string name="no_notifications_msg">You have no notifications to show</string>
+    <string name="choose_teacher">choose teacher</string>
+    <string name="student_pending_connection_request_title">Waiting for teacher response</string>
+    <string name="student_pending_connection_request_message">Connection Request to a teacher pending</string>
+    <string name="students">students: %1$d</string>
+    <string name="status">Status</string>
+    <string name="when">When</string>
+    <string name="where">Where</string>
+    <string name="summary_not_summarized">Summary: not summarized</string>
+    <string name="grade_not_graded">Grade: not graded</string>
+    <string name="lesson_summary_header">Lesson Summary</string>
+    <string name="date">Date: N/A</string>
+    <string name="start_location">Start location" N/A</string>
+    <string name="end_location">End location: N/A</string>
+    <string name="summary">Summary: not summarized yet</string>
+    <string name="my_teacher">My Teacher</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="response">Response</string>
 
 </resources>

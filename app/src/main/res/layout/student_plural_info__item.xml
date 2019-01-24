@@ -6,8 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/recycler_view_row_height"
-    android:orientation="horizontal">
-
+    android:orientation="horizontal"
+    android:background="@drawable/rounded_boarder_line">
 
     <TextView
         android:id="@+id/StudentPluralInfoItemFirstName"
@@ -60,8 +60,8 @@
 
     <ImageView
         android:id="@+id/imageViewPhone"
-        android:layout_width="47dp"
-        android:layout_height="50dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
@@ -83,4 +83,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_user_foreground" />
+
+    <ImageView
+        android:id="@+id/imageViewMessage"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewPhone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_message_foreground" />
 </android.support.constraint.ConstraintLayout>

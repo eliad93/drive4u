@@ -1,71 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/recycler_view_row_height"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/list_item_padding"
+    android:background="@color/colorRegistrationFormFieldBorder">
 
-    <TextView
-        android:id="@+id/LessonWhen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardViewRecyclerViewLessonItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/LessonWhere"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@id/nav_header_image"
-        app:layout_constraintTop_toBottomOf="@id/LessonWhen" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/list_item_padding">
 
-    <ImageView
-        android:id="@+id/nav_header_image"
-        android:layout_width="25dp"
-        android:layout_height="22dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LessonWhen"
-        app:srcCompat="@mipmap/ic_location_foreground" />
+            <TextView
+                android:id="@+id/textViewRecyclerViewLessonItemWhen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_alignParentLeft="true"
+                android:text="@string/where"
+                android:layout_marginLeft="@dimen/horizontal_margin_small"
+                android:layout_marginStart="@dimen/horizontal_margin_small"
+                android:layout_marginTop="@dimen/vertical_margin_X_small"
+                android:layout_toLeftOf="@id/textViewRecyclerViewLessonItemStatus"
+                android:layout_toStartOf="@id/textViewRecyclerViewLessonItemStatus"
+                android:layout_alignParentStart="true" />
 
-    <TextView
-        android:id="@+id/LessonStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="8dp"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nav_header_image" />
+            <TextView
+                android:id="@+id/textViewRecyclerViewLessonItemWhere"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="@string/when"
+                android:layout_below="@id/textViewRecyclerViewLessonItemWhen"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@id/textViewRecyclerViewLessonItemStatus"
+                android:layout_marginLeft="@dimen/horizontal_margin_small"
+                android:layout_marginStart="@dimen/horizontal_margin_small"
+                android:layout_marginTop="@dimen/vertical_margin_small"
+                android:layout_toStartOf="@id/textViewRecyclerViewLessonItemStatus"
+                android:layout_alignParentStart="true" />
 
-    <ImageButton
-        android:id="@+id/editButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|top"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+            <TextView
+                android:id="@+id/textViewRecyclerViewLessonItemStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_toLeftOf="@id/imageButtonRecyclerViewLessonItem"
+                android:text="@string/status"
+                android:layout_marginLeft="@dimen/horizontal_margin_small"
+                android:layout_marginStart="@dimen/horizontal_margin_small"
+                android:layout_marginTop="@dimen/vertical_margin_X_small"
+                android:layout_toStartOf="@id/imageButtonRecyclerViewLessonItem"
+                android:layout_marginRight="@dimen/horizontal_margin_small"
+                android:layout_marginEnd="@dimen/horizontal_margin_small" />
 
-</android.support.constraint.ConstraintLayout>
+            <ImageButton
+                android:id="@+id/imageButtonRecyclerViewLessonItem"
+                android:layout_width="@dimen/list_item_image_size_medium"
+                android:layout_height="@dimen/list_item_image_size_medium"
+                android:layout_marginTop="@dimen/vertical_margin_X_small"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/horizontal_margin_small"
+                android:src="@android:drawable/ic_menu_edit"
+                tools:ignore="ContentDescription"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/horizontal_margin_small" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
