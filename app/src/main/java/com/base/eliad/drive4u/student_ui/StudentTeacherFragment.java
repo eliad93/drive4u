@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.base.eliad.drive4u.models.Student;
@@ -77,6 +79,8 @@ public class StudentTeacherFragment extends StudentBaseFragment {
         textViewCarModel = view.findViewById(R.id.StudentTeacherProfileCarModel);
         textViewGearType = view.findViewById(R.id.StudentTeacherProfileGearType);
         textViewPrice = view.findViewById(R.id.StudentTeacherProfilePrice);
+        ImageView imageView = view.findViewById(R.id.imageViewEditPhoto);
+        imageView.setVisibility(View.GONE);
     }
     private void updateProfile() {
         username.setText(mTeacher.getFullName());

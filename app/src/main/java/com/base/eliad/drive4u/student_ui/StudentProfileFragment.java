@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ public class StudentProfileFragment extends StudentBaseFragment {
     CircleImageView image_profile;
     TextView username;
     private ImageButton editBtn;
+    private ImageView editPicBtn;
     private TextView textViewPhoneNumber, textViewEmail, textViewCity;
 
     private EditText editTextName, editTextPhone, editTextCity;
@@ -84,6 +86,7 @@ public class StudentProfileFragment extends StudentBaseFragment {
                 container, false);
         // init text views
         image_profile           = view.findViewById(R.id.profile_image);
+        editPicBtn              = view.findViewById(R.id.imageViewEditPhoto);
         username                = view.findViewById(R.id.profile_username);
         isEditMode = false;
         editBtn = view.findViewById(R.id.student_imageButtonEdit);
@@ -97,7 +100,7 @@ public class StudentProfileFragment extends StudentBaseFragment {
         // set the content
         updateInfo();
 
-        image_profile.setOnClickListener(new View.OnClickListener() {
+        editPicBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openImage();
@@ -239,6 +242,7 @@ public class StudentProfileFragment extends StudentBaseFragment {
     }
 
     private void openImage() {
+
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);

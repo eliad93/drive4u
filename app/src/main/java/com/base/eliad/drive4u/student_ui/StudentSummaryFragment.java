@@ -28,8 +28,12 @@ import com.base.eliad.drive4u.adapters.StudentHomeLessonsAdapter;
 import com.base.eliad.drive4u.built_in_utils.BorderLineDividerItemDecoration;
 import com.base.eliad.drive4u.fragments.TimePickerFragment;
 import com.base.eliad.drive4u.models.Lesson;
+import com.base.eliad.drive4u.models.Student;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -37,6 +41,8 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.Calendar;
 import java.util.LinkedList;
+
+import javax.annotation.Nullable;
 
 public class StudentSummaryFragment extends StudentBaseFragment implements
         StudentHomeLessonsAdapter.OnItemClickListener,
@@ -64,6 +70,8 @@ public class StudentSummaryFragment extends StudentBaseFragment implements
     private TextView hourUpdateDialog;
     private TextView startingLocationUpdateDialog;
     private TextView endingLocationUpdateDialog;
+    private TextView teacherRequestTitle;
+    private TextView teacherRequest;
     private Button update;
     private Button timePicker;
     private Button datePicker;
@@ -93,17 +101,58 @@ public class StudentSummaryFragment extends StudentBaseFragment implements
         textViewBalance = view.findViewById(R.id.textViewBalance);
         textViewLessonsCompleted = view.findViewById(R.id.textViewLessonsCompleted);
         textViewNoLessons = view.findViewById(R.id.textViewNoLessons);
+        teacherRequestTitle = view.findViewById(R.id.textViewTeacherStatusTitle);
+        teacherRequest      = view.findViewById(R.id.textViewTeacherStatus);
+
 
         String text = Integer.toString(mStudent.getBalance());
         textViewBalance.setText(text);
-        text = Integer.toString(mStudent.getNumberOfLessons());  // TODO: fix to the correct number
+        text = Integer.toString(mStudent.getNumberOfLessons());
         textViewLessonsCompleted.setText(text);
 
         initLessonsRecyclerView();
 
-        updateLessonsView();
+        updatePage();
 
+        db.collection("Students")
+                .document(mStudent.getID())
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.d(TAG, "Listen failed " + e);
+                            return;
+                        }
+                        if (documentSnapshot != null && documentSnapshot.exists()) {
+
+                            mStudent = documentSnapshot.toObject(Student.class);
+
+                            if (getActivity() != null) {
+                                updatePage();
+
+                            }
+
+                        }
+                    }
+                });
         return view;
+    }
+
+    private void updatePage() {
+        updateLessonsView();
+        manageTeacherRequestStatus();
+        updateLessonsView();
+    }
+
+    private void manageTeacherRequestStatus() {
+        if (mStudent.getRequest().equals(Student.ConnectionRequestStatus.ACCEPTED.getUserMessage())) {
+            teacherRequest.setVisibility(View.GONE);
+            teacherRequestTitle.setVisibility(View.GONE);
+        } else {
+            teacherRequest.setVisibility(View.VISIBLE);
+            teacherRequestTitle.setVisibility(View.VISIBLE);
+            teacherRequest.setText(mStudent.getRequest());
+        }
     }
 
     private void updateLessonsView() {

@@ -28,16 +28,26 @@ import com.base.eliad.drive4u.adapters.ViewPagerAdapter;
 import com.base.eliad.drive4u.base_activities.StudentBaseActivity;
 import com.base.eliad.drive4u.chat.MainChatActivity;
 import com.base.eliad.drive4u.fragments.student_fragments.StudentNotificationFragment;
+import com.base.eliad.drive4u.models.Student;
+import com.base.eliad.drive4u.models.Teacher;
 import com.base.eliad.drive4u.models.UserAction;
 import com.base.eliad.drive4u.models.User;
 import com.base.eliad.drive4u.student_ui.StudentDashboardFragment;
 import com.base.eliad.drive4u.student_ui.StudentProfileFragment;
 import com.base.eliad.drive4u.student_ui.StudentSummaryFragment;
+import com.base.eliad.drive4u.student_ui.StudentTeacherFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+
+import javax.annotation.Nullable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -112,6 +122,7 @@ public class StudentMainActivity extends StudentBaseActivity
 
             }
         });
+
         addNotificationsBadgeView();
     }
 
@@ -197,6 +208,33 @@ public class StudentMainActivity extends StudentBaseActivity
                 isAtHome = false;
                 break;
 
+            case R.id.student_nav_teacher_info:
+                if (mStudent.getRequest().equals(Student.ConnectionRequestStatus.NOT_YET.getUserMessage())) {
+                    Toast.makeText(this, "You must chose a teacher first", Toast.LENGTH_SHORT).show();
+                } else {
+                    db.collection("Teachers")
+                            .document(mStudent.getTeacherId())
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        if (task.getResult() != null && task.getResult().exists()) {
+                                            Teacher t = task.getResult().toObject(Teacher.class);
+                                            Fragment f = StudentTeacherFragment.newInstance(t);
+                                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                                            ft.replace(R.id.student_content_frame, f);
+                                            ft.commit();
+                                        } else {
+                                            Log.d(TAG, "Could not get the teacher");
+                                        }
+                                    } else {
+                                        Log.d(TAG, "Could not get the teacher for my teacher fragment");
+                                    }
+                                }
+                            });
+                }
+                break;
             default:
                 // TODO: add to the following isAtHome = false for back pressed.
                 Toast.makeText(this,
