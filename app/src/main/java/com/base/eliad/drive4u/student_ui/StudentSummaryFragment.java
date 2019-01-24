@@ -40,6 +40,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.jetbrains.annotations.Contract;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.LinkedList;
 
 import javax.annotation.Nullable;
@@ -101,6 +102,9 @@ public class StudentSummaryFragment extends StudentBaseFragment implements
         textViewBalance = view.findViewById(R.id.textViewBalance);
         textViewLessonsCompleted = view.findViewById(R.id.textViewLessonsCompleted);
         textViewNoLessons = view.findViewById(R.id.textViewNoLessons);
+        textViewNoLessons.setVisibility(View.GONE);
+        textViewNoLessons.setText(R.string.you_have_no_lessons);
+
         teacherRequestTitle = view.findViewById(R.id.textViewTeacherStatusTitle);
         teacherRequest      = view.findViewById(R.id.textViewTeacherStatus);
 
@@ -109,9 +113,7 @@ public class StudentSummaryFragment extends StudentBaseFragment implements
         textViewBalance.setText(text);
         text = Integer.toString(mStudent.getNumberOfLessons());
         textViewLessonsCompleted.setText(text);
-
         initLessonsRecyclerView();
-
         updatePage();
 
         db.collection("Students")
@@ -156,8 +158,9 @@ public class StudentSummaryFragment extends StudentBaseFragment implements
     }
 
     private void updateLessonsView() {
-        Log.d(TAG, "in presentNextLessons");
-        lessons = new LinkedList<>();
+        Log.d(TAG, "in updateLessonsView");
+        lessons.clear();
+        mAdapter.notifyDataSetChanged();
         db.collection(getString(R.string.DB_Lessons))
                 .whereEqualTo("studentUID", mStudent.getID())
                 .get()
@@ -167,19 +170,18 @@ public class StudentSummaryFragment extends StudentBaseFragment implements
                         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                             Log.d(TAG, "received document " + document.getId());
                             Lesson lesson = document.toObject(Lesson.class);
-                            if (lesson.getConformationStatus() != Lesson.Status.S_CANCELED) {
-                                lessons.addLast(lesson);
+                            lesson.setLessonID(document.getId());
+                            if(!lessons.contains(lesson)){
+                                if (lesson.getConformationStatus() != Lesson.Status.S_CANCELED) {
+                                    lessons.addLast(lesson);
+                                    mAdapter.notifyDataSetChanged();
+                                }
                             }
                         }
                         if (lessons.size() > 0) {
-                            mAdapter = new StudentHomeLessonsAdapter(lessons);
-                            ((StudentHomeLessonsAdapter) mAdapter)
-                                    .setOnItemClickListener(StudentSummaryFragment.this);
-                            mRecyclerView.setAdapter(mAdapter);
+                            textViewNoLessons.setVisibility(View.GONE);
                         } else {
-                            Log.d(TAG, "Student " + mStudent.getEmail() + " has no lessons to present");
                             textViewNoLessons.setVisibility(View.VISIBLE);
-                            textViewNoLessons.setText(R.string.you_have_no_lessons);
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -197,6 +199,8 @@ public class StudentSummaryFragment extends StudentBaseFragment implements
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addItemDecoration(new BorderLineDividerItemDecoration(getContext()));
+        mAdapter = new StudentHomeLessonsAdapter(lessons);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
