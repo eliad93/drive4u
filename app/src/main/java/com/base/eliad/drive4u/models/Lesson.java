@@ -201,4 +201,15 @@ public class Lesson implements Parcelable {
         dest.writeString(conformationStatus.name());
         dest.writeParcelable(summary, flags);
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(this.lessonID == null){
+            return false;
+        }
+        if(!(o instanceof Lesson)){
+            return false;
+        }
+        return lessonID.equals(((Lesson) o).lessonID);
+    }
 }
