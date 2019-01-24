@@ -153,6 +153,8 @@
     android:layout_marginTop="10dp"
     android:layout_toRightOf="@id/linearLayoutStudentSearchSort"
     android:text="@string/apply"
+    android:background="@drawable/rounded_button"
+    android:textColor="@color/colorButtonText"
     android:layout_toEndOf="@id/linearLayoutStudentSearchSort" />
 
 <LinearLayout

@@ -12,12 +12,13 @@
         android:id="@+id/textViewLessonsCompletedTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:text="@string/lessons_completed"
         app:layout_constraintEnd_toStartOf="@+id/textViewLessonsCompleted"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/textViewBalance"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTeacherStatus" />
 
     <TextView
         android:id="@+id/textViewLessonsCompleted"
@@ -26,9 +27,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:text="@string/empty"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTeacherStatus" />
 
     <TextView
         android:id="@+id/textViewBalance"
@@ -38,7 +38,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toEndOf="@+id/textViewBalanceTitle"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTeacherStatus" />
 
     <TextView
         android:id="@+id/textViewBalanceTitle"
@@ -49,34 +49,33 @@
         android:layout_marginTop="16dp"
         android:text="@string/balance"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTeacherStatus" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewNextLessons"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_height="498dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/border_line"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewLessonsCompletedTitle" />
 
     <TextView
         android:id="@+id/textViewNoLessons"
         android:layout_width="wrap_content"
-        android:layout_height="4dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:textSize="24sp"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.46"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewBalanceTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewLessonsCompletedTitle" />
 
     <FrameLayout
         android:id="@+id/frameLayoutHome"
@@ -94,5 +93,26 @@
         app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/textViewTeacherStatusTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/teacher_request_status"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewTeacherStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTeacherStatusTitle" />
 
 </android.support.constraint.ConstraintLayout>

@@ -25,6 +25,11 @@
             android:title="@string/nav_teachers" />
 
         <item
+            android:id="@+id/student_nav_teacher_info"
+            android:icon="@mipmap/ic_seat_foreground"
+            android:title="@string/my_teacher"/>
+
+        <item
             android:id="@+id/student_nav_profile"
             android:icon="@mipmap/ic_user_foreground"
             android:title="@string/profile" />
