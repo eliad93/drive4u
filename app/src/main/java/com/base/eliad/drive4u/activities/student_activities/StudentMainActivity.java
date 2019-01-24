@@ -33,12 +33,14 @@ import com.base.eliad.drive4u.models.Teacher;
 import com.base.eliad.drive4u.models.UserAction;
 import com.base.eliad.drive4u.models.User;
 import com.base.eliad.drive4u.student_ui.StudentDashboardFragment;
-import com.base.eliad.drive4u.student_ui.StudentProfileFragment;
 import com.base.eliad.drive4u.student_ui.StudentSummaryFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
@@ -248,11 +250,7 @@ public class StudentMainActivity extends StudentBaseActivity
                 break;
         }
 
-        if (fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.student_content_frame, fragment);
-            ft.commit();
-        } else if (intent != null) {
+        if (intent != null) {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }

@@ -122,7 +122,8 @@
         <activity
             android:name=".activities.ResetPasswordActivity"
             android:launchMode="singleTask"
-            android:parentActivityName=".activities.LoginActivity" />
+            android:parentActivityName=".activities.LoginActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
