@@ -15,9 +15,9 @@ import android.widget.Toast;
 
 import com.base.eliad.drive4u.R;
 import com.base.eliad.drive4u.activities.LoginActivity;
+import com.base.eliad.drive4u.activities.teacher_activities.TeacherHomeActivity;
 import com.base.eliad.drive4u.models.Chat;
 import com.base.eliad.drive4u.activities.student_activities.StudentMainActivity;
-import com.base.eliad.drive4u.teacher_ui.TeacherMainActivity;
 import com.base.eliad.drive4u.adapters.ViewPagerAdapter;
 import com.base.eliad.drive4u.models.Student;
 import com.base.eliad.drive4u.models.Teacher;
@@ -103,8 +103,8 @@ public class MainChatActivity extends AppCompatActivity {
                 } else {
                     // instanceof Teacher
                     intent = new Intent(MainChatActivity.this,
-                            TeacherMainActivity.class);
-                    intent.putExtra(TeacherMainActivity.ARG_TEACHER, mUser);
+                            TeacherHomeActivity.class);
+                    intent.putExtra(TeacherHomeActivity.ARG_TEACHER, mUser);
                 }
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

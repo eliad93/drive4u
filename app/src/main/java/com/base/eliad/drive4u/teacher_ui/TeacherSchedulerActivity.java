@@ -11,6 +11,7 @@ import android.os.Bundle;
 import com.base.eliad.drive4u.R;
 import com.base.eliad.drive4u.adapters.TeacherChooseStudentLessonAdapter;
 import com.base.eliad.drive4u.base_activities.TeacherBaseActivity;
+import com.base.eliad.drive4u.base_activities.TeacherBaseNavigationActivity;
 import com.base.eliad.drive4u.built_in_utils.BorderLineDividerItemDecoration;
 import com.base.eliad.drive4u.models.Lesson;
 import com.base.eliad.drive4u.models.Student;
@@ -43,7 +44,7 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TeacherSchedulerActivity extends TeacherBaseActivity
+public class TeacherSchedulerActivity extends TeacherBaseNavigationActivity
         implements TeacherChooseStudentLessonAdapter.OnItemClickListener{
     private static final String TAG = TeacherSchedulerActivity.class.getSimpleName();
     private RelativeLayout mLayout;

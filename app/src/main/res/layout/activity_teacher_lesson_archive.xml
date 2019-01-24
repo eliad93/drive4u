@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.student_activities.StudentLessonsArchiveActivity">
+    android:layout_marginTop="?attr/actionBarSize"
+    tools:context=".activities.teacher_activities.TeacherLessonArchiveActivity">
 
-<TextView
-    android:id="@+id/textViewStudentLessonsArchiveHeader"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:layout_marginTop="60dp"
-    android:fontFamily="sans-serif-condensed"
-    android:gravity="center"
-    android:text="@string/lessons_archive_activity_header"
-    android:textColor="@color/colorPrimaryDark"
-    android:textSize="@dimen/main_headers" />
+    <TextView
+        android:id="@+id/textViewStudentLessonsArchiveHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="60dp"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:text="@string/lessons_archive_activity_header"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/main_headers" />
 
     <LinearLayout
         android:id="@+id/linearLayoutStudentLessonsArchiveFilter"

@@ -17,11 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.base.eliad.drive4u.R;
+import com.base.eliad.drive4u.activities.teacher_activities.TeacherHomeActivity;
 import com.base.eliad.drive4u.base_activities.TeacherBaseActivity;
 import com.base.eliad.drive4u.fragments.UnexpectedErrorDialog;
 import com.base.eliad.drive4u.registration.RegistrationMainActivity;
 import com.base.eliad.drive4u.activities.student_activities.StudentMainActivity;
-import com.base.eliad.drive4u.teacher_ui.TeacherMainActivity;
 import com.base.eliad.drive4u.models.Student;
 import com.base.eliad.drive4u.models.Teacher;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -213,7 +213,7 @@ public class LoginActivity extends AppCompatActivity {
                     assert document != null;
                     if(document.exists()){
                         Intent intent = new Intent(getApplicationContext(),
-                                TeacherMainActivity.class);
+                                TeacherHomeActivity.class);
                         Teacher teacher = document.toObject(Teacher.class);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         Gson gson = new Gson();

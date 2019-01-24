@@ -1,26 +1,24 @@
-package com.base.eliad.drive4u.teacher_ui;
-
+package com.base.eliad.drive4u.activities.teacher_activities;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.base.eliad.drive4u.R;
 import com.base.eliad.drive4u.adapters.TeacherConnectionRequestsAdapter;
+import com.base.eliad.drive4u.base_activities.TeacherBaseNavigationActivity;
 import com.base.eliad.drive4u.models.Student;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FieldValue;
@@ -30,16 +28,12 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.util.LinkedList;
 
-/**
- * A simple {@link TeacherBaseFragment} subclass.
- * Use the {@link TeacherConnectionRequestsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class TeacherConnectionRequestsFragment extends TeacherBaseFragment
+public class TeacherConnectionRequestsActivity extends TeacherBaseNavigationActivity
         implements AdapterView.OnItemSelectedListener, View.OnClickListener,
         TeacherConnectionRequestsAdapter.OnRequestClickListener {
+
     // Tag for the Log
-    private static final String TAG = TeacherConnectionRequestsFragment.class.getName();
+    private static final String TAG = TeacherConnectionRequestsActivity.class.getName();
     // RecyclerView items
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -63,65 +57,46 @@ public class TeacherConnectionRequestsFragment extends TeacherBaseFragment
     private String mFilterSelectedValueStr;
     private LinkedList<Student> presentedRequests;
 
-    public TeacherConnectionRequestsFragment() {
-        // Required empty public constructor
-    }
-
-    public static TeacherConnectionRequestsFragment newInstance() {
-        return new TeacherConnectionRequestsFragment();
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+        setContentView(R.layout.activity_teacher_connection_requests);
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_teacher_connection_requests,
-                container, false);
-        initWidgets(view);
+        initWidgets();
         presentAllRequests();
-        return view;
     }
 
-    private void initWidgets(View view) {
-        textViewNoRequests = view.findViewById(R.id.textViewTeacherConnectionRequestsNoRequests);
+    private void initWidgets() {
+        textViewNoRequests = findViewById(R.id.textViewTeacherConnectionRequestsNoRequests);
         textViewNoRequests.setVisibility(View.GONE);
-        initSpinners(view);
-        initRecyclerView(view);
+        initSpinners();
+        initRecyclerView();
     }
 
-    private void initSpinners(View view) {
-        mSortSelectedTextView = view.findViewById(R.id.textViewTeacherConnectionRequestsSort);
-        mFilterSelectedTextView = view.findViewById(R.id.textViewTeacherConnectionRequestsFilter);
-        mFilterSelectedEditText = view.findViewById(R.id.editTextTeacherConnectionRequestsFilter);
-        mFilterSpinner = view.findViewById(R.id.spinnerTeacherConnectionRequestsFilter);
-        mSortSpinner = view.findViewById(R.id.spinnerTeacherConnectionRequestsSort);
-        mApplyButton = view.findViewById(R.id.buttonTeacherConnectionRequestsApply);
-        mSortSwitch = view.findViewById(R.id.switchStudentTeacherConnectionRequestsSortOrder);
+    private void initSpinners() {
+        mSortSelectedTextView = findViewById(R.id.textViewTeacherConnectionRequestsSort);
+        mFilterSelectedTextView = findViewById(R.id.textViewTeacherConnectionRequestsFilter);
+        mFilterSelectedEditText = findViewById(R.id.editTextTeacherConnectionRequestsFilter);
+        mFilterSpinner = findViewById(R.id.spinnerTeacherConnectionRequestsFilter);
+        mSortSpinner = findViewById(R.id.spinnerTeacherConnectionRequestsSort);
+        mApplyButton = findViewById(R.id.buttonTeacherConnectionRequestsApply);
+        mSortSwitch = findViewById(R.id.switchStudentTeacherConnectionRequestsSortOrder);
         //sort spinner
-        Context context = getContext();
-        if(context != null){
-            ArrayAdapter sortAdapter = ArrayAdapter.createFromResource(getContext(),
-                    R.array.teacher_connection_requests_sort_categories,
-                    android.R.layout.simple_spinner_item);
-            sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            mSortSpinner.setAdapter(sortAdapter);
-            mSortSpinner.setOnItemSelectedListener(this);
-            //filter spinner
-            ArrayAdapter filterAdapter = ArrayAdapter.createFromResource(getContext(),
-                    R.array.teacher_connection_requests_filter_categories,
-                    android.R.layout.simple_spinner_item);
-            filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            mFilterSpinner.setAdapter(filterAdapter);
-            mFilterSpinner.setOnItemSelectedListener(this);
+        ArrayAdapter sortAdapter = ArrayAdapter.createFromResource(this,
+                R.array.teacher_connection_requests_sort_categories,
+                android.R.layout.simple_spinner_item);
+        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSortSpinner.setAdapter(sortAdapter);
+        mSortSpinner.setOnItemSelectedListener(this);
+        //filter spinner
+        ArrayAdapter filterAdapter = ArrayAdapter.createFromResource(this,
+                R.array.teacher_connection_requests_filter_categories,
+                android.R.layout.simple_spinner_item);
+        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mFilterSpinner.setAdapter(filterAdapter);
+        mFilterSpinner.setOnItemSelectedListener(this);
 
-            mApplyButton.setOnClickListener(this);
-        } else {
-            unexpectedError();
-        }
+        mApplyButton.setOnClickListener(this);
     }
 
     private void presentAllRequests() {
@@ -143,9 +118,9 @@ public class TeacherConnectionRequestsFragment extends TeacherBaseFragment
                     presentedRequests = new LinkedList<>();
                     presentedRequests.addAll(studentsRequests);
                     mAdapter = new TeacherConnectionRequestsAdapter(presentedRequests,
-                            getContext());
+                            TeacherConnectionRequestsActivity.this);
                     ((TeacherConnectionRequestsAdapter) mAdapter)
-                            .setOnRequestListener(TeacherConnectionRequestsFragment.this);
+                            .setOnRequestListener(TeacherConnectionRequestsActivity.this);
                     mRecyclerView.setAdapter(mAdapter);
                 }
             }
@@ -195,11 +170,11 @@ public class TeacherConnectionRequestsFragment extends TeacherBaseFragment
 //        }
     }
 
-    private void initRecyclerView(View view) {
+    private void initRecyclerView() {
         Log.d(TAG, "in initializeRecyclerView");
-        mRecyclerView = view.findViewById(R.id.recyclerViewTeacherConnectionRequests);
+        mRecyclerView = findViewById(R.id.recyclerViewTeacherConnectionRequests);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
@@ -231,16 +206,16 @@ public class TeacherConnectionRequestsFragment extends TeacherBaseFragment
             batch.update(getStudentDoc(selectedStudent),
                     "teacherId", null);
             batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            selectedStudent.setRequest(connectionRequestStatus.getUserMessage());
-                            selectedStudent.setTeacherId(null);
-                            presentedRequests.remove(selectedStudent);
-                            mTeacher.removeConnectionRequest(selectedStudent.getID());
-                            mAdapter.notifyDataSetChanged();
-                            writeTeacherToSharedPreferences();
-                        }
-                    });
+                @Override
+                public void onSuccess(Void aVoid) {
+                    selectedStudent.setRequest(connectionRequestStatus.getUserMessage());
+                    selectedStudent.setTeacherId(null);
+                    presentedRequests.remove(selectedStudent);
+                    mTeacher.removeConnectionRequest(selectedStudent.getID());
+                    mAdapter.notifyDataSetChanged();
+                    writeTeacherToSharedPreferences();
+                }
+            });
         }
     }
 }

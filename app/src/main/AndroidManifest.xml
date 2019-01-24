@@ -16,7 +16,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.student_activities.StudentLessonsArchiveActivity"></activity>
+
+        <activity android:name=".activities.teacher_activities.TeacherLessonArchiveActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask" />
+
+        <activity android:name=".activities.teacher_activities.TeacherStudentsActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activities.teacher_activities.TeacherConnectionRequestsActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activities.teacher_activities.TeacherProfileActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activities.teacher_activities.TeacherHomeActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"  />
+
+        <activity android:name=".activities.student_activities.StudentLessonsArchiveActivity" />
         <activity android:name=".activities.student_activities.StudentChooseTeacherActivity" />
         <activity android:name=".activities.student_activities.StudentSearchTeacherActivity" />
         <activity
@@ -48,11 +72,6 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity
-            android:name=".teacher_ui.TeacherMainActivity"
-            android:label="@string/title_activity_main"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.student_activities.StudentMainActivity"
             android:label="@string/title_activity_student_main"
@@ -86,6 +105,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.ResetPasswordActivity"
+            android:launchMode="singleTask"
             android:parentActivityName=".activities.LoginActivity" />
     </application>
 

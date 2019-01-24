@@ -22,8 +22,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.base.eliad.drive4u.R;
+import com.base.eliad.drive4u.activities.teacher_activities.TeacherHomeActivity;
 import com.base.eliad.drive4u.base_activities.TeacherBaseActivity;
-import com.base.eliad.drive4u.teacher_ui.TeacherMainActivity;
 import com.base.eliad.drive4u.models.Teacher;
 import com.base.eliad.drive4u.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -229,8 +229,8 @@ public class TeacherRegistrationFragment extends Fragment
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "firestore teacher created successfully");
                         Intent intent = new Intent(getContext(),
-                                TeacherMainActivity.class);
-                        intent.putExtra(TeacherMainActivity.ARG_TEACHER, newTeacher);
+                                TeacherHomeActivity.class);
+                        intent.putExtra(TeacherHomeActivity.ARG_TEACHER, newTeacher);
                         getActivity().finish();
                         startActivity(intent);
                     }

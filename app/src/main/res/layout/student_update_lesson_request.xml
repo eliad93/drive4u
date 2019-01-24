@@ -37,13 +37,15 @@
             android:layout_marginStart="64dp" />
         <Button
             android:id="@+id/date_picker"
-            android:layout_width="80dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/date_picker"
             android:textSize="10dp"
             android:gravity="end"
             android:layout_marginRight="15dp"
-            android:layout_marginEnd="15dp" />
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/rounded_button"
+            android:textColor="@color/colorButtonText"/>
 
 
 
@@ -74,13 +76,16 @@
 
         <Button
             android:id="@+id/time_picker"
-            android:layout_width="80dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/time_picker"
             android:textSize="10dp"
             android:gravity="end"
             android:layout_marginRight="15dp"
-            android:layout_marginEnd="15dp" />
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/rounded_button"
+            android:textColor="@color/colorButtonText"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -136,6 +141,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/submit"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:background="@drawable/rounded_button"
+        android:textColor="@color/colorButtonText"/>
 
 </LinearLayout>

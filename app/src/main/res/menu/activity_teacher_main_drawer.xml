@@ -22,7 +22,7 @@
             android:title="@string/connection_requests" />
         <item
             android:id="@+id/teacher_nav_lessons_archive"
-            android:icon="@mipmap/ic_user_foreground"
+            android:icon="@drawable/ic_archive_foreground"
             android:title="@string/lessons_archive" />
         <item
             android:id="@+id/teacher_nav_profile"

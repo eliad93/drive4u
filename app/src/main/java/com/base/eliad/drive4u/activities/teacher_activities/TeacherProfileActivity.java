@@ -1,29 +1,29 @@
-package com.base.eliad.drive4u.teacher_ui;
-
+package com.base.eliad.drive4u.activities.teacher_activities;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.base.eliad.drive4u.R;
+import com.base.eliad.drive4u.base_activities.TeacherBaseNavigationActivity;
 import com.base.eliad.drive4u.models.Teacher;
 import com.base.eliad.drive4u.models.User;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -40,16 +40,16 @@ import javax.annotation.Nullable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static android.app.Activity.RESULT_OK;
+public class TeacherProfileActivity extends TeacherBaseNavigationActivity
+        implements AdapterView.OnItemSelectedListener{
 
-public class TeacherProfileFragment extends TeacherBaseFragment
-        implements AdapterView.OnItemSelectedListener {
-    private static final String TAG = TeacherProfileFragment.class.getName();
+    private static final String TAG = TeacherProfileActivity.class.getName();
 
     CircleImageView image_profile;
     TextView username;
 
-    private ImageButton editBtn;
+    private ImageButton editInfoBtn;
+    private ImageView editPicBtn;
     private TextView textViewPhoneNumber, textViewEmail, textViewCity, textViewCarModel,
             textViewGearType, textViewPrice;
 
@@ -65,43 +65,34 @@ public class TeacherProfileFragment extends TeacherBaseFragment
     private Uri imageUri;
     private StorageTask uploadTask;
 
-    public TeacherProfileFragment() {
-        // Required empty public constructor
-    }
-
-    public static TeacherProfileFragment newInstance(Teacher teacher) {
-        return new TeacherProfileFragment();
-    }
-
-
-
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_teacher_profile, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        FrameLayout frameLayout = findViewById(R.id.teacher_base_content_frame);
+        getLayoutInflater().inflate(R.layout.activity_teacher_profile, frameLayout);
 
         storageReference = FirebaseStorage.getInstance().getReference(User.UPLOADS);
         isEditMode = false;
-        image_profile = view.findViewById(R.id.profile_image);
-        editBtn = view.findViewById(R.id.imageButtonEdit);
-        username = view.findViewById(R.id.profile_username);
-        textViewPhoneNumber = view.findViewById(R.id.TeacherProfilePhone);
-        textViewEmail = view.findViewById(R.id.TeacherProfileEmail);
-        textViewCity = view.findViewById(R.id.TeacherProfileCity);
-        textViewCarModel = view.findViewById(R.id.TeacherProfileCarModel);
-        textViewGearType = view.findViewById(R.id.TeacherProfileGearType);
-        textViewPrice = view.findViewById(R.id.TeacherProfilePrice);
+        image_profile = findViewById(R.id.profile_image);
+        editInfoBtn = findViewById(R.id.imageButtonEdit);
+        username = findViewById(R.id.profile_username);
+        textViewPhoneNumber = findViewById(R.id.TeacherProfilePhone);
+        textViewEmail = findViewById(R.id.TeacherProfileEmail);
+        textViewCity = findViewById(R.id.TeacherProfileCity);
+        textViewCarModel = findViewById(R.id.TeacherProfileCarModel);
+        textViewGearType = findViewById(R.id.TeacherProfileGearType);
+        textViewPrice = findViewById(R.id.TeacherProfilePrice);
+        editPicBtn = findViewById(R.id.imageViewEditPhoto);
 
-        initEditProfile(view);
+        initEditProfile();
 
-        image_profile.setOnClickListener(new View.OnClickListener() {
+        editPicBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openImage();
             }
         });
-        editBtn.setOnClickListener(new View.OnClickListener() {
+        editInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!isEditMode) {
@@ -111,7 +102,7 @@ public class TeacherProfileFragment extends TeacherBaseFragment
                     endEditMode();
                     isEditMode = false;
                 } else {
-                    Toast.makeText(getContext(), "in valid input!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TeacherProfileActivity.this, "Please enter a valid input", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -132,7 +123,12 @@ public class TeacherProfileFragment extends TeacherBaseFragment
                     }
                 });
 
-        return view;
+    }
+
+    private void endEditMode() {
+        updateTeacher();
+        updateProfile();
+        swapVisibility(View.VISIBLE, View.GONE);
     }
 
     private boolean isValidInput(){
@@ -178,31 +174,25 @@ public class TeacherProfileFragment extends TeacherBaseFragment
         return isValid;
     }
 
-    private void endEditMode() {
-        updateTeacher();
-        updateProfile();
-        swapVisibility(View.VISIBLE, View.GONE);
+    private void prepForProfileEdit() {
+        swapVisibility(View.GONE, View.VISIBLE);
     }
 
-    private void initEditProfile (View v) {
+    private void initEditProfile () {
         Log.d(TAG, "initEditProfile");
-        editTextName = v.findViewById(R.id.ProfileEditTextName);
-        editTextPhone = v.findViewById(R.id.editTextTeacherProfilePhone);
-        editTextCity = v.findViewById(R.id.editTextTeacherProfileCity);
-        editTextCarModel = v.findViewById(R.id.editTextTeacherProfileCarModel);
-        editTextPrice = v.findViewById(R.id.editTextTeacherProfilePrice);
-        spinnerGearType = v.findViewById(R.id.spinnerTeacherProfileGearType);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+        editTextName = findViewById(R.id.ProfileEditTextName);
+        editTextPhone = findViewById(R.id.editTextTeacherProfilePhone);
+        editTextCity = findViewById(R.id.editTextTeacherProfileCity);
+        editTextCarModel = findViewById(R.id.editTextTeacherProfileCarModel);
+        editTextPrice = findViewById(R.id.editTextTeacherProfilePrice);
+        spinnerGearType = findViewById(R.id.spinnerTeacherProfileGearType);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.gear_types_teacher, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGearType.setAdapter(adapter);
         spinnerGearType.setOnItemSelectedListener(this);
 
         swapVisibility(View.VISIBLE, View.GONE);
-    }
-
-    private void prepForProfileEdit() {
-        swapVisibility(View.GONE, View.VISIBLE);
     }
 
     private void swapVisibility(int tvCode, int etCode) {
@@ -245,10 +235,7 @@ public class TeacherProfileFragment extends TeacherBaseFragment
         if (mTeacher.getImageUrl() == null || mTeacher.getImageUrl().equals(User.DEFAULT_IMAGE_KEY)) {
             image_profile.setImageResource(R.mipmap.ic_user_foreground );
         } else {
-            if (getContext() == null) {
-                return;
-            }
-            Glide.with(getContext()).load(mTeacher.getImageUrl()).into(image_profile);
+            Glide.with(this).load(mTeacher.getImageUrl()).into(image_profile);
         }
     }
 
@@ -282,19 +269,19 @@ public class TeacherProfileFragment extends TeacherBaseFragment
     }
 
     private String getFileExtension(Uri uri) {
-        ContentResolver contentResolver = getContext().getContentResolver();
+        ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
     private void uploadImage() {
-        final ProgressDialog pd = new ProgressDialog(getContext());
+        final ProgressDialog pd = new ProgressDialog(this);
         pd.setMessage("Uploading");
         pd.show();
 
         if (imageUri != null) {
             final StorageReference fileReference = storageReference.child(System.currentTimeMillis()
-            + "." + getFileExtension(imageUri));
+                    + "." + getFileExtension(imageUri));
 
             uploadTask = fileReference.putFile(imageUri);
             uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -319,19 +306,19 @@ public class TeacherProfileFragment extends TeacherBaseFragment
 
                         pd.dismiss();
                     } else {
-                        Toast.makeText(getContext(), "Fail to write the picture!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TeacherProfileActivity.this, "Fail to write the picture!", Toast.LENGTH_SHORT).show();
                     }
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TeacherProfileActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     pd.dismiss();
                 }
             });
         } else {
-            Toast.makeText(getContext(), "No image selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TeacherProfileActivity.this, "No image selected", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -342,9 +329,9 @@ public class TeacherProfileFragment extends TeacherBaseFragment
         if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null) {
             imageUri = data.getData();
-            
+
             if (uploadTask != null && uploadTask.isInProgress()) {
-                Toast.makeText(getContext(), "Upload in progress", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Upload in progress", Toast.LENGTH_SHORT).show();
             } else {
                 uploadImage();
             }
@@ -361,4 +348,5 @@ public class TeacherProfileFragment extends TeacherBaseFragment
     public void onNothingSelected(AdapterView<?> parent) {
         gearType = null;
     }
+
 }
