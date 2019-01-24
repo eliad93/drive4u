@@ -274,5 +274,6 @@
     <string name="start_location">Start location" N/A</string>
     <string name="end_location">End location: N/A</string>
     <string name="summary">Summary: not summarized yet</string>
+    <string name="my_teacher">My Teacher</string>
 
 </resources>
