@@ -60,7 +60,6 @@ public class StudentSearchTeacherActivity extends StudentBaseActivity implements
         setContentView(R.layout.activity_student_search_teacher);
 
         initWidgets();
-        initRecyclerView();
         presetAllTeachers();
     }
 

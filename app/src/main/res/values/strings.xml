@@ -275,5 +275,7 @@
     <string name="end_location">End location: N/A</string>
     <string name="summary">Summary: not summarized yet</string>
     <string name="my_teacher">My Teacher</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="response">Response</string>
 
 </resources>

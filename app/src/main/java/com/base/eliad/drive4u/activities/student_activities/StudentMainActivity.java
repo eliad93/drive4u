@@ -3,6 +3,8 @@ package com.base.eliad.drive4u.activities.student_activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationItemView;
+import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -13,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,12 +27,17 @@ import com.base.eliad.drive4u.activities.LoginActivity;
 import com.base.eliad.drive4u.adapters.ViewPagerAdapter;
 import com.base.eliad.drive4u.base_activities.StudentBaseActivity;
 import com.base.eliad.drive4u.chat.MainChatActivity;
-import com.base.eliad.drive4u.fragments.UserNotificationsFragment;
+import com.base.eliad.drive4u.fragments.student_fragments.StudentNotificationFragment;
+import com.base.eliad.drive4u.models.UserAction;
 import com.base.eliad.drive4u.models.User;
 import com.base.eliad.drive4u.student_ui.StudentDashboardFragment;
 import com.base.eliad.drive4u.student_ui.StudentProfileFragment;
 import com.base.eliad.drive4u.student_ui.StudentSummaryFragment;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -40,7 +48,10 @@ public class StudentMainActivity extends StudentBaseActivity
     // widgets
     Toolbar mToolbar;
     private ViewPager mViewPager;
-    private BottomNavigationView mNavigation;
+    private BottomNavigationView bottomNavigationView;
+    private View notificationBadge;
+    // models
+    private ArrayList<UserAction> unseenActions = new ArrayList<>();
 
     private boolean isAtHome = true;
 
@@ -56,9 +67,10 @@ public class StudentMainActivity extends StudentBaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_main);
         Log.d(TAG, "onCreate");
+        setContentView(R.layout.activity_student_main);
         initWidgets();
+        getUnseenActions();
         status(User.ONLINE);
     }
 
@@ -66,14 +78,15 @@ public class StudentMainActivity extends StudentBaseActivity
         initToolbar();
         initNavigationView();
 
-        mNavigation = findViewById(R.id.student_home_navigation);
-        mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        bottomNavigationView = findViewById(R.id.student_home_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         mViewPager = findViewById(R.id.student_home_container);
+        // adapters
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(StudentSummaryFragment.newInstance());
         viewPagerAdapter.addFragment(StudentDashboardFragment.newInstance());
-        viewPagerAdapter.addFragment(UserNotificationsFragment.newInstance(mStudent));
+        viewPagerAdapter.addFragment(StudentNotificationFragment.newInstance());
         mViewPager.setAdapter(viewPagerAdapter);
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -84,13 +97,13 @@ public class StudentMainActivity extends StudentBaseActivity
             public void onPageSelected(int i) {
                 switch (i) {
                     case 0:
-                        mNavigation.setSelectedItemId(R.id.student_navigation_home);
+                        bottomNavigationView.setSelectedItemId(R.id.student_navigation_home);
                         break;
                     case 1:
-                        mNavigation.setSelectedItemId(R.id.student_navigation_dashboard);
+                        bottomNavigationView.setSelectedItemId(R.id.student_navigation_dashboard);
                         break;
                     case 2:
-                        mNavigation.setSelectedItemId(R.id.student_navigation_notifications);
+                        bottomNavigationView.setSelectedItemId(R.id.student_navigation_notifications);
                         break;
                 }
             }
@@ -99,6 +112,17 @@ public class StudentMainActivity extends StudentBaseActivity
 
             }
         });
+        addNotificationsBadgeView();
+    }
+
+    private void addNotificationsBadgeView() {
+        BottomNavigationMenuView menuView = (BottomNavigationMenuView)
+                bottomNavigationView.getChildAt(0);
+        BottomNavigationItemView itemView = (BottomNavigationItemView) menuView.getChildAt(2);
+        notificationBadge = LayoutInflater.from(this)
+                .inflate(R.layout.student_notification_badge, menuView, false);
+        itemView.addView(notificationBadge);
+        notificationBadge.setVisibility(View.GONE);
     }
 
     public void displayPage(int viewId) {
@@ -115,6 +139,7 @@ public class StudentMainActivity extends StudentBaseActivity
                 break;
 
             case R.id.student_navigation_notifications:
+                notificationBadge.setVisibility(View.GONE);
                 mViewPager.setCurrentItem(2);
                 msg = "notifications selected";
                 break;
@@ -309,5 +334,23 @@ public class StudentMainActivity extends StudentBaseActivity
 
     public void onStudentHomeFab(View view) {
         displayView(R.id.student_nav_schedule);
+    }
+
+    protected void getUnseenActions(){
+        db.collection(getString(R.string.students_actions_history))
+                .whereEqualTo("receiverId", mStudent.getID())
+                .whereEqualTo("notice", UserAction.Notice.UNSEEN.getMessage())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        unseenActions.addAll(queryDocumentSnapshots
+                                .toObjects(UserAction.class));
+                        if(unseenActions.size() > 0){
+                            notificationBadge.setVisibility(View.VISIBLE);
+                        }
+                        initWidgets();
+                    }
+                });
     }
 }

@@ -39,4 +39,5 @@
     <string name="DB_InfoLink">infoLink</string>
     <string name="DB_TeacherReview">teacherReview</string>
     <string name="DB_ConformationStatus">conformationStatus</string>
+    <string name="students_actions_history">students_actions_history</string>
 </resources>

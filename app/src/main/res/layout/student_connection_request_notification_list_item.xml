@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/list_item_padding"
+    android:clickable="true"
+    android:background="@color/colorRegistrationFormFieldBorder"
+    android:focusable="true">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardViewStudentConnectionRequestNotificationListItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/list_item_padding">
+
+            <ImageView
+                android:id="@+id/imageViewStudentConnectionRequestNotificationListItem"
+                android:layout_width="@dimen/list_item_image_size"
+                android:layout_height="@dimen/list_item_image_size"
+                android:src="@mipmap/ic_user_foreground"
+                tools:ignore="ContentDescription"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="@dimen/horizontal_margin_x_small"
+                android:layout_marginStart="@dimen/horizontal_margin_x_small"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:id="@+id/textViewStudentConnectionRequestNotificationListItemName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/name"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/list_item_text_size_big"
+                android:layout_toRightOf="@id/imageViewStudentConnectionRequestNotificationListItem"
+                android:layout_toEndOf="@id/imageViewStudentConnectionRequestNotificationListItem"
+                android:layout_marginLeft="@dimen/horizontal_margin_small"
+                android:layout_marginStart="@dimen/horizontal_margin_small"
+                android:layout_toLeftOf="@id/buttonStudentConnectionRequestNotificationListItemDismiss"
+                android:layout_toStartOf="@id/buttonStudentConnectionRequestNotificationListItemDismiss"
+                android:layout_marginRight="@dimen/horizontal_margin_small"
+                android:layout_marginEnd="@dimen/horizontal_margin_small"
+                android:layout_marginTop="@dimen/vertical_margin_small"/>
+
+            <TextView
+                android:id="@+id/textViewStudentConnectionRequestNotificationListItemResponse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/response"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/list_item_text_size_big"
+                android:layout_toRightOf="@id/imageViewStudentConnectionRequestNotificationListItem"
+                android:layout_toEndOf="@id/imageViewStudentConnectionRequestNotificationListItem"
+                android:layout_marginLeft="@dimen/horizontal_margin_small"
+                android:layout_marginStart="@dimen/horizontal_margin_small"
+                android:layout_toLeftOf="@id/buttonStudentConnectionRequestNotificationListItemDismiss"
+                android:layout_toStartOf="@id/buttonStudentConnectionRequestNotificationListItemDismiss"
+                android:layout_marginRight="@dimen/horizontal_margin_small"
+                android:layout_marginEnd="@dimen/horizontal_margin_small"
+                android:layout_below="@id/textViewStudentSimpleListItemName"
+                android:layout_marginTop="@dimen/vertical_margin_small"
+                android:layout_marginBottom="@dimen/vertical_margin_small"/>
+
+            <Button
+                android:id="@+id/buttonStudentConnectionRequestNotificationListItemDismiss"
+                android:layout_width="@dimen/small_button_width"
+                android:layout_height="@dimen/small_button_height"
+                android:text="@string/dismiss"
+                android:background="@color/colorButtonBackground"
+                android:gravity="center"
+                android:textSize="@dimen/text_size_small"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/horizontal_margin_large"
+                android:layout_marginEnd="@dimen/horizontal_margin_large" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

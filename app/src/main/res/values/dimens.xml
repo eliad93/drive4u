@@ -38,4 +38,5 @@
     <dimen name="vertical_margin_small">8dp</dimen>
     <dimen name="text_size_small_medium">16sp</dimen>
     <dimen name="medium_button_size">60dp</dimen>
+    <dimen name="horizontal_margin_x_small">8dp</dimen>
 </resources>
