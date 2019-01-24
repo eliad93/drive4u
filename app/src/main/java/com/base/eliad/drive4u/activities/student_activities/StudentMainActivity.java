@@ -33,21 +33,15 @@ import com.base.eliad.drive4u.models.Teacher;
 import com.base.eliad.drive4u.models.UserAction;
 import com.base.eliad.drive4u.models.User;
 import com.base.eliad.drive4u.student_ui.StudentDashboardFragment;
-import com.base.eliad.drive4u.student_ui.StudentProfileFragment;
 import com.base.eliad.drive4u.student_ui.StudentSummaryFragment;
-import com.base.eliad.drive4u.student_ui.StudentTeacherFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-
-import javax.annotation.Nullable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -198,7 +192,7 @@ public class StudentMainActivity extends StudentBaseActivity
                 isAtHome = false;
                 break;
             case R.id.student_nav_profile:
-                fragment = StudentProfileFragment.newInstance(mStudent);
+                intent = new Intent(this, StudentProfileActivity.class);
                 isAtHome = false;
                 break;
 
@@ -222,10 +216,10 @@ public class StudentMainActivity extends StudentBaseActivity
                                     if (task.isSuccessful()) {
                                         if (task.getResult() != null && task.getResult().exists()) {
                                             Teacher t = task.getResult().toObject(Teacher.class);
-                                            Fragment f = StudentTeacherFragment.newInstance(t);
-                                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                                            ft.replace(R.id.student_content_frame, f);
-                                            ft.commit();
+                                            Intent i = new Intent(StudentMainActivity.this, StudentTeacherActivity.class);
+                                            i.putExtra(StudentTeacherActivity.ARG_TEACHER, t);
+                                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(i);
                                         } else {
                                             Log.d(TAG, "Could not get the teacher");
                                         }

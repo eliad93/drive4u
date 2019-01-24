@@ -16,33 +16,45 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".activities.teacher_activities.TeacherLessonArchiveActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask" />
-
-        <activity android:name=".activities.teacher_activities.TeacherStudentsActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask" />
-
+        <activity android:name=".activities.student_activities.StudentProfileActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.student_activities.StudentTeacherActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.teacher_activities.TeacherLessonArchiveActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.teacher_activities.TeacherStudentsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.teacher_activities.TeacherConnectionRequestsActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask" />
-
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.teacher_activities.TeacherProfileActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask" />
-
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.teacher_activities.TeacherHomeActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"  />
-
-        <activity android:name=".activities.student_activities.StudentLessonsArchiveActivity" />
-        <activity android:name=".activities.student_activities.StudentChooseTeacherActivity" />
-        <activity android:name=".activities.student_activities.StudentSearchTeacherActivity" />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.student_activities.StudentLessonsArchiveActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.student_activities.StudentChooseTeacherActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.student_activities.StudentSearchTeacherActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.LoginActivity"
             android:screenOrientation="portrait"

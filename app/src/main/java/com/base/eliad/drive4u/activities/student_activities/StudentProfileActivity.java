@@ -1,16 +1,14 @@
-package com.base.eliad.drive4u.student_ui;
-
+package com.base.eliad.drive4u.activities.student_activities;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -18,10 +16,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.base.eliad.drive4u.R;
+import com.base.eliad.drive4u.base_activities.StudentBaseActivity;
 import com.base.eliad.drive4u.models.Student;
 import com.base.eliad.drive4u.models.User;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,17 +33,13 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
-import org.jetbrains.annotations.Contract;
-
 import javax.annotation.Nullable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static android.app.Activity.RESULT_OK;
+public class StudentProfileActivity extends StudentBaseActivity {
 
-public class StudentProfileFragment extends StudentBaseFragment {
-    // Tag for the Log
-    private static final String TAG = StudentProfileFragment.class.getName();
+    private static final String TAG = StudentProfileActivity.class.getName();
 
     CircleImageView image_profile;
     TextView username;
@@ -62,41 +57,24 @@ public class StudentProfileFragment extends StudentBaseFragment {
     private static final int IMAGE_REQUEST = 1;
     private Uri imageUri;
     private StorageTask uploadTask;
-
-    public StudentProfileFragment() {
-        // Required empty public constructor
-    }
-
-    @NonNull
-    @Contract("_ -> new")
-    public static StudentProfileFragment newInstance(Student student) {
-        return new StudentProfileFragment();
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+        setContentView(R.layout.activity_student_profile);
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_student_profile,
-                container, false);
         // init text views
-        image_profile           = view.findViewById(R.id.profile_image);
-        editPicBtn              = view.findViewById(R.id.imageViewEditPhoto);
-        username                = view.findViewById(R.id.profile_username);
+        image_profile           = findViewById(R.id.profile_image);
+        editPicBtn              = findViewById(R.id.imageViewEditPhoto);
+        username                = findViewById(R.id.profile_username);
         isEditMode = false;
-        editBtn = view.findViewById(R.id.student_imageButtonEdit);
-        textViewPhoneNumber     = view.findViewById(R.id.StudentProfilePhone);
-        textViewEmail           = view.findViewById(R.id.StudentProfileEmail);
-        textViewCity            = view.findViewById(R.id.StudentProfileCity);
+        editBtn = findViewById(R.id.student_imageButtonEdit);
+        textViewPhoneNumber     = findViewById(R.id.StudentProfilePhone);
+        textViewEmail           = findViewById(R.id.StudentProfileEmail);
+        textViewCity            = findViewById(R.id.StudentProfileCity);
         // get ready for loading pictures
         storageReference        = FirebaseStorage.getInstance().getReference(User.UPLOADS);
 
-        initEditProfile(view);
+        initEditProfile();
         // set the content
         updateInfo();
 
@@ -117,7 +95,7 @@ public class StudentProfileFragment extends StudentBaseFragment {
                     endEditMode();
                     isEditMode = false;
                 } else {
-                    Toast.makeText(getContext(), "in valid input!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(StudentProfileActivity.this, "in valid input!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -136,7 +114,6 @@ public class StudentProfileFragment extends StudentBaseFragment {
                         }
                     }
                 });
-        return view;
     }
 
     private void endEditMode() {
@@ -163,7 +140,6 @@ public class StudentProfileFragment extends StudentBaseFragment {
                     }
                 });
     }
-
 
     private boolean isValidInput(){
         Log.d(TAG, "isValidInput");
@@ -200,11 +176,11 @@ public class StudentProfileFragment extends StudentBaseFragment {
         swapVisibility(View.GONE, View.VISIBLE);
     }
 
-    private void initEditProfile (View v) {
+    private void initEditProfile () {
         Log.d(TAG, "initEditProfile");
-        editTextName = v.findViewById(R.id.ProfileEditTextName);
-        editTextPhone = v.findViewById(R.id.editTextStudentProfilePhone);
-        editTextCity = v.findViewById(R.id.editTextStudentProfileCity);
+        editTextName = findViewById(R.id.ProfileEditTextName);
+        editTextPhone = findViewById(R.id.editTextStudentProfilePhone);
+        editTextCity = findViewById(R.id.editTextStudentProfileCity);
         swapVisibility(View.VISIBLE, View.GONE);
     }
 
@@ -236,8 +212,8 @@ public class StudentProfileFragment extends StudentBaseFragment {
 
         if (mStudent.getImageUrl() == null || mStudent.getImageUrl().equals(User.DEFAULT_IMAGE_KEY)) {
             image_profile.setImageResource(R.mipmap.ic_user_round);
-        } else if (getContext() != null) {
-            Glide.with(getContext()).load(mStudent.getImageUrl()).into(image_profile);
+        } else {
+            Glide.with(this).load(mStudent.getImageUrl()).into(image_profile);
         }
     }
 
@@ -258,7 +234,7 @@ public class StudentProfileFragment extends StudentBaseFragment {
             imageUri = data.getData();
 
             if (uploadTask != null && uploadTask.isInProgress()) {
-                Toast.makeText(getContext(), "Upload in progress", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Upload in progress", Toast.LENGTH_SHORT).show();
             } else {
                 uploadImage();
             }
@@ -266,13 +242,13 @@ public class StudentProfileFragment extends StudentBaseFragment {
     }
 
     private String getFileExtension(Uri uri) {
-        ContentResolver contentResolver = getContext().getContentResolver();
+        ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
     private void uploadImage() {
-        final ProgressDialog pd = new ProgressDialog(getContext());
+        final ProgressDialog pd = new ProgressDialog(this);
         pd.setMessage("Uploading");
         pd.show();
 
@@ -303,21 +279,20 @@ public class StudentProfileFragment extends StudentBaseFragment {
 
                         pd.dismiss();
                     } else {
-                        Toast.makeText(getContext(), "Fail to write the picture!", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "Fail to write the picture!");
                     }
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, e.getMessage());
                     pd.dismiss();
                 }
             });
         } else {
-            Toast.makeText(getContext(), "No image selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show();
         }
     }
-
 
 }
