@@ -135,7 +135,20 @@ public class UserAction implements Parcelable {
     }
 
     public enum Type{
-        CONNECTION_REQUEST
+        CONNECTION_REQUEST("connection request");
+        String message;
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        Type(String msg) {
+            message = msg;
+        }
     }
 
 }

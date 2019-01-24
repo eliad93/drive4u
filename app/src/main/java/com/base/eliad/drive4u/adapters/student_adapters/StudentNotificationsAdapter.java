@@ -63,15 +63,23 @@ public class StudentNotificationsAdapter extends RecyclerView.Adapter<RecyclerVi
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 teacher = documentSnapshot.toObject(Teacher.class);
-                initNotifications();
+                if(teacher != null){
+                    initNotifications();
+                }
             }
         });
     }
 
     private void initNotifications() {
+        initConnectionRequest();
+    }
+
+    private void initConnectionRequest() {
         db.collection(context.getString(R.string.students_actions_history))
                 .whereEqualTo("receiverId", student.getID())
+                .whereEqualTo("senderId", teacher.getID())
                 .whereEqualTo("notice", UserAction.Notice.UNSEEN.getMessage())
+                .whereEqualTo("type", UserAction.Type.CONNECTION_REQUEST.getMessage())
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -84,7 +92,9 @@ public class StudentNotificationsAdapter extends RecyclerView.Adapter<RecyclerVi
     private void registerToChanges() {
         Query query = db.collection(context.getString(R.string.students_actions_history))
                 .whereEqualTo("receiverId", student.getID())
-                .whereEqualTo("notice", UserAction.Notice.UNSEEN.getMessage());
+                .whereEqualTo("senderId", teacher.getID())
+                .whereEqualTo("notice", UserAction.Notice.UNSEEN.getMessage())
+                .whereEqualTo("type", UserAction.Type.CONNECTION_REQUEST.getMessage());
         registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
