@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.base.eliad.drive4u.student_ui.StudentTeacherFragment"
-    android:layout_marginTop="?attr/actionBarSize">
+    tools:context=".activities.student_activities.StudentTeacherActivity">
 
     <include layout="@layout/profile_header"
         android:id="@+id/student_teacher_profile_header"/>
