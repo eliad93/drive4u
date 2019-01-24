@@ -210,7 +210,8 @@ public class StudentMainActivity extends StudentBaseActivity
 
             case R.id.student_nav_teacher_info:
                 if (mStudent.getRequest().equals(Student.ConnectionRequestStatus.NOT_YET.getUserMessage())) {
-                    Toast.makeText(this, "You must chose a teacher first", Toast.LENGTH_SHORT).show();
+                    promptUserWithDialog(getString(R.string.no_teacher_dialog_title),
+                            getString(R.string.no_teacher_profile_dialog_message));
                 } else {
                     db.collection("Teachers")
                             .document(mStudent.getTeacherId())
