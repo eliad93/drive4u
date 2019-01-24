@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.telecom.ConnectionRequest;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,13 +21,19 @@ import com.base.eliad.drive4u.R;
 import com.base.eliad.drive4u.adapters.TeacherConnectionRequestsAdapter;
 import com.base.eliad.drive4u.base_activities.TeacherBaseNavigationActivity;
 import com.base.eliad.drive4u.models.Student;
+import com.base.eliad.drive4u.models.UserAction;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
+import java.util.Locale;
 
 public class TeacherConnectionRequestsActivity extends TeacherBaseNavigationActivity
         implements AdapterView.OnItemSelectedListener, View.OnClickListener,
@@ -182,12 +189,23 @@ public class TeacherConnectionRequestsActivity extends TeacherBaseNavigationActi
     public void onRequestClick(final int position,
                                final Student.ConnectionRequestStatus connectionRequestStatus) {
         final Student selectedStudent = presentedRequests.get(position);
+
+
+        Date now = new Date();
+        String formattedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS",
+                Locale.ENGLISH).format(now);
+        final UserAction userAction = new UserAction(mTeacher.getID(),
+                selectedStudent.getID(), formattedDate,
+                 null, UserAction.Notice.UNSEEN.getMessage(),
+                UserAction.Type.CONNECTION_REQUEST.getMessage());
+
         WriteBatch batch = db.batch();
         batch.update(getStudentDoc(selectedStudent),
                 "request", connectionRequestStatus.getUserMessage());
         batch.update(getTeacherDoc(),
                 "connectionRequests", FieldValue.arrayRemove(selectedStudent.getID()));
         if(connectionRequestStatus == Student.ConnectionRequestStatus.ACCEPTED){
+            userAction.setDescription(Student.ConnectionRequestStatus.ACCEPTED.getUserMessage());
             batch.update(getTeacherDoc(),
                     "students", FieldValue.arrayUnion(selectedStudent.getID()));
             batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -200,9 +218,12 @@ public class TeacherConnectionRequestsActivity extends TeacherBaseNavigationActi
                     mTeacher.addStudent(selectedStudent.getID());
                     mAdapter.notifyDataSetChanged();
                     writeTeacherToSharedPreferences();
+                    db.collection(getString(R.string.students_actions_history))
+                            .add(userAction);
                 }
             });
         } else{
+            userAction.setDescription(Student.ConnectionRequestStatus.DECLINED.getUserMessage());
             batch.update(getStudentDoc(selectedStudent),
                     "teacherId", null);
             batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -214,6 +235,8 @@ public class TeacherConnectionRequestsActivity extends TeacherBaseNavigationActi
                     mTeacher.removeConnectionRequest(selectedStudent.getID());
                     mAdapter.notifyDataSetChanged();
                     writeTeacherToSharedPreferences();
+                    db.collection(getString(R.string.students_actions_history))
+                            .add(userAction);
                 }
             });
         }

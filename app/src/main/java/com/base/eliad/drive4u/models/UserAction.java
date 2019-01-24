@@ -3,7 +3,26 @@ package com.base.eliad.drive4u.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.firestore.Exclude;
+
 public class UserAction implements Parcelable {
+
+    public String getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
+    }
+
+    private String senderId;
+    private String receiverId;
+    private String dateTime;
+    private String description;
+    private String notice;
+    private String type;
+    @Exclude private String actionId;
+
     public String getActionId() {
         return actionId;
     }
@@ -12,23 +31,14 @@ public class UserAction implements Parcelable {
         this.actionId = actionId;
     }
 
-    private String actionId;
-    private String senderId;
-    private String receiverId;
-    private String dateTime;
-    private String description;
-    private String notice;
-    private String type;
-
-
     protected UserAction(Parcel in) {
-        actionId = in.readString();
         senderId = in.readString();
         receiverId = in.readString();
         dateTime = in.readString();
         description = in.readString();
         notice = in.readString();
         type = in.readString();
+        actionId = in.readString();
     }
 
     public static final Creator<UserAction> CREATOR = new Creator<UserAction>() {
@@ -51,17 +61,8 @@ public class UserAction implements Parcelable {
         this.receiverId = receiverId;
     }
 
-    public String getId() {
-        return senderId;
-    }
-
-    public void setId(String id) {
-        this.senderId = id;
-    }
-
-    public UserAction(String mActionId, String mSender, String mReceiver, String mDateTime,
+    public UserAction(String mSender, String mReceiver, String mDateTime,
                       String mDescription, String mNotice, String mType){
-        actionId = mActionId;
         senderId = mSender;
         receiverId = mReceiver;
         dateTime = mDateTime;
@@ -111,13 +112,13 @@ public class UserAction implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(actionId);
         dest.writeString(senderId);
         dest.writeString(receiverId);
         dest.writeString(dateTime);
         dest.writeString(description);
         dest.writeString(notice);
         dest.writeString(type);
+        dest.writeString(actionId);
     }
 
 
@@ -149,6 +150,17 @@ public class UserAction implements Parcelable {
         Type(String msg) {
             message = msg;
         }
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof UserAction)){
+            return false;
+        }
+        if(actionId == null){
+            return false;
+        }
+        return actionId.equals(((UserAction) o).actionId);
     }
 
 }
