@@ -97,6 +97,7 @@ public class StudentMainActivity extends StudentBaseActivity
         viewPagerAdapter.addFragment(StudentDashboardFragment.newInstance());
         viewPagerAdapter.addFragment(StudentNotificationFragment.newInstance());
         mViewPager.setAdapter(viewPagerAdapter);
+        addNotificationsBadgeView();
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -121,7 +122,6 @@ public class StudentMainActivity extends StudentBaseActivity
 
             }
         });
-        addNotificationsBadgeView();
     }
 
     private void addNotificationsBadgeView() {
@@ -155,6 +155,8 @@ public class StudentMainActivity extends StudentBaseActivity
                         writeBatch.update(documentReference, "notice",
                                 UserAction.Notice.SEEN.getMessage());
                     }
+                    actionsReferences.clear();
+                    unseenActions.clear();
                     writeBatch.commit();
                 }
                 mViewPager.setCurrentItem(2);
@@ -398,7 +400,6 @@ public class StudentMainActivity extends StudentBaseActivity
                         } else {
                             notificationBadge.setVisibility(View.GONE);
                         }
-                        initWidgets();
                     }
                 });
     }
