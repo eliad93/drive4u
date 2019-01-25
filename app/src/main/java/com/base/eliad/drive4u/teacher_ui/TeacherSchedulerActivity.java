@@ -1497,6 +1497,7 @@ public class TeacherSchedulerActivity extends TeacherBaseNavigationActivity
     @Override
     public void onItemClickRequestsList(List<Lesson>lessonsList, final int position) {
         updateLesson = lessonsList.get(position);
+        updatedLessons.remove(updateLesson);
         AlertDialog alertDialog = new AlertDialog.Builder(TeacherSchedulerActivity.this).create();
         alertDialog.setTitle(getString(R.string.alert_dialog_request_lesson_title));
         alertDialog.setMessage(getString(R.string.alert_dialog_request_lesson_message));
@@ -1510,6 +1511,7 @@ public class TeacherSchedulerActivity extends TeacherBaseNavigationActivity
                             Toast.makeText(getApplicationContext(),getString(R.string.wait_for_student_response), Toast.LENGTH_SHORT).show();
                         } else {
                             updateStatus = Lesson.Status.T_CONFIRMED;
+                            updatedLessons.add(updateLesson);
                             oneRequestApprove = true;
                             requestsRecyclerView.findViewHolderForLayoutPosition(position).itemView.setBackgroundColor(Color.GREEN);
                             updateLessonStatusInDB(updateLesson, updateStatus);
@@ -1526,6 +1528,7 @@ public class TeacherSchedulerActivity extends TeacherBaseNavigationActivity
                         oneRequestApprove = false;
                     }
                     updateStatus = Lesson.Status.T_CANCELED;
+                    updatedLessons.add(updateLesson);
                     requestsRecyclerView.findViewHolderForLayoutPosition(position).itemView.setBackgroundColor(Color.RED);
                     updateLessonStatusInDB(updateLesson, updateStatus);
                     Toast.makeText(getApplicationContext(), getString(R.string.lesson_reject), Toast.LENGTH_SHORT).show();
@@ -1564,8 +1567,8 @@ public class TeacherSchedulerActivity extends TeacherBaseNavigationActivity
         datePicker = (Button) updateRequests.findViewById(R.id.date_picker);
 
         spinner = updateRequests.findViewById(R.id.hoursSpinner);
-        if(freeLessons!=null){
-            freeLessonsSorted = new String[freeLessons.size()+1];
+        if (freeLessons != null) {
+            freeLessonsSorted = new String[freeLessons.size() + 1];
             freeLessonsSorted[0] = updateLesson.getHour();
             lessonsTemp = new LinkedList<>();
             lessonsTemp.addAll(freeLessons);
@@ -1580,7 +1583,7 @@ public class TeacherSchedulerActivity extends TeacherBaseNavigationActivity
                 lessonsTemp.remove(min);
                 freeLessonsSorted[i + 1] = min;
             }
-        }else{
+        } else {
             freeLessonsSorted = new String[1];
             freeLessonsSorted[0] = updateLesson.getHour();
         }
@@ -1645,46 +1648,47 @@ public class TeacherSchedulerActivity extends TeacherBaseNavigationActivity
                                 if (lesson.getConformationStatus() == Lesson.Status.S_CANCELED || lesson.getConformationStatus() == Lesson.Status.T_CANCELED) {
                                     toRemove.add(lesson);
                                 }
-                                if(lesson.getConformationStatus() == Lesson.Status.T_OPTION){
+                                if (lesson.getConformationStatus() == Lesson.Status.T_OPTION) {
                                     freeLessonsInDate.add(lesson.getHour());
                                 }
                             }
-                            for(Lesson l:toRemove){
-                                if(freeLessonsInDate.contains(l.getHour())){
+                            for (Lesson l : toRemove) {
+                                if (freeLessonsInDate.contains(l.getHour())) {
                                     freeLessonsInDate.remove(l.getHour());
                                 }
                             }
+
+                            if (updateDate.equals(date)) {
+                                freeLessonsSortedInDate = freeLessonsSorted;
+                            } else {
+                                if (freeLessonsInDate != null) {
+                                    freeLessonsSortedInDate = new String[freeLessonsInDate.size()];
+                                    lessonsTemp = new LinkedList<>();
+                                    lessonsTemp.addAll(freeLessonsInDate);
+                                    //order by hours
+                                    for (int i = 0; i < freeLessonsInDate.size(); i++) {
+                                        String min = lessonsTemp.get(0);
+                                        for (int j = 0; j < lessonsTemp.size(); j++) {
+                                            if (hourLowerThan(lessonsTemp.get(j), min)) {
+                                                min = lessonsTemp.get(j);
+                                            }
+                                        }
+                                        lessonsTemp.remove(min);
+                                        freeLessonsSortedInDate[i] = min;
+                                    }
+                                } else {
+                                    freeLessonsSortedInDate = new String[0];
+                                }
+                            }
+
+                            ArrayAdapter<String> adapter = new ArrayAdapter<>(TeacherSchedulerActivity.this,
+                                    android.R.layout.simple_spinner_item, freeLessonsSortedInDate);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinner.setAdapter(adapter);
+
                         }
                     }
                 });
-
-                if(updateDate.equals(date)){
-                    freeLessonsSortedInDate = freeLessonsSorted;
-                }else{
-                    if(freeLessonsInDate !=null) {
-                        freeLessonsSortedInDate = new String[freeLessonsInDate.size()];
-                        lessonsTemp = new LinkedList<>();
-                        lessonsTemp.addAll(freeLessonsInDate);
-                        //order by hours
-                        for (int i = 0; i < freeLessonsInDate.size(); i++) {
-                            String min = lessonsTemp.get(0);
-                            for (int j = 0; j < lessonsTemp.size(); j++) {
-                                if (hourLowerThan(lessonsTemp.get(j), min)) {
-                                    min = lessonsTemp.get(j);
-                                }
-                            }
-                            lessonsTemp.remove(min);
-                            freeLessonsSortedInDate[i] = min;
-                        }
-                    }else{
-                        freeLessonsSortedInDate = new String[0];
-                    }
-                }
-
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(TeacherSchedulerActivity.this,
-                        android.R.layout.simple_spinner_item, freeLessonsSortedInDate);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinner.setAdapter(adapter);
             }
         };
 
@@ -1702,21 +1706,43 @@ public class TeacherSchedulerActivity extends TeacherBaseNavigationActivity
                     } else {
                         newHour = spinner.getSelectedItem().toString();
                         newDate = dateUpdateDialog.getText().toString();
-                        db.collection("lessons").document(updateLesson.getLessonID()).delete();
-                        updateLesson.setHour(newHour);
-                        updateLesson.setDate(newDate);
-                        updateLesson.setConformationStatus(Lesson.Status.T_UPDATE);
-                        db.collection("lessons").add(updateLesson);
+                        db.collection("lessons").document(updateLesson.getLessonID()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                updateLesson.setHour(newHour);
+                                updateLesson.setDate(newDate);
+                                updateLesson.setConformationStatus(Lesson.Status.T_UPDATE);
+                                db.collection("lessons").whereEqualTo("date", newDate).whereEqualTo("hour", newHour)
+                                        .whereEqualTo("teacherUID", mTeacher.getID()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            String id = "";
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                id = document.getId();
+                                            }
+                                            db.collection("lessons").document(id).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    db.collection("lessons").add(updateLesson);
 
-                        updatedLessons.add(updateLesson);
-                        requestsRecyclerView.findViewHolderForLayoutPosition(position).itemView.setBackgroundColor(Color.YELLOW);
-                        updateRequests.hide();
+                                                    updatedLessons.add(updateLesson);
+                                                    requestsRecyclerView.findViewHolderForLayoutPosition(position).itemView.setBackgroundColor(Color.YELLOW);
+                                                    updateRequests.hide();
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+
+                            }
+                        });
                     }
                 }
             }
         });
-    }
 
+    }
     private boolean hourLowerThan(String hour1, String hour2){
         //return true if hour1 is before hour2
         int time1 = Integer.valueOf(hour1.split(":")[0]) * 60 + Integer.valueOf(hour1.split(":")[1]);
